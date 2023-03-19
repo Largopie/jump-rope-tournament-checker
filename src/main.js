@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
-import RContest from './register/r-contest';
-import REvent from './register/r-event';
-import Test from './register/test';
+import AddCompetition from './components/competition/addCompetition';
+import REvent from './components/competition//addEvent';
+import Test from './components/competition/test';
+import FindCompetition from './components/competition/findCompetition';
 
 const Container = styled.div`
     display: flex;
@@ -30,6 +31,7 @@ const Content = styled.div`
 `;
 
 const List = styled.li`
+    color: #3498db;
     box-shadow: 0 0 0 1px purple inset;
     :hover > ul {
         opacity: 1;
@@ -54,6 +56,10 @@ const Ul = styled.ul`
 
 const StyledLink = styled(Link)`
     text-decoration: none;
+    color: #1abc9c;
+    :hover {
+        color: #f1c40f;
+    };
 `;
 
 const Main = () => {
@@ -63,11 +69,12 @@ const Main = () => {
                 <ul>
                     <List h="125px">대회 준비
                         <Ul>
-                            <li><StyledLink to="/contest">대회 등록</StyledLink></li>
+                            <li><StyledLink to="/competition/add">대회 등록</StyledLink></li>
                             <li><StyledLink to="/event">종목 선택 등록</StyledLink></li>
-                            <li>댠체 참가 등록</li>
+                            <li>단체 참가 등록</li>
                             <li>선수 등록</li>
                             <li>종목 별 점수 등록</li>
+                            <li><StyledLink to="/competition/find">대회 조회</StyledLink></li>
                         </Ul>
                     </List>
                     <List h="100px">선수등록 현황
@@ -100,8 +107,9 @@ const Main = () => {
             <Content>
                 <Routes>
                     <Route exact path="/" element={<Test />} />
-                    <Route path="/contest" element={<RContest />} />
+                    <Route path="/competition/add" element={<AddCompetition />} />
                     <Route path="/event" element={<REvent />} />
+                    <Route path="/competition/find" element={<FindCompetition />} />
                 </Routes>
             </Content>
         </Container>

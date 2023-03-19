@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import {API} from '../config';
+import {API} from '../../config';
 
 const Container = styled.div`
     padding: 15px;
@@ -43,7 +43,7 @@ const Select = styled.select`
     width: ${(props) => props.wid};
 `;
 
-const RContest = () => {
+const AddCompetition = () => {
     const [value, setValue] = useState({
         name: '',
         printName: '',
@@ -82,6 +82,7 @@ const RContest = () => {
             <Form>
                 <FormRowContainer>
                     <FormColumnContainer wid="60%" hei="100%">
+                        <h3>대회 정보 입력</h3><br />
                         <label htmlFor="name">대회명 </label>
                         <Input wid="60%" id="name" name="name" onChange={onChangeHandler} type="text" />
 
@@ -90,20 +91,21 @@ const RContest = () => {
                     </FormColumnContainer>
                 </FormRowContainer>
                 <FormRowContainer wid="60%" hei="100%">
-                        <FormColumnContainer wid="50%">
-                            <label htmlFor="startDate">대회 시작 날짜</label>
-                            <Input wid="60%" id="startDate" name="startDate" onChange={onChangeHandler} type="date" />
-                            <Input wid="60%" name="startTime" onChange={onChangeHandler} type="time" />
-                        </FormColumnContainer>
-                        <FormColumnContainer wid="50%">
-                            <label htmlFor="endDate">대회 종료 날짜</label>
-                            <Input wid="60%" id="endDate" name="endDate" onChange={onChangeHandler} type="date" />
-                            
-                            <Input wid="60%" name="endTime" onChange={onChangeHandler} type="time" />
-                        </FormColumnContainer>
-                    </FormRowContainer>
+                    <FormColumnContainer wid="50%">
+                        <label htmlFor="startDate">대회 시작 날짜</label>
+                        <Input wid="60%" id="startDate" name="startDate" onChange={onChangeHandler} type="date" />
+                        <Input wid="60%" name="startTime" onChange={onChangeHandler} type="time" />
+                    </FormColumnContainer>
+                    <FormColumnContainer wid="50%">
+                        <label htmlFor="endDate">대회 종료 날짜</label>
+                        <Input wid="60%" id="endDate" name="endDate" onChange={onChangeHandler} type="date" />
+                        
+                        <Input wid="60%" name="endTime" onChange={onChangeHandler} type="time" />
+                    </FormColumnContainer>
+                </FormRowContainer>
                 <FormRowContainer>
                     <FormColumnContainer wid="60%" hei="100%">
+                        <h3>개최측 정보입력</h3><br />
                         <label htmlFor="organizer">개최자</label>
                         <Input wid="60%" id="organizer" name="organizer" onChange={onChangeHandler} type="text" />
                         <label htmlFor="orgEmailId">이메일</label>
@@ -133,4 +135,4 @@ const RContest = () => {
     );
 }
 
-export default RContest;
+export default AddCompetition;
