@@ -1,6 +1,8 @@
 
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { API } from '../../config';
 
 const Container = styled.div`
     width: 100%;
@@ -30,39 +32,54 @@ const Td = styled.td`
     border: 1px solid black;
 `;
 
+const A = styled.a`
+    :hover {
+        cursor: hand;
+    };
+    text-decoration: none;
+`;
+
 const FindCompetition = () => {
-
-    const a = [
-        {competitionId: Number("1"),
-        competitionName: "전국체전",
-        recordingSheetName: "string",
-        competitionHost: "string",
-        hostEmail: "song990320@dongyang.ac.kr",
-        hostTel: "0101010101",
-        competitionStartDate: "2023-03-16T06:34:12.592Z",
-        competitionEndDate: "2023-03-16T06:34:12.592Z"},
-        {competitionId: Number("2"),
-        competitionName: "국내대회",
-        recordingSheetName: "string",
-        competitionHost: "string",
-        hostEmail: "abc@123.com",
-        hostTel: "0101010101",
-        competitionStartDate: "2023-03-16T06:34:12.592Z",
-        competitionEndDate: "2023-03-16T06:34:12.592Z"},
-    ];
-
     const columns = ['대회ID', '대회이름', '기록지명', '개최자명', '개최자이메일', '개최자전화번호', '대회시작날짜', '대회종료날짜'];
 
+    const [data, setData] = useState([]);
     const [val, setVal] = useState('');
     const [opt, setOpt] = useState('competitionId');
-
+    const [deleteResponse, setDeleteResponse] = useState(false);
     const setValHandler = (e) => {
         setVal(e.target.value);
+    };
+
+    const doDelete = (e) => {
+        console.log([Number(e.target.value)]);
+        if(window.confirm("정말 삭제하시겠습니까?")) {
+            axios.delete(`${API.COMPETITION_DELETE}`,{
+                data: [
+                    e.target.value
+                ]
+            }).then((res) => setDeleteResponse((state) => !state));
+        } else {
+            alert('취소 되었습니다.');
+        }
+        
     };
 
     const setOptHandler = (e) => {
         setOpt(e.target.value);
     };
+
+    const findID = (e) => {
+        axios.get(`${API.COMPETITION_FIND}/${e.target.innerText}`).then(
+            (res) => console.log(res.data)
+        );
+        
+    };
+
+    useEffect(() => {
+        axios.get(`${API.COMPETITION_FIND_ALL}`).then(
+            (res) => setData(res.data)
+        );
+    }, [deleteResponse]);
 
     return (
         <Container>
@@ -86,13 +103,14 @@ const FindCompetition = () => {
                         {columns.map((column, idx) => (
                             <Th key={idx}>{column}</Th>
                         ))}
+                        <Th>삭제여부</Th>
                     </tr>
                 </thead>
                 <tbody>
-                    {a.filter(item => item.competitionName.includes(val))
+                    {data.filter(item => String(item[opt]).includes(val) )
                     .map(({ competitionId, competitionName, recordingSheetName, competitionHost, hostEmail, hostTel, competitionStartDate, competitionEndDate }) => (
                         <tr key={competitionId}>
-                            <Td>{competitionId}</Td>
+                            <Td><A onClick={findID}>{competitionId}</A></Td>
                             <Td>{competitionName}</Td>
                             <Td>{recordingSheetName}</Td>
                             <Td>{competitionHost}</Td>
@@ -100,6 +118,7 @@ const FindCompetition = () => {
                             <Td>{hostTel}</Td>
                             <Td>{competitionStartDate}</Td>
                             <Td>{competitionEndDate}</Td>
+                            <Td><button value={competitionId} onClick={doDelete}>삭제</button></Td>
                         </tr>
                     ))}
                 </tbody>
