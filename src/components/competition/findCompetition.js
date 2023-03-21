@@ -6,6 +6,7 @@ import { API } from '../../config';
 
 const Container = styled.div`
     width: 100%;
+    overflow: scroll;
 `;
 
 const SearchContainer = styled.div`
