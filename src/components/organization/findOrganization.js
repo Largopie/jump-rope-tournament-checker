@@ -43,7 +43,8 @@ const A = styled.a`
 `;
 
 const RowContainer = styled.div`
-    
+    display: flex;
+    flex-direction: row;
 `;
 
 const ColumnContainer = styled.div`
@@ -194,6 +195,11 @@ const FindOrganization = () => {
             {detailState ?
             <DetailContent>
                 <form>
+                    <RowContainer>
+                        <label htmlFor="csv">선수등록(CSV)</label>
+                        <input type="file" id="csv" accept='.csv' />
+                        <input type="button" value="일반선수등록" />
+                    </RowContainer>
                     <ColumnContainer>
                         <h3>데이터 꽂히는지 확인</h3>
                         <input disabled type="text" value={detail.orgId}/>
