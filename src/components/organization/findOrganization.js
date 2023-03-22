@@ -87,12 +87,22 @@ const FindOrganization = () => {
     });
     const [detailState, setDetailState] = useState(false);
 
+    const detailOnChange = (e) => {
+        setDetail((prevState) => {
+            return { ...prevState, [e.target.name]: e.target.value };
+        });
+    };
+
     const setValHandler = (e) => {
         setVal(e.target.value);
     };
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
+        if (window.confirm('수정하시겠습니까?')) {
+            // axios.put 이용하여 수정값 JSON보내기
+            alert('수정완료!');
+        }
     };
 
     const handleCancel = () => {
@@ -187,11 +197,11 @@ const FindOrganization = () => {
                     <ColumnContainer>
                         <h3>데이터 꽂히는지 확인</h3>
                         <input disabled type="text" value={detail.orgId}/>
-                        <input type="text" value={detail.orgName}/>
-                        <input type="text" value={detail.orgEmail}/>
-                        <input type="text" value={detail.orgTel}/>
-                        <input type="text" value={detail.orgLeaderName}/>
-                        <input type="text" value={detail.leaderTel}/>
+                        <input type="text" name="orgName" value={detail.orgName} onChange={detailOnChange}/>
+                        <input type="text" name="orgEmail" value={detail.orgEmail} onChange={detailOnChange}/>
+                        <input type="text" name="orgTel" value={detail.orgTel} onChange={detailOnChange}/>
+                        <input type="text" name="orgLeaderName" value={detail.orgLeaderName} onChange={detailOnChange}/>
+                        <input type="text" name="leaderTel" value={detail.leaderTel} onChange={detailOnChange}/>
                         <input type="submit" onClick={handleOnSubmit} value="수정"/>
                         <input type="button" onClick={handleCancel} value="취소" />
                     </ColumnContainer>
