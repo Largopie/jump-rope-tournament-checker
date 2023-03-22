@@ -5,6 +5,8 @@ import AddCompetition from './components/competition/addCompetition';
 import REvent from './components/competition//addEvent';
 import Test from './components/competition/test';
 import FindCompetition from './components/competition/findCompetition';
+import AddOrganization from './components/organization/addOrganization';
+import AddPlayer from './components/player/addPlayer';
 
 const Container = styled.div`
     display: flex;
@@ -71,8 +73,8 @@ const Main = () => {
                         <Ul>
                             <li><StyledLink to="/competition/add">대회 등록</StyledLink></li>
                             <li><StyledLink to="/event">종목 선택 등록</StyledLink></li>
-                            <li>단체 참가 등록</li>
-                            <li>선수 등록</li>
+                            <li><StyledLink to="/organization/add">단체 참가 등록</StyledLink></li>
+                            <li><StyledLink to="/player/add">선수 등록</StyledLink></li>
                             <li>종목 별 점수 등록</li>
                             <li><StyledLink to="/competition/find">대회 조회</StyledLink></li>
                         </Ul>
@@ -108,8 +110,11 @@ const Main = () => {
                 <Routes>
                     <Route exact path="/" element={<Test />} />
                     <Route path="/competition/add" element={<AddCompetition />} />
-                    <Route path="/event" element={<REvent />} />
                     <Route path="/competition/find" element={<FindCompetition />} />
+
+                    <Route path="/event" element={<REvent />} />
+                    <Route path="/organization/add" element={<AddOrganization />} />
+                    <Route path="/player/add" element={<AddPlayer />} />
                 </Routes>
             </Content>
         </Container>

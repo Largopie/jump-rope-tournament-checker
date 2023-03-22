@@ -22,6 +22,7 @@ const Table = styled.table`
     border: 1px solid black;
     margin: 0 auto;
     text-align: center;
+    width: 90%;
 `;
 
 const Th = styled.th`
