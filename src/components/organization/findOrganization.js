@@ -9,6 +9,9 @@ const Container = styled.div`
     overflow: scroll;
 `;
 
+const DetailContent = styled.div`
+`;
+
 const SearchContainer = styled.div`
     margin: 15px 0px 15px 15px;
 `;
@@ -35,34 +38,89 @@ const Td = styled.td`
 `;
 
 const A = styled.a`
-    :hover {
-        cursor: hand;
-    };
+    cursor: pointer;
     text-decoration: none;
 `;
 
+const RowContainer = styled.div`
+    
+`;
+
+const ColumnContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 const FindOrganization = () => {
     const columns = ['단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
 
-    const [data, setData] = useState([]);
+    const data = [
+        {
+        orgId: '0',
+        orgName: '나단체임ㅋ',
+        orgEmail: 'k123@dongyang.ac.kr',
+        orgTel: '01001010101',
+        orgLeaderName: 'Leader',
+        leaderTel: '10101010101'
+        },
+        {
+            orgId: '1',
+            orgName: '나ㅋ',
+            orgEmail: 'kyk@dongyang.ac.kr',
+            orgTel: '123456789123',
+            orgLeaderName: 'L123',
+            leaderTel: '123123123'
+        }
+    ];
+
+    // const [data, setData] = useState([]);
     const [val, setVal] = useState('');
     const [opt, setOpt] = useState('orgId');
     const [deleteResponse, setDeleteResponse] = useState(false);
+
+    const [detail, setDetail] = useState({
+        orgId: '',
+        orgName: '',
+        orgEmail: '',
+        orgTel: '',
+        orgLeaderName: '',
+        leaderTel: '',
+    });
+    const [detailState, setDetailState] = useState(false);
+
     const setValHandler = (e) => {
         setVal(e.target.value);
     };
 
+    const handleOnSubmit = (e) => {
+        e.preventDefault();
+    };
+
+    const handleCancel = () => {
+        if (window.confirm('수정을 취소하시겠습니까?')) {
+            setDetailState(false);
+            alert('취소되었습니다!');
+            setDetail({
+                orgId: '',
+                orgName: '',
+                orgEmail: '',
+                orgTel: '',
+                orgLeaderName: '',
+                leaderTel: '',
+            });
+        }
+    };
+
     const doDelete = (e) => {
         console.log([Number(e.target.value)]);
-        if(window.confirm("정말 삭제하시겠습니까?")) {
-            axios.delete(`${API.COMPETITION_DELETE}`,{
-                data: [
-                    e.target.value
-                ]
-            }).then((res) => setDeleteResponse((state) => !state));
-        } else {
-            alert('취소 되었습니다.');
-        }
+        // if(window.confirm("정말 삭제하시겠습니까?")) {
+        //     axios.delete(`${API.COMPETITION_DELETE}`,{
+        //         data: [
+        //             e.target.value
+        //         ]
+        //     }).then((res) => setDeleteResponse((state) => !state));
+        // } else {
+        //     alert('취소 되었습니다.');
+        // }
         
     };
 
@@ -70,23 +128,23 @@ const FindOrganization = () => {
         setOpt(e.target.value);
     };
 
-    const findID = (e) => {
-        axios.get(`${API.ORGANIZATION_FIND}/${e.target.innerText}`).then(
-            (res) => console.log(res.data)
-        );
+    const updateOrg = (e) => {
+        if (window.confirm('데이터를 수정하시겠습니까?')) {
+            setDetail(data[e.target.innerText]);
+            setDetailState(true);
+        }
         
     };
-
-    useEffect(() => {
-        axios.get(`${API.ORGANIZATION_FIND_ALL}`).then(
-            (res) => setData(res.data)
-        );
-    }, [deleteResponse]);
+    // useEffect(() => {
+    //     axios.get(`${API.ORGANIZATION_FIND_ALL}`).then(
+    //         (res) => setData(res.data)
+    //     );
+    // }, [deleteResponse]);
 
     return (
         <Container>
             <SearchContainer>
-                <label htmlFor="search">대회 검색</label>
+                <label htmlFor="search">단체 검색</label>
                 <Search onChange={setValHandler} name="search" id="search" />
                 
                 <select name="searchOption" onChange={setOptHandler}>
@@ -112,7 +170,7 @@ const FindOrganization = () => {
                     {data.filter(item => String(item[opt]).includes(val) )
                     .map(({ orgId, orgName, orgEmail, orgTel, orgLeaderName, leaderTel}) => (
                         <tr key={orgId}>
-                            <Td><A onClick={findID}>{orgId}</A></Td>
+                            <Td><A onClick={updateOrg}>{orgId}</A></Td>
                             <Td>{orgName}</Td>
                             <Td>{orgEmail}</Td>
                             <Td>{orgTel}</Td>
@@ -123,6 +181,23 @@ const FindOrganization = () => {
                     ))}
                 </tbody>
             </Table>
+            {detailState ?
+            <DetailContent>
+                <form>
+                    <ColumnContainer>
+                        <h3>데이터 꽂히는지 확인</h3>
+                        <input disabled type="text" value={detail.orgId}/>
+                        <input type="text" value={detail.orgName}/>
+                        <input type="text" value={detail.orgEmail}/>
+                        <input type="text" value={detail.orgTel}/>
+                        <input type="text" value={detail.orgLeaderName}/>
+                        <input type="text" value={detail.leaderTel}/>
+                        <input type="submit" onClick={handleOnSubmit} value="수정"/>
+                        <input type="button" onClick={handleCancel} value="취소" />
+                    </ColumnContainer>
+                </form>
+            </DetailContent>
+            : null}
         </Container>
     );
 }

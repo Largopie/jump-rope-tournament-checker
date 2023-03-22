@@ -8,6 +8,10 @@ const Container = styled.div`
     overflow: scroll;
 `;
 
+const Content = styled.div`
+
+`;
+
 const TextContainer = styled.div`
     margin-bottom: 15px;
 `;
@@ -155,6 +159,7 @@ const AddCompetition = () => {
                 </FormRowContainer>
             </Form>
         </Container>
+        
     );
 }
 
