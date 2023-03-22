@@ -41,12 +41,12 @@ const A = styled.a`
     text-decoration: none;
 `;
 
-const FindCompetition = () => {
-    const columns = ['대회번호', '대회이름', '기록지명', '개최자명', '개최자이메일', '개최자전화번호', '대회시작날짜', '대회종료날짜'];
+const FindOrganization = () => {
+    const columns = ['단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
 
     const [data, setData] = useState([]);
     const [val, setVal] = useState('');
-    const [opt, setOpt] = useState('competitionId');
+    const [opt, setOpt] = useState('orgId');
     const [deleteResponse, setDeleteResponse] = useState(false);
     const setValHandler = (e) => {
         setVal(e.target.value);
@@ -71,14 +71,14 @@ const FindCompetition = () => {
     };
 
     const findID = (e) => {
-        axios.get(`${API.COMPETITION_FIND}/${e.target.innerText}`).then(
+        axios.get(`${API.ORGANIZATION_FIND}/${e.target.innerText}`).then(
             (res) => console.log(res.data)
         );
         
     };
 
     useEffect(() => {
-        axios.get(`${API.COMPETITION_FIND_ALL}`).then(
+        axios.get(`${API.ORGANIZATION_FIND_ALL}`).then(
             (res) => setData(res.data)
         );
     }, [deleteResponse]);
@@ -91,12 +91,12 @@ const FindCompetition = () => {
                 
                 <select name="searchOption" onChange={setOptHandler}>
                     <option value="">분류 선택</option>
-                    <option value="competitionId">대회번호</option>
-                    <option value="competitionName">대회이름</option>
-                    <option value="recordingSheetName">기록지명</option>
-                    <option value="competitionHost">개최자명</option>
-                    <option value="hostEmail">개최자이메일</option>
-                    <option value="hostTel">개최자전화번호</option>
+                    <option value="orgId">단체번호</option>
+                    <option value="orgName">단체이름</option>
+                    <option value="orgEmail">이메일</option>
+                    <option value="orgTel">전화번호</option>
+                    <option value="orgLeaderName">리더명</option>
+                    <option value="leaderTel">리더전화번호</option>
                 </select>
             </SearchContainer>
             <Table>
@@ -110,17 +110,15 @@ const FindCompetition = () => {
                 </thead>
                 <tbody>
                     {data.filter(item => String(item[opt]).includes(val) )
-                    .map(({ competitionId, competitionName, recordingSheetName, competitionHost, hostEmail, hostTel, competitionStartDate, competitionEndDate }) => (
-                        <tr key={competitionId}>
-                            <Td><A onClick={findID}>{competitionId}</A></Td>
-                            <Td>{competitionName}</Td>
-                            <Td>{recordingSheetName}</Td>
-                            <Td>{competitionHost}</Td>
-                            <Td>{hostEmail}</Td>
-                            <Td>{hostTel}</Td>
-                            <Td>{competitionStartDate}</Td>
-                            <Td>{competitionEndDate}</Td>
-                            <Td><button value={competitionId} onClick={doDelete}>삭제</button></Td>
+                    .map(({ orgId, orgName, orgEmail, orgTel, orgLeaderName, leaderTel}) => (
+                        <tr key={orgId}>
+                            <Td><A onClick={findID}>{orgId}</A></Td>
+                            <Td>{orgName}</Td>
+                            <Td>{orgEmail}</Td>
+                            <Td>{orgTel}</Td>
+                            <Td>{orgLeaderName}</Td>
+                            <Td>{leaderTel}</Td>
+                            <Td><button value={orgId} onClick={doDelete}>삭제</button></Td>
                         </tr>
                     ))}
                 </tbody>
@@ -129,4 +127,4 @@ const FindCompetition = () => {
     );
 }
 
-export default FindCompetition;
+export default FindOrganization;

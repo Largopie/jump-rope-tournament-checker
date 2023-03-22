@@ -53,7 +53,7 @@ const AddPlayer = () => {
     const [value, setValue] = useState({
         playerName: '',
         playerGender: '',
-        playerAge: 0,
+        playerAge: '',
         playerTel: ''
     });
 
@@ -65,7 +65,12 @@ const AddPlayer = () => {
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        
+        axios.post(`${API.PLAYER_ADD}`,{
+            playerName: value.playerName,
+            playerGender: value.playerGender,
+            playerAge: Number(value.playerAge),
+            playerTel: value.playerTel
+        });
     };
 
     return (
@@ -79,7 +84,7 @@ const AddPlayer = () => {
                         <FormRowContainer>
                             <FormColumnContainer wid="60%">
                                 <label htmlFor="playerName">선수 이름</label>
-                                <Input onChange={onChangeHandler} type="text" id="playerName" name="playerName" />
+                                <Input value={value.playerName} onChange={onChangeHandler} type="text" id="playerName" name="playerName" />
                             </FormColumnContainer>
                         </FormRowContainer>
 
@@ -87,21 +92,22 @@ const AddPlayer = () => {
                             <FormRowContainer>
                                 <FormColumnContainer wid="50%">
                                     <label htmlFor="playerGender">성별</label>
-                                    <Select wid="90%"    onChange={onChangeHandler} name="playerGender" id="playerGender">
+                                    <Select value={value.playerGender} wid="90%" onChange={onChangeHandler} name="playerGender" id="playerGender">
                                         <option value="male">남성</option>
                                         <option value="female">여성</option>
                                     </Select>
                                 </FormColumnContainer>
                                 <FormColumnContainer wid="50%">
                                     <label html="playerAge">나이</label>
-                                    <Input onChange={onChangeHandler} type="number" id="playerAge" name="playerAge" />
+                                    <Input value={value.playerAge} onChange={onChangeHandler} type="number" id="playerAge" name="playerAge" />
                                 </FormColumnContainer>
                             </FormRowContainer>
                         </FormColumnContainer>
                         <FormRowContainer>
                             <FormColumnContainer wid="60%">
                                 <label htmlFor="playerTel">전화번호</label>
-                                <Input onChange={onChangeHandler} type="tel" id="playerTel" name="playerTel" />
+                                <Input value={value.playerTel} maxLength="11" onChange={onChangeHandler} type="tel" id="playerTel" name="playerTel" />
+                                
                             </FormColumnContainer>
                         </FormRowContainer>
                     </FormColumnContainer>

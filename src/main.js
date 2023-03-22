@@ -7,6 +7,7 @@ import Test from './components/competition/test';
 import FindCompetition from './components/competition/findCompetition';
 import AddOrganization from './components/organization/addOrganization';
 import AddPlayer from './components/player/addPlayer';
+import FindOrganization from './components/organization/findOrganization';
 
 const Container = styled.div`
     display: flex;
@@ -79,10 +80,10 @@ const Main = () => {
                             <li><StyledLink to="/competition/find">대회 조회</StyledLink></li>
                         </Ul>
                     </List>
-                    <List h="100px">선수등록 현황
+                    <List h="100px">선수
                         <Ul>
                             <li>참가선수 현황</li>
-                            <li>단체별 참가인원수</li>
+                            <li><StyledLink to="/organization/find">단체 조회</StyledLink></li>
                             <li>종목별 참가인원수</li>
                             <li>종목별 참가선수 현황</li>
                         </Ul>
@@ -114,6 +115,7 @@ const Main = () => {
 
                     <Route path="/event" element={<REvent />} />
                     <Route path="/organization/add" element={<AddOrganization />} />
+                    <Route path="/organization/find" element={<FindOrganization />} />
                     <Route path="/player/add" element={<AddPlayer />} />
                 </Routes>
             </Content>
