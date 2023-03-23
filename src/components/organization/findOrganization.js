@@ -10,6 +10,7 @@ const Container = styled.div`
 `;
 
 const DetailContent = styled.div`
+    margin-top: 10px;
 `;
 
 const SearchContainer = styled.div`
@@ -47,36 +48,24 @@ const RowContainer = styled.div`
     flex-direction: row;
 `;
 
+const TitleContent = styled.div`
+    margin: 0 auto;
+`;
+
 const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
 `;
 const FindOrganization = () => {
-    const columns = ['단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
+    const orgColumns = ['단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
+    const orgPlyaerColumns = ['단체이름', '선수번호', '선수이름', '성별', '나이', '전화번호'];
 
-    const data = [
-        {
-        orgId: '0',
-        orgName: '나단체임ㅋ',
-        orgEmail: 'k123@dongyang.ac.kr',
-        orgTel: '01001010101',
-        orgLeaderName: 'Leader',
-        leaderTel: '10101010101'
-        },
-        {
-            orgId: '1',
-            orgName: '나ㅋ',
-            orgEmail: 'kyk@dongyang.ac.kr',
-            orgTel: '123456789123',
-            orgLeaderName: 'L123',
-            leaderTel: '123123123'
-        }
-    ];
-
-    // const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
+    const [playerData, setPlayerData] = useState([]);
     const [val, setVal] = useState('');
     const [opt, setOpt] = useState('orgId');
     const [deleteResponse, setDeleteResponse] = useState(false);
+    const [updateState, setUpdateState] = useState(false);
 
     const [detail, setDetail] = useState({
         orgId: '',
@@ -101,7 +90,8 @@ const FindOrganization = () => {
     const handleOnSubmit = (e) => {
         e.preventDefault();
         if (window.confirm('수정하시겠습니까?')) {
-            // axios.put 이용하여 수정값 JSON보내기
+            axios.put(`${API.ORGANIZATION_UPDATE}`, detail);
+            setUpdateState((state) => !state);
             alert('수정완료!');
         }
     };
@@ -122,17 +112,23 @@ const FindOrganization = () => {
     };
 
     const doDelete = (e) => {
-        console.log([Number(e.target.value)]);
-        // if(window.confirm("정말 삭제하시겠습니까?")) {
-        //     axios.delete(`${API.COMPETITION_DELETE}`,{
-        //         data: [
-        //             e.target.value
-        //         ]
-        //     }).then((res) => setDeleteResponse((state) => !state));
-        // } else {
-        //     alert('취소 되었습니다.');
-        // }
-        
+        if(window.confirm("정말 삭제하시겠습니까?")) {
+            axios.delete(`${API.ORGANIZATION_DELETE}`,{
+                data: [e.target.value]
+            }).then(() => setDeleteResponse((state) => !state));
+        } else {
+            alert('취소 되었습니다.');
+        }   
+    };
+
+    const deletePlayer = (e) => {
+        if(window.confirm("정말 삭제하시겠습니까?")){
+            axios.delete(`${API.PLAYER_DELETE}/${e.target.value}`, {
+                data: [e.target.value]
+            }).then(() => setDeleteResponse((state) => !state));
+        } else {
+            alert('취소 되었습니다.');
+        }
     };
 
     const setOptHandler = (e) => {
@@ -141,16 +137,18 @@ const FindOrganization = () => {
 
     const updateOrg = (e) => {
         if (window.confirm('데이터를 수정하시겠습니까?')) {
-            setDetail(data[e.target.innerText]);
+            setDetail(data[e.target.innerText - 1]);
             setDetailState(true);
         }
-        
+        axios.get(`${API.PLAYER_FIND_ORG}/${e.target.innerText}`).then(
+            (res) => setPlayerData(res.data)
+        );
     };
-    // useEffect(() => {
-    //     axios.get(`${API.ORGANIZATION_FIND_ALL}`).then(
-    //         (res) => setData(res.data)
-    //     );
-    // }, [deleteResponse]);
+    useEffect(() => {
+        axios.get(`${API.ORGANIZATION_FIND_ALL}`).then(
+            (res) => setData(res.data)
+        );
+    }, [deleteResponse, updateState]);
 
     return (
         <Container>
@@ -171,7 +169,7 @@ const FindOrganization = () => {
             <Table>
                 <thead>
                     <tr>
-                        {columns.map((column, idx) => (
+                        {orgColumns.map((column, idx) => (
                             <Th key={idx}>{column}</Th>
                         ))}
                         <Th>삭제여부</Th>
@@ -194,24 +192,55 @@ const FindOrganization = () => {
             </Table>
             {detailState ?
             <DetailContent>
-                <form>
+                <ColumnContainer>
                     <RowContainer>
-                        <label htmlFor="csv">선수등록(CSV)</label>
-                        <input type="file" id="csv" accept='.csv' />
-                        <input type="button" value="일반선수등록" />
+                        <form>
+                            <RowContainer>
+                                <label htmlFor="csv">선수등록(CSV)</label>
+                                <input type="file" id="csv" accept=".csv" />
+                                <input type="button" value="일반선수등록" />
+                            </RowContainer>
+                            <ColumnContainer>
+                                <TitleContent><h3>데이터 꽂히는지 확인</h3></TitleContent>
+                                <input disabled type="text" value={detail.orgId}/>
+                                <input type="text" name="orgName" value={detail.orgName} onChange={detailOnChange}/>
+                                <input type="text" name="orgEmail" value={detail.orgEmail} onChange={detailOnChange}/>
+                                <input type="text" name="orgTel" value={detail.orgTel} onChange={detailOnChange}/>
+                                <input type="text" name="orgLeaderName" value={detail.orgLeaderName} onChange={detailOnChange}/>
+                                <input type="text" name="leaderTel" value={detail.leaderTel} onChange={detailOnChange}/>
+                                <input type="submit" onClick={handleOnSubmit} value="수정"/>
+                                <input type="button" onClick={handleCancel} value="취소" />
+                            </ColumnContainer>
+                        </form>
                     </RowContainer>
                     <ColumnContainer>
-                        <h3>데이터 꽂히는지 확인</h3>
-                        <input disabled type="text" value={detail.orgId}/>
-                        <input type="text" name="orgName" value={detail.orgName} onChange={detailOnChange}/>
-                        <input type="text" name="orgEmail" value={detail.orgEmail} onChange={detailOnChange}/>
-                        <input type="text" name="orgTel" value={detail.orgTel} onChange={detailOnChange}/>
-                        <input type="text" name="orgLeaderName" value={detail.orgLeaderName} onChange={detailOnChange}/>
-                        <input type="text" name="leaderTel" value={detail.leaderTel} onChange={detailOnChange}/>
-                        <input type="submit" onClick={handleOnSubmit} value="수정"/>
-                        <input type="button" onClick={handleCancel} value="취소" />
+                        <TitleContent><h3>선수 목록</h3></TitleContent>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    {orgPlyaerColumns.map((column, idx) => (
+                                        <Th key={idx}>{column}</Th>
+                                    ))}
+                                    <Th>삭제여부</Th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {playerData.filter(item => String(item[opt]).includes(val) )
+                                .map(({ organizationName, playerId, playerName, playerGender, playerAge, playerTel}) => (
+                                    <tr key={playerId}>
+                                        <Td>{organizationName}</Td>
+                                        <Td>{playerId}</Td>
+                                        <Td>{playerName}</Td>
+                                        <Td>{playerGender}</Td>
+                                        <Td>{playerAge}</Td>
+                                        <Td>{playerTel}</Td>
+                                        <Td><button value={playerId} onClick={deletePlayer}>삭제</button></Td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
                     </ColumnContainer>
-                </form>
+                </ColumnContainer>
             </DetailContent>
             : null}
         </Container>
