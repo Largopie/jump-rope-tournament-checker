@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import AddCompetition from './components/competition/addCompetition';
-import REvent from './components/competition//addEvent';
+import FindEvent from './components/competition/findEvent';
 import Test from './components/competition/test';
 import FindCompetition from './components/competition/findCompetition';
 import AddOrganization from './components/organization/addOrganization';
@@ -73,7 +73,7 @@ const Main = () => {
                     <List h="125px">대회 준비
                         <Ul>
                             <li><StyledLink to="/competition/add">대회 등록</StyledLink></li>
-                            <li><StyledLink to="/event">종목 선택 등록</StyledLink></li>
+                            <li><StyledLink to="/event/find">종목 선택 등록</StyledLink></li>
                             <li><StyledLink to="/organization/add">단체 참가 등록</StyledLink></li>
                             <li><StyledLink to="/player/add">선수 등록</StyledLink></li>
                             <li>종목 별 점수 등록</li>
@@ -113,7 +113,7 @@ const Main = () => {
                     <Route path="/competition/add" element={<AddCompetition />} />
                     <Route path="/competition/find" element={<FindCompetition />} />
 
-                    <Route path="/event" element={<REvent />} />
+                    <Route path="/event/find" element={<FindEvent />} />
                     <Route path="/organization/add" element={<AddOrganization />} />
                     <Route path="/organization/find" element={<FindOrganization />} />
                     <Route path="/player/add" element={<AddPlayer />} />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import {API} from '../../config';
+import { API } from '../../config';
 
 const Container = styled.div`
     padding: 15px;
@@ -54,7 +54,8 @@ const AddPlayer = () => {
         playerName: '',
         playerGender: '',
         playerAge: '',
-        playerTel: ''
+        playerTel: '',
+        department: '',
     });
 
     const onChangeHandler = (e) => {
@@ -65,53 +66,79 @@ const AddPlayer = () => {
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        axios.post(`${API.PLAYER_ADD}`,{
+        axios.post(`${API.PLAYER_ADD}`, {
             playerName: value.playerName,
             playerGender: value.playerGender,
             playerAge: Number(value.playerAge),
-            playerTel: value.playerTel
+            playerTel: value.playerTel,
+            department: value.department
         });
     };
+
+    console.log(value);
 
     return (
         <Container>
             <Title><h2>선수 등록</h2></Title>
             <Form>
-                <FormRowContainer>
-                    <FormColumnContainer wid="60%">
-                        <TextContainer><h3>선수 정보 입력</h3></TextContainer>
-
-                        <FormRowContainer>
-                            <FormColumnContainer wid="60%">
-                                <label htmlFor="playerName">선수 이름</label>
-                                <Input value={value.playerName} onChange={onChangeHandler} type="text" id="playerName" name="playerName" />
-                            </FormColumnContainer>
-                        </FormRowContainer>
-
+                <FormColumnContainer wid="60%">
+                    <TextContainer><h3>선수 정보 입력</h3></TextContainer>
+                    
+                    {/* 선수 이름 */}
+                    <FormRowContainer>
                         <FormColumnContainer wid="60%">
-                            <FormRowContainer>
-                                <FormColumnContainer wid="50%">
-                                    <label htmlFor="playerGender">성별</label>
-                                    <Select value={value.playerGender} wid="90%" onChange={onChangeHandler} name="playerGender" id="playerGender">
-                                        <option value="male">남성</option>
-                                        <option value="female">여성</option>
-                                    </Select>
-                                </FormColumnContainer>
-                                <FormColumnContainer wid="50%">
-                                    <label html="playerAge">나이</label>
-                                    <Input value={value.playerAge} onChange={onChangeHandler} type="number" id="playerAge" name="playerAge" />
-                                </FormColumnContainer>
-                            </FormRowContainer>
+                            <label htmlFor="playerName">선수 이름</label>
+                            <Input value={value.playerName} onChange={onChangeHandler} type="text" id="playerName" name="playerName" />
                         </FormColumnContainer>
+                    </FormRowContainer>
+
+                    <FormColumnContainer wid="60%">
+
+                        {/* 성별 */}
                         <FormRowContainer>
-                            <FormColumnContainer wid="60%">
-                                <label htmlFor="playerTel">전화번호</label>
-                                <Input value={value.playerTel} maxLength="11" onChange={onChangeHandler} type="tel" id="playerTel" name="playerTel" />
-                                
+                            <FormColumnContainer wid="50%">
+                                <label htmlFor="playerGender">성별</label>
+                                <Select value={value.playerGender} wid="90%" onChange={onChangeHandler} name="playerGender" id="playerGender">
+                                    <option value="male">남성</option>
+                                    <option value="female">여성</option>
+                                </Select>
+                            </FormColumnContainer>
+
+                            {/* 나이 */}
+                            <FormColumnContainer wid="50%">
+                                <label html="playerAge">나이</label>
+                                <Input value={value.playerAge} onChange={onChangeHandler} type="number" id="playerAge" name="playerAge" />
                             </FormColumnContainer>
                         </FormRowContainer>
                     </FormColumnContainer>
-                </FormRowContainer>
+
+                    {/* 전화번호 */}
+                    <FormRowContainer>
+                        <FormColumnContainer wid="60%">
+                            <label htmlFor="playerTel">전화번호</label>
+                            <Input value={value.playerTel} maxLength="11" onChange={onChangeHandler} type="tel" id="playerTel" name="playerTel" />
+                        </FormColumnContainer>
+                    </FormRowContainer>
+
+                    {/* 참가부 */}
+                    <FormRowContainer>
+                        <FormColumnContainer wid="60%">
+                            <label htmlFor="department">참가부</label>
+                            <Select value={value.department} id="department" name="department" wid="60%" onChange={onChangeHandler}>
+                                <option value="">-- 참가부 선택 --</option>
+                                <option value="U">유치부</option>
+                                <option value="1">초등 1학년부</option>
+                                <option value="2">초등 2학년부</option>
+                                <option value="3">초등 3학년부</option>
+                                <option value="4">초등 4학년부</option>
+                                <option value="5">초등 5학년부</option>
+                                <option value="6">초등 6학년부</option>
+                                <option value="J">중고등부</option>
+                                <option value="N">일반부</option>
+                            </Select>
+                        </FormColumnContainer>
+                    </FormRowContainer>
+                </FormColumnContainer>
                 <FormRowContainer>
                     <Input type="submit" value="선수 등록" onClick={onSubmitHandler} />
                 </FormRowContainer>

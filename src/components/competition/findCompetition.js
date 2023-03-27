@@ -1,6 +1,7 @@
 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { API } from '../../config';
 
@@ -41,8 +42,50 @@ const A = styled.a`
     text-decoration: none;
 `;
 
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: #1abc9c;
+    :hover {
+        color: #f1c40f;
+    };
+`;
+
 const FindCompetition = () => {
     const columns = ['대회번호', '대회이름', '기록지명', '개최자명', '개최자이메일', '개최자전화번호', '대회시작날짜', '대회종료날짜'];
+
+    const dummy = [
+        {
+            competitionId: 0,
+            competitionName: '동작구대회',
+            recordingSheetName: '동작구대회',
+            competitionHost: '김아무개',
+            hostEmail: 'a123@naver.com',
+            hostTel: '01023431234',
+            competitionStartDate: '20230314',
+            competitionEndDate: '20230315'
+        },
+        {
+            competitionId: 1,
+            competitionName: '강남구대회',
+            recordingSheetName: '강남구대회',
+            competitionHost: '박아무개',
+            hostEmail: 'b123@naver.com',
+            hostTel: '01013431234',
+            competitionStartDate: '20230314',
+            competitionEndDate: '20230315'
+        },
+        {
+            competitionId: 2,
+            competitionName: '구로구대회',
+            recordingSheetName: '구로구대회',
+            competitionHost: '임아무개',
+            hostEmail: 'c123@naver.com',
+            hostTel: '01012341234',
+            competitionStartDate: '20230314',
+            competitionEndDate: '20230315'
+        },
+    ];
 
     const [data, setData] = useState([]);
     const [val, setVal] = useState('');
@@ -77,6 +120,10 @@ const FindCompetition = () => {
         
     };
 
+    const setEvent = (e) => {
+        console.log(e.target.id);
+    };
+
     useEffect(() => {
         axios.get(`${API.COMPETITION_FIND_ALL}`).then(
             (res) => setData(res.data)
@@ -109,11 +156,11 @@ const FindCompetition = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.filter(item => String(item[opt]).includes(val) )
+                    {dummy.filter(item => String(item[opt]).includes(val) )
                     .map(({ competitionId, competitionName, recordingSheetName, competitionHost, hostEmail, hostTel, competitionStartDate, competitionEndDate }) => (
                         <tr key={competitionId}>
                             <Td><A onClick={findID}>{competitionId}</A></Td>
-                            <Td>{competitionName}</Td>
+                            <Td><StyledLink to="/event/find" state={{competitionId: competitionId}}>{competitionName}</StyledLink></Td>
                             <Td>{recordingSheetName}</Td>
                             <Td>{competitionHost}</Td>
                             <Td>{hostEmail}</Td>
