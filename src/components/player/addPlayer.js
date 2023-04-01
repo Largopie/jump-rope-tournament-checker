@@ -119,25 +119,6 @@ const AddPlayer = () => {
                             <Input value={value.playerTel} maxLength="11" onChange={onChangeHandler} type="tel" id="playerTel" name="playerTel" />
                         </FormColumnContainer>
                     </FormRowContainer>
-
-                    {/* 참가부 */}
-                    <FormRowContainer>
-                        <FormColumnContainer wid="60%">
-                            <label htmlFor="department">참가부</label>
-                            <Select value={value.department} id="department" name="department" wid="60%" onChange={onChangeHandler}>
-                                <option value="">-- 참가부 선택 --</option>
-                                <option value="U">유치부</option>
-                                <option value="1">초등 1학년부</option>
-                                <option value="2">초등 2학년부</option>
-                                <option value="3">초등 3학년부</option>
-                                <option value="4">초등 4학년부</option>
-                                <option value="5">초등 5학년부</option>
-                                <option value="6">초등 6학년부</option>
-                                <option value="J">중고등부</option>
-                                <option value="N">일반부</option>
-                            </Select>
-                        </FormColumnContainer>
-                    </FormRowContainer>
                 </FormColumnContainer>
                 <FormRowContainer>
                     <Input type="submit" value="선수 등록" onClick={onSubmitHandler} />

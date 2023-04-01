@@ -2,12 +2,13 @@ import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import AddCompetition from './components/competition/addCompetition';
-import FindEvent from './components/competition/findEvent';
+import FindEventAll from './components/competition/findEventAll';
 import Test from './components/competition/test';
 import FindCompetition from './components/competition/findCompetition';
 import AddOrganization from './components/organization/addOrganization';
 import AddPlayer from './components/player/addPlayer';
 import FindOrganization from './components/organization/findOrganization';
+import FindEvent from './components/competition/findCompetitionEvent';
 
 const Container = styled.div`
     display: flex;
@@ -70,17 +71,16 @@ const Main = () => {
         <Container>
             <SideMenu>
                 <ul>
-                    <List h="125px">대회 준비
+                    <List>대회 준비
                         <Ul>
                             <li><StyledLink to="/competition/add">대회 등록</StyledLink></li>
-                            <li><StyledLink to="/event/find">종목 선택 등록</StyledLink></li>
+                            <li><StyledLink to="/event/find/all">전체 종목 조회</StyledLink></li>
                             <li><StyledLink to="/organization/add">단체 참가 등록</StyledLink></li>
                             <li><StyledLink to="/player/add">선수 등록</StyledLink></li>
-                            <li>종목 별 점수 등록</li>
                             <li><StyledLink to="/competition/find">대회 조회</StyledLink></li>
                         </Ul>
                     </List>
-                    <List h="100px">선수
+                    <List>선수
                         <Ul>
                             <li>참가선수 현황</li>
                             <li><StyledLink to="/organization/find">단체 조회</StyledLink></li>
@@ -88,13 +88,13 @@ const Main = () => {
                             <li>종목별 참가선수 현황</li>
                         </Ul>
                     </List>
-                    <List h="70px">대회 진행
+                    <List>대회 진행
                         <Ul>
                             <li>기록 등록</li>
                             <li>기록 조회<br />(단체 및 개인)</li>
                         </Ul>
                     </List>
-                    <List h="160px">인쇄
+                    <List>인쇄
                         <Ul>
                             <li>단체 접수 인원 인쇄 및 조회</li>
                             <li>배번표 인쇄 및 조회</li>
@@ -113,6 +113,7 @@ const Main = () => {
                     <Route path="/competition/add" element={<AddCompetition />} />
                     <Route path="/competition/find" element={<FindCompetition />} />
 
+                    <Route path="/event/find/all" element={<FindEventAll />} />
                     <Route path="/event/find" element={<FindEvent />} />
                     <Route path="/organization/add" element={<AddOrganization />} />
                     <Route path="/organization/find" element={<FindOrganization />} />

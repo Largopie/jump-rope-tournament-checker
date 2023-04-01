@@ -52,7 +52,7 @@ const StyledLink = styled(Link)`
 `;
 
 const FindCompetition = () => {
-    const columns = ['대회번호', '대회이름', '기록지명', '개최자명', '개최자이메일', '개최자전화번호', '대회시작날짜', '대회종료날짜'];
+    const columns = ['참가단체신청', '대회이름', '기록지명', '개최자명', '개최자이메일', '개최자전화번호', '대회시작날짜', '대회종료날짜'];
 
     const dummy = [
         {
@@ -159,7 +159,7 @@ const FindCompetition = () => {
                     {dummy.filter(item => String(item[opt]).includes(val) )
                     .map(({ competitionId, competitionName, recordingSheetName, competitionHost, hostEmail, hostTel, competitionStartDate, competitionEndDate }) => (
                         <tr key={competitionId}>
-                            <Td><A onClick={findID}>{competitionId}</A></Td>
+                            <Td><button>신청</button></Td>
                             <Td><StyledLink to="/event/find" state={{competitionId: competitionId}}>{competitionName}</StyledLink></Td>
                             <Td>{recordingSheetName}</Td>
                             <Td>{competitionHost}</Td>

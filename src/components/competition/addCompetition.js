@@ -8,10 +8,6 @@ const Container = styled.div`
     overflow: scroll;
 `;
 
-const Content = styled.div`
-
-`;
-
 const TextContainer = styled.div`
     margin-bottom: 15px;
 `;
@@ -46,11 +42,13 @@ const Title = styled.div`
 const Input = styled.input`
     margin-bottom: 10px;
     width: ${(props) => props.wid};
+    outline: none;
 `;
 
 const Select = styled.select`
     margin-bottom: 10px;
     width: ${(props) => props.wid};
+    outline: none;
 `;
 
 const AddCompetition = () => {
