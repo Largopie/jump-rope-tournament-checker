@@ -106,8 +106,8 @@ const AddPlayer = () => {
 
                             {/* 나이 */}
                             <FormColumnContainer wid="50%">
-                                <label html="playerAge">나이</label>
-                                <Input value={value.playerAge} onChange={onChangeHandler} type="number" id="playerAge" name="playerAge" />
+                                <label html="playerAge">생년월일</label>
+                                <Input value={value.playerAge} onChange={onChangeHandler} type="date" id="playerAge" name="playerAge" />
                             </FormColumnContainer>
                         </FormRowContainer>
                     </FormColumnContainer>

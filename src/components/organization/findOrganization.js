@@ -59,7 +59,7 @@ const ColumnContainer = styled.div`
 `;
 const FindOrganization = () => {
     const orgColumns = ['단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
-    const orgPlyaerColumns = ['단체이름', '선수번호', '선수이름', '성별', '나이', '전화번호'];
+    const orgPlyaerColumns = ['단체이름', '선수번호', '선수이름', '성별', '생년월일', '전화번호'];
 
     const orgDummy = [
         {
