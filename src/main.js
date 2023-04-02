@@ -9,6 +9,7 @@ import AddOrganization from './components/organization/addOrganization';
 import AddPlayer from './components/player/addPlayer';
 import FindOrganization from './components/organization/findOrganization';
 import FindEvent from './components/competition/findCompetitionEvent';
+import ChooseOrganization from './components/competition/chooseOrganization';
 
 const Container = styled.div`
     display: flex;
@@ -112,7 +113,7 @@ const Main = () => {
                     <Route exact path="/" element={<Test />} />
                     <Route path="/competition/add" element={<AddCompetition />} />
                     <Route path="/competition/find" element={<FindCompetition />} />
-
+                    <Route path="/competition/organization/choose" element={<ChooseOrganization />} />
                     <Route path="/event/find/all" element={<FindEventAll />} />
                     <Route path="/event/find" element={<FindEvent />} />
                     <Route path="/organization/add" element={<AddOrganization />} />

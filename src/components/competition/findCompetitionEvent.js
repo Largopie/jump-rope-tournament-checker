@@ -42,36 +42,36 @@ const FindEvent = () => {
 
 
     //isProceed, cmptEventId, eventName, partPoint, firstGrandPrizePoint, secondGrandPrizePoint, thirdGrandPrizePoint, fourthGrandPrizePoint, fifthGrandPrizePoint
-    const dummy = [
-        {
-            isProceed: true,
-            cmptEventId: 1,
-            eventName: '종목1',
-            partPoint: 100,
-            goldPrize: 10,
-            silverPrize: 10,
-            bronzePrize: 10,
-            firstGrandPrizePoint: 100,
-            secondGrandPrizePoint: 100,
-            thirdGrandPrizePoint: 100,
-            fourthGrandPrizePoint: 100,
-            fifthGrandPrizePoint: 100
-        },
-        {
-            isProceed: true,
-            cmptEventId: 2,
-            eventName: '종목2',
-            partPoint: 100,
-            goldPrize: 10,
-            silverPrize: 10,
-            bronzePrize: 10,
-            firstGrandPrizePoint: 100,
-            secondGrandPrizePoint: 100,
-            thirdGrandPrizePoint: 100,
-            fourthGrandPrizePoint: 100,
-            fifthGrandPrizePoint: 100
-        }
-    ];
+    // const dummy = [
+    //     {
+    //         isProceed: true,
+    //         cmptEventId: 1,
+    //         eventName: '종목1',
+    //         partPoint: 100,
+    //         fstPrizeStandard: 10,
+    //         sndPrizeStandard: 10,
+    //         trdPrizeStandard: 10,
+    //         firstGrandPrizePoint: 100,
+    //         secondGrandPrizePoint: 100,
+    //         thirdGrandPrizePoint: 100,
+    //         fourthGrandPrizePoint: 100,
+    //         fifthGrandPrizePoint: 100
+    //     },
+    //     {
+    //         isProceed: true,
+    //         cmptEventId: 2,
+    //         eventName: '종목2',
+    //         partPoint: 100,
+    //         fstPrizeStandard: 10,
+    //         sndPrizeStandard: 10,
+    //         trdPrizeStandard: 10,
+    //         firstGrandPrizePoint: 100,
+    //         secondGrandPrizePoint: 100,
+    //         thirdGrandPrizePoint: 100,
+    //         fourthGrandPrizePoint: 100,
+    //         fifthGrandPrizePoint: 100
+    //     }
+    // ];
 
     const handleOnChange = (e) => {
         setData(data.map(item => item.cmptEventId === Number(e.target.name) ? {...item, [e.target.id]: e.target.id === "isProceed" ? e.target.checked : e.target.value } : item))
@@ -86,7 +86,10 @@ const FindEvent = () => {
                 item.secondGrandPrizePoint = Number(item.secondGrandPrizePoint),
                 item.thirdGrandPrizePoint = Number(item.thirdGrandPrizePoint),
                 item.fourthGrandPrizePoint = Number(item.fourthGrandPrizePoint),
-                item.fifthGrandPrizePoint = Number(item.fifthGrandPrizePoint)
+                item.fifthGrandPrizePoint = Number(item.fifthGrandPrizePoint),
+                item.fstPrizeStandard = Number(item.fstPrizeStandard),
+                item.sndPrizeStandard = Number(item.sndPrizeStandard),
+                item.trdPrizeStandard = Number(item.trdPrizeStandard)
             ))));
             axios.put(`${API.COMPETITION_EVENT_UPDATAE}`, data).then(res => console.log(res));
             alert('수정 완료!');
@@ -119,16 +122,16 @@ const FindEvent = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {dummy.map(({ isProceed, cmptEventId, eventName,
-                    partPoint, goldPrize, silverPrize, bronzePrize,
+                    {data.map(({ isProceed, cmptEventId, eventName,
+                    partPoint, fstPrizeStandard, sndPrizeStandard, trdPrizeStandard,
                     firstGrandPrizePoint, secondGrandPrizePoint, thirdGrandPrizePoint, fourthGrandPrizePoint, fifthGrandPrizePoint }) => (
                         <tr key={cmptEventId}>
                             <Td><Input name={cmptEventId} type="checkbox" id="isProceed" checked={isProceed} onChange={handleOnChange} /></Td>
                             <Td>{eventName}</Td>
                             <Td><Input name={cmptEventId}  type="number" id="partPoint" value={partPoint} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="goldPrize" value={goldPrize} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="silverPrize" value={silverPrize} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="bronzePrize" value={bronzePrize} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="goldPrize" value={fstPrizeStandard} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="silverPrize" value={sndPrizeStandard} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="bronzePrize" value={trdPrizeStandard} onChange={handleOnChange} /> </Td>
                             <Td><Input name={cmptEventId}  type="number" id="fstPrizeStandard" value={firstGrandPrizePoint} onChange={handleOnChange} /> </Td>
                             <Td><Input name={cmptEventId}  type="number" id="sndPrizeStandard" value={secondGrandPrizePoint} onChange={handleOnChange} /> </Td>
                             <Td><Input name={cmptEventId}  type="number" id="trdPrizeStandard" value={thirdGrandPrizePoint} onChange={handleOnChange} /> </Td>
