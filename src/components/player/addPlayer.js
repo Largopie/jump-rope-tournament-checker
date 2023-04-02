@@ -53,7 +53,7 @@ const AddPlayer = () => {
     const [value, setValue] = useState({
         playerName: '',
         playerGender: '',
-        playerAge: '',
+        playerBirth: '',
         playerTel: '',
         department: '',
     });
@@ -106,8 +106,8 @@ const AddPlayer = () => {
 
                             {/* 나이 */}
                             <FormColumnContainer wid="50%">
-                                <label html="playerAge">생년월일</label>
-                                <Input value={value.playerAge} onChange={onChangeHandler} type="date" id="playerAge" name="playerAge" />
+                                <label html="playerBirth">생년월일</label>
+                                <Input value={value.playerBirth} onChange={onChangeHandler} type="date" id="playerBirth" name="playerBirth" />
                             </FormColumnContainer>
                         </FormRowContainer>
                     </FormColumnContainer>
