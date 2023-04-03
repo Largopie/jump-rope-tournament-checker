@@ -40,6 +40,10 @@ const A = styled.a`
     text-decoration: none;
 `;
 
+const Form = styled.form`
+    box-shadow: 0 0 0 1px black inset;
+`;
+
 const RowContainer = styled.div`
     display: flex;
     flex-direction: row;
@@ -53,12 +57,24 @@ const ColumnContainer = styled.div`
     display: flex;
     flex-direction: column;
 `;
+
+const CSVInput = styled.label`
+    padding: 4px 15px;
+    background-color: #FF6600;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+`;
+
+const Input = styled.input`
+    outline: none;
+`;
+
 const ChooseOrganization = () => {
     const location = useLocation();
     const competitionId = location.state?.competitionId;
     const orgColumns = ['단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
     const orgPlyaerColumns = ['단체이름', '선수번호', '선수이름', '성별', '생년월일', '전화번호'];
-
     // const orgDummy = [
     //     {
     //         orgId: 1,
@@ -114,6 +130,8 @@ const ChooseOrganization = () => {
     const [updateState, setUpdateState] = useState(false);
     const [detailPlayerState, setDetailPlayerState] = useState(false);
     const [orgId, setOrgId] = useState(0);
+    const [csvFileName, setCsvFileName] = useState('');
+
 
     const setValHandler = (e) => {
         setVal(e.target.value);
@@ -138,9 +156,14 @@ const ChooseOrganization = () => {
         if (window.confirm("단체에 소속된 선수를 조회합니다.")) {
             setDetailPlayerState(true);
         }
-        axios.get(`${API.ATTEND_FIND}/${orgId}`).then(
+        axios.get(`${API.ATTEND_FIND}?cmptId=${competitionId}&orgId=${orgId}`).then(
             (res) => setPlayerData(res.data)
         );
+    };
+
+    const handleCsvValue = (e) => {
+        const val = e.target.value.split('\\');
+        setCsvFileName(val[val.length - 1]);
     };
 
     const sendCsvFile = (e) => {
@@ -151,6 +174,10 @@ const ChooseOrganization = () => {
 
     const clickAddPlayer = (e) => {
         window.open('/jump-rope-tournament-checker/player/add', '', 'width=800,height=600');
+    };
+
+    const downloadApply = () => {
+        axios.get(`${API.ATTEND_CREATE_CSV}?cmptId=${competitionId}&orgId=${orgId}`);
     };
 
     useEffect(() => {
@@ -198,13 +225,15 @@ const ChooseOrganization = () => {
             {detailPlayerState ?
                 <ColumnContainer>
                     <TitleContent><h3>선수 목록</h3></TitleContent>
+                    <A onClick={downloadApply}>신청서 다운로드</A>
                     <RowContainer>
-                        <form>
-                            <label htmlFor="csv">선수등록(CSV)</label>
-                            <input type="file" id="csv" accept=".csv" />
-                            <input type="submit" onClick={sendCsvFile} value="파일등록" />
-                        </form>
-                        <Link to="/player/add" target="_blank" state={{orgId: orgId}}>일반선수등록</Link>
+                        <Form>
+                            <Input type="text" value={csvFileName} readOnly onChange={handleCsvValue} />
+                            <CSVInput htmlFor="csv">선수등록(CSV)</CSVInput><br />
+                            <input type="file" id="csv" accept=".csv" onChange={handleCsvValue} style={{display: "none"}} />
+                            <input type="submit" onClick={sendCsvFile} value="파일전송" />
+                        </Form>
+                        <Link to="/player/add" target="_blank" state={{orgId: orgId, competitionId: competitionId}}>일반선수등록</Link>
                         <button onClick={clickAddPlayer}>일반선수등록</button>
                     </RowContainer>
                     <Table>

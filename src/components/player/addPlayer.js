@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { API } from '../../config';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
     padding: 15px;
@@ -50,6 +51,10 @@ const Select = styled.select`
 `;
 
 const AddPlayer = () => {
+    const location = useLocation();
+    const competitionId = location.state?.competitionId;
+    const orgId = location.state?.orgId;
+
     const [value, setValue] = useState({
         playerName: '',
         playerGender: '',
@@ -66,12 +71,13 @@ const AddPlayer = () => {
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        axios.post(`${API.PLAYER_ADD}`, {
+        axios.post(`${API.ATTEND_PLAYER}`, {
+            cmptId: Number(competitionId),
+            orgId: Number(orgId),
             playerName: value.playerName,
             playerGender: value.playerGender,
-            playerAge: Number(value.playerAge),
-            playerTel: value.playerTel,
-            department: value.department
+            playerAge: value.playerBirth,
+            playerTel: value.playerTel
         });
     };
 
