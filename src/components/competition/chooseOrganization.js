@@ -4,11 +4,19 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { API } from '../../config';
+import AddPlayer from '../player/addPlayer';
 
 const Container = styled.div`
     width: 100%;
     overflow: scroll;
 `;
+
+const ModalContainer = styled.div`
+    width: 800px;
+    height: 600px;
+    
+`;
+
 
 const SearchContainer = styled.div`
     margin: 15px 0px 15px 15px;
@@ -33,11 +41,6 @@ const Th = styled.th`
 const Td = styled.td`
     overflow: scroll;
     border: 1px solid black;
-`;
-
-const A = styled.a`
-    cursor: pointer;
-    text-decoration: none;
 `;
 
 const Form = styled.form`
@@ -73,7 +76,7 @@ const Input = styled.input`
 const ChooseOrganization = () => {
     const location = useLocation();
     const competitionId = location.state?.competitionId;
-    const orgColumns = ['단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
+    const orgColumns = ['신청하기', '단체번호','단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
     const orgPlyaerColumns = ['단체이름', '선수번호', '선수이름', '성별', '생년월일', '전화번호'];
     // const orgDummy = [
     //     {
@@ -122,16 +125,18 @@ const ChooseOrganization = () => {
     // ];
 
 
+
     const [data, setData] = useState([]);
     const [playerData, setPlayerData] = useState([]);
     const [val, setVal] = useState('');
     const [opt, setOpt] = useState('orgId');
     const [deleteResponse, setDeleteResponse] = useState(false);
-    const [updateState, setUpdateState] = useState(false);
     const [detailPlayerState, setDetailPlayerState] = useState(false);
     const [orgId, setOrgId] = useState(0);
     const [csvFileName, setCsvFileName] = useState('');
-
+    const [modal, setModal] = useState(false);
+    const [events, setEvents] = useState([]);
+    const [depList, setDepList] = useState([]);
 
     const setValHandler = (e) => {
         setVal(e.target.value);
@@ -152,12 +157,12 @@ const ChooseOrganization = () => {
     };
 
     const updateOrgPlayer = (e) => {
-        setOrgId(e.target.value);
         if (window.confirm("단체에 소속된 선수를 조회합니다.")) {
-            setDetailPlayerState(true);
+            setDetailPlayerState((state) => !state);
+            setOrgId(e.target.value);
         }
-        axios.get(`${API.ATTEND_FIND}?cmptId=${competitionId}&orgId=${orgId}`).then(
-            (res) => setPlayerData(res.data)
+        axios.get(`${API.ATTEND_FIND}?cmptId=${competitionId}&orgId=${e.target.value}`).then(
+            (res) => setPlayerData('')
         );
     };
 
@@ -172,19 +177,51 @@ const ChooseOrganization = () => {
         console.log('sendCsvFile');
     };
 
-    const clickAddPlayer = (e) => {
-        window.open('/jump-rope-tournament-checker/player/add', '', 'width=800,height=600');
+    const clickAddPlayer = () => {
+        setModal((state) => !state);
     };
 
-    const downloadApply = () => {
-        axios.get(`${API.ATTEND_CREATE_CSV}?cmptId=${competitionId}&orgId=${orgId}`);
+    // const downloadApply = () => {
+    //     axios.get(
+    //         `${API.ATTEND_CREATE_FORM}?cmptId=${competitionId}&orgId=${orgId}`, {
+    //             responseType: 'blob'
+    //         }).then( (res) => {
+    //             const blob = new Blob([res.blob]);
+    //             const fileUrl = window.URL.createObjectURL(blob);
+    //             const link = document.createElement('a');
+    //             link.href = fileUrl;
+    //             link.style.display = 'none';
+    //         })
+    //         .catch( (err) => console.log(err));;
+    //     console.log(`${API.ATTEND_CREATE_FORM}?cmptId=${competitionId}&orgId=${orgId}`);
+    // };
+
+    const check = () => {
+        console.log(`${API.ATTEND_CREATE_FORM}?cmptId=${competitionId}&orgId=${orgId}`);
     };
 
     useEffect(() => {
         axios.get(`${API.ORGANIZATION_FIND_ALL}`).then(
             (res) => setData(res.data)
         );
-    }, [deleteResponse, updateState]);
+        
+        axios.get(`${API.COMPETITION_EVENT_FIND}/${competitionId}`).then(
+            (res) => setEvents(res.data.filter((item) => item.isProceed === true))
+        );
+        
+        axios.get(`${API.DEPART_FIND_ALL}`).then(
+            (res) => setDepList(res.data)
+        );
+        // axios.all([axios.get(`${API.ORGANIZATION_FIND_ALL}`) ,axios.get(`${API.COMPETITION_EVENT_FIND}/${competitionId}`), axios.get(axios.get(`${API.DEPART_FIND_ALL}`))]).then(
+        //     axios.spread((res1, res2, res3) => {
+        //         setData(res1.data);
+        //         setEvents(res2.data.filter((item) => item.isProceed === true));
+        //         setDepList(res3.data);
+        //     })
+        // )
+    }, [competitionId, deleteResponse]);
+
+    console.log(depList);
 
     return (
         <Container>
@@ -213,6 +250,7 @@ const ChooseOrganization = () => {
                         .map(({ orgId, orgName, orgEmail, orgTel, orgLeaderName, leaderTel }) => (
                             <tr key={orgId}>
                                 <Td><button onClick={updateOrgPlayer} value={orgId}>신청</button></Td>
+                                <Td>{orgId}</Td>
                                 <Td>{orgName}</Td>
                                 <Td>{orgEmail}</Td>
                                 <Td>{orgTel}</Td>
@@ -225,7 +263,11 @@ const ChooseOrganization = () => {
             {detailPlayerState ?
                 <ColumnContainer>
                     <TitleContent><h3>선수 목록</h3></TitleContent>
-                    <A onClick={downloadApply}>신청서 다운로드</A>
+                    <form action={`${API.ATTEND_CREATE_FORM}?`} method="get" target="_blank">
+                        <input type="hidden" name="cmptId" value={competitionId} />
+                        <input type="hidden" name="orgId" value={orgId} />
+                        <button type="submit" onClick={check}>신청서 다운로드</button>
+                    </form>
                     <RowContainer>
                         <Form>
                             <Input type="text" value={csvFileName} readOnly onChange={handleCsvValue} />
@@ -233,7 +275,6 @@ const ChooseOrganization = () => {
                             <input type="file" id="csv" accept=".csv" onChange={handleCsvValue} style={{display: "none"}} />
                             <input type="submit" onClick={sendCsvFile} value="파일전송" />
                         </Form>
-                        <Link to="/player/add" target="_blank" state={{orgId: orgId, competitionId: competitionId}}>일반선수등록</Link>
                         <button onClick={clickAddPlayer}>일반선수등록</button>
                     </RowContainer>
                     <Table>
@@ -261,6 +302,11 @@ const ChooseOrganization = () => {
                         </tbody>
                     </Table>
                 </ColumnContainer>
+                : null}
+                {modal ? 
+                    <ModalContainer>
+                        <AddPlayer competitionId={competitionId} orgId={orgId} events={events} depList={depList} />
+                    </ModalContainer>
                 : null}
         </Container>
     );

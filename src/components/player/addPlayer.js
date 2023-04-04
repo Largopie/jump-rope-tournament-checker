@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { API } from '../../config';
-import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
     padding: 15px;
@@ -50,17 +49,14 @@ const Select = styled.select`
     width: ${(props) => props.wid};
 `;
 
-const AddPlayer = () => {
-    const location = useLocation();
-    const competitionId = location.state?.competitionId;
-    const orgId = location.state?.orgId;
-
+const AddPlayer = ({ competitionId, orgId, depList, events }) => {
+    const [checkedList, setCheckedList] = useState([]);
+    const [departId, setDepartId] = useState('');
     const [value, setValue] = useState({
         playerName: '',
         playerGender: '',
         playerBirth: '',
         playerTel: '',
-        department: '',
     });
 
     const onChangeHandler = (e) => {
@@ -69,27 +65,42 @@ const AddPlayer = () => {
         });
     };
 
+    const onCheckHandler = (value, isChecked) => {
+        if (isChecked) {
+            setCheckedList((prevState) => {
+                return [...prevState, value];
+            });
+        };
+
+        if (!isChecked && checkedList.includes(value)) {
+            setCheckedList(checkedList.filter((item) => item !== value));
+        };
+
+    };
+
     const onSubmitHandler = (e) => {
         e.preventDefault();
         axios.post(`${API.ATTEND_PLAYER}`, {
             cmptId: Number(competitionId),
             orgId: Number(orgId),
+            cmptEventIds: checkedList,
+            departId: Number(departId),
             playerName: value.playerName,
             playerGender: value.playerGender,
-            playerAge: value.playerBirth,
+            playerBirth: value.playerBirth,
             playerTel: value.playerTel
-        });
+        }).then((res) => console.log(res.data)).catch((err) => console.log(err));;
     };
 
     console.log(value);
-
+    console.log(checkedList);
     return (
         <Container>
             <Title><h2>선수 등록</h2></Title>
             <Form>
                 <FormColumnContainer wid="60%">
                     <TextContainer><h3>선수 정보 입력</h3></TextContainer>
-                    
+
                     {/* 선수 이름 */}
                     <FormRowContainer>
                         <FormColumnContainer wid="60%">
@@ -98,15 +109,14 @@ const AddPlayer = () => {
                         </FormColumnContainer>
                     </FormRowContainer>
 
+                    {/* 성별 */}
                     <FormColumnContainer wid="60%">
-
-                        {/* 성별 */}
                         <FormRowContainer>
                             <FormColumnContainer wid="50%">
                                 <label htmlFor="playerGender">성별</label>
                                 <Select value={value.playerGender} wid="90%" onChange={onChangeHandler} name="playerGender" id="playerGender">
-                                    <option value="male">남성</option>
-                                    <option value="female">여성</option>
+                                    <option value="남">남성</option>
+                                    <option value="여">여성</option>
                                 </Select>
                             </FormColumnContainer>
 
@@ -126,10 +136,33 @@ const AddPlayer = () => {
                         </FormColumnContainer>
                     </FormRowContainer>
                 </FormColumnContainer>
+                <h3>부서선택</h3>
+                <select onChange={(e) => setDepartId(e.target.value)}>
+                    {depList.map(({departId, departName}) => (
+                        <option key={departId} value={departId}>{departName}</option>
+                    ))}
+                </select>
+                <h3>참가종목 선택</h3>
+                <table>
+                    <tr>
+                        <th>check</th>
+                        <th>이름</th>
+                    </tr>
+                    <tbody style={{textAlign:"center"}}>
+                        {events.map(({ eventName, eventId }) => (
+                            <tr key={eventName}>
+                                <td><input type="checkbox" onChange={(e) => onCheckHandler(eventId, e.target.checked)} /></td>
+                                <td>{eventName}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+
+                </table>
                 <FormRowContainer>
                     <Input type="submit" value="선수 등록" onClick={onSubmitHandler} />
                 </FormRowContainer>
             </Form>
+
         </Container>
     );
 }
