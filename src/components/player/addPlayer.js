@@ -59,6 +59,16 @@ const AddPlayer = ({ competitionId, orgId, depList, events }) => {
         playerTel: '',
     });
 
+    const reset = () => {
+        setValue({
+            playerName: '',
+            playerGender: '',
+            playerBirth: '',
+            playerTel: '',
+        });
+        setDepartId('');
+    };
+
     const onChangeHandler = (e) => {
         setValue((prevState) => {
             return { ...prevState, [e.target.name]: e.target.value };
@@ -115,6 +125,7 @@ const AddPlayer = ({ competitionId, orgId, depList, events }) => {
                             <FormColumnContainer wid="50%">
                                 <label htmlFor="playerGender">성별</label>
                                 <Select value={value.playerGender} wid="90%" onChange={onChangeHandler} name="playerGender" id="playerGender">
+                                    <option value="">-- 성별 --</option>
                                     <option value="남">남성</option>
                                     <option value="여">여성</option>
                                 </Select>

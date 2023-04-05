@@ -1,0 +1,144 @@
+import React, { useEffect, useState } from 'react';
+import { API } from '../../config';
+import styled from 'styled-components';
+import axios from 'axios';
+
+const Container = styled.div`
+    overflow: auto;
+`;
+
+const Table = styled.table`
+    margin: 0 auto;
+    width: 80%;
+    border: 1px solid black;
+    border-collapse: collapse;
+    font-size: 0.8em;
+`;
+
+const Td = styled.td`
+    border: 1px solid black;
+    text-align: center;
+`;
+
+const Input = styled.input`
+    outline: none;
+`;
+
+const FindPage = () => {
+    const [competitions, setCompetitions] = useState([]);
+    const [playerInquiring, setPlayerInquiring] = useState(false);
+    const [orgInquiring, setOrgInquiring] = useState(false);
+    const [players, setPlayers] = useState([]);
+    const [organizations, setOrganizations] = useState([]);
+    const [search, setSearch] = useState('');
+
+    const inquirePlayer = (e) => {
+        axios.get(`${API.ATTEND_FIND_PLAYER_CMPT}/${e.target.value}`).then(
+            (res) => setPlayers(res.data)
+        );
+        setPlayerInquiring((state) => !state);
+        setOrgInquiring(false);
+    };
+
+    const onSearch = (e) => {
+        setSearch(e.target.value);
+    };
+
+    const inquireOrg = (e) => {
+        axios.get(`${API.ATTEND_FIND_ORGANIZATION}/${e.target.value}`).then(
+            (res) => setOrganizations(res.data)
+        );
+        setOrgInquiring((state) => !state);
+        setPlayerInquiring(false);
+    };
+
+    useEffect(() => {
+        axios.get(`${API.COMPETITION_FIND_ALL}`).then(
+            (res) => setCompetitions(res.data)
+        );
+    }, []);
+    return (
+        <Container>
+            <Table>
+                <thead>
+                    <tr>
+                        <th>대회ID</th>
+                        <th>대회명</th>
+                        <th>참가단체조회</th>
+                        <th>참가선수조회</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {competitions.map(({ competitionId, competitionName }) => (
+                        <tr key={competitionId}>
+                            <Td>{competitionId}</Td>
+                            <Td>{competitionName}</Td>
+                            <Td><button value={competitionId} onClick={inquireOrg}>조회</button></Td>
+                            <Td><button value={competitionId} onClick={inquirePlayer}>조회</button></Td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+            {playerInquiring ?
+                <div>
+                    <h3>참가 선수 조회</h3>
+                    <label htmlFor="search">선수 검색 </label>
+                    <Input id="search" value={search} onChange={onSearch} />
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>소속단체</th>
+                                <th>이름</th>
+                                <th>성별</th>
+                                <th>생년월일</th>
+                                <th>전화번호</th>
+                                <th>참가종목</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {players.filter(item => item.playerName.includes(search) )
+                            .map(({ cmptAttendId, eventAttendId, organizationName, playerName, playerGender, playerBirth, playerTel, eventName }) => (
+                                <tr key={cmptAttendId + eventAttendId + playerName}>
+                                    <Td>{organizationName}</Td>
+                                    <Td>{playerName}</Td>
+                                    <Td>{playerGender}</Td>
+                                    <Td>{playerBirth}</Td>
+                                    <Td>{playerTel}</Td>
+                                    <Td>{eventName}</Td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
+                : null}
+            {orgInquiring ?
+                <div>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>단체명</th>
+                                <th>단체메일</th>
+                                <th>단체전화번호</th>
+                                <th>단체대표자명</th>
+                                <th>대표자전화번호</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {organizations.map(({orgId, orgName, orgEmail, orgTel, orgLeaderName, leaderTel}) => (
+                                <tr key={orgId+orgName}>
+                                    <Td>{orgName}</Td>
+                                    <Td>{orgEmail}</Td>
+                                    <Td>{orgTel}</Td>
+                                    <Td>{orgLeaderName}</Td>
+                                    <Td>{leaderTel}</Td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                </div>
+                : null}
+        </Container>
+    );
+};
+
+export default FindPage;

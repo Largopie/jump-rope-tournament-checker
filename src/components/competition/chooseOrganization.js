@@ -17,7 +17,6 @@ const ModalContainer = styled.div`
     
 `;
 
-
 const SearchContainer = styled.div`
     margin: 15px 0px 15px 15px;
 `;
@@ -32,6 +31,7 @@ const Table = styled.table`
     margin: 0 auto;
     text-align: center;
     width: 90%;
+    overflow: scroll;
 `;
 
 const Th = styled.th`
@@ -45,9 +45,11 @@ const Td = styled.td`
 
 const Form = styled.form`
     box-shadow: 0 0 0 1px black inset;
+    margin-right: 15px;
 `;
 
 const RowContainer = styled.div`
+    margin: 15px 0px 15px 15px;
     display: flex;
     flex-direction: row;
 `;
@@ -61,12 +63,16 @@ const ColumnContainer = styled.div`
     flex-direction: column;
 `;
 
-const CSVInput = styled.label`
-    padding: 4px 15px;
-    background-color: #FF6600;
-    border-radius: 4px;
+const Label = styled.label`
+    margin-right: 15px;
+    background-color: black;
     color: white;
+    border-radius: 3px;
     cursor: pointer;
+    :hover {
+        background-color: lightgray;
+        color: black;
+    };
 `;
 
 const Input = styled.input`
@@ -77,7 +83,8 @@ const ChooseOrganization = () => {
     const location = useLocation();
     const competitionId = location.state?.competitionId;
     const orgColumns = ['신청하기', '단체번호','단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
-    const orgPlyaerColumns = ['단체이름', '선수번호', '선수이름', '성별', '생년월일', '전화번호'];
+    const orgPlyaerColumns = ['선수이름', '성별', '생년월일', '전화번호', '참가종목명', '점수', '개수'];
+    //cmptAttendId, playerName, playerGender, playerBirth, playerTel, eventName, grade, count
     // const orgDummy = [
     //     {
     //         orgId: 1,
@@ -133,7 +140,8 @@ const ChooseOrganization = () => {
     const [deleteResponse, setDeleteResponse] = useState(false);
     const [detailPlayerState, setDetailPlayerState] = useState(false);
     const [orgId, setOrgId] = useState(0);
-    const [csvFileName, setCsvFileName] = useState('');
+    const [xlsFileName, setXlsFileName] = useState('');
+    const [xlsFile, setXlsFile] = useState('');
     const [modal, setModal] = useState(false);
     const [events, setEvents] = useState([]);
     const [depList, setDepList] = useState([]);
@@ -142,15 +150,17 @@ const ChooseOrganization = () => {
         setVal(e.target.value);
     };
 
-    const deletePlayer = (e) => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
-            axios.delete(`${API.PLAYER_DELETE}/${e.target.value}`, {
-                data: [e.target.value]
-            }).then(() => setDeleteResponse((state) => !state));
-        } else {
-            alert('취소 되었습니다.');
-        }
-    };
+
+    // 선수삭제
+    // const deletePlayer = (e) => {
+    //     if (window.confirm("정말 삭제하시겠습니까?")) {
+    //         axios.delete(`${API.PLAYER_DELETE}/${e.target.value}`, {
+    //             data: [e.target.value]
+    //         }).then(() => setDeleteResponse((state) => !state));
+    //     } else {
+    //         alert('취소 되었습니다.');
+    //     }
+    // };
 
     const setOptHandler = (e) => {
         setOpt(e.target.value);
@@ -162,19 +172,30 @@ const ChooseOrganization = () => {
             setOrgId(e.target.value);
         }
         axios.get(`${API.ATTEND_FIND}?cmptId=${competitionId}&orgId=${e.target.value}`).then(
-            (res) => setPlayerData('')
+            (res) => setPlayerData(res.data)
         );
     };
 
     const handleCsvValue = (e) => {
         const val = e.target.value.split('\\');
-        setCsvFileName(val[val.length - 1]);
+        setXlsFileName(val[val.length - 1]);
+        setXlsFile(e.target.files[0]);
     };
 
-    const sendCsvFile = (e) => {
+    const sendXlsFile = async (e) => {
         e.preventDefault();
-        //axios로 csv파일 보내야 함.
-        console.log('sendCsvFile');
+        const formData = new FormData();
+        formData.append("attendForm", xlsFile);
+
+        for (var value of formData.values()) {
+            console.log(value);
+        }
+
+        axios.post(`${API.ATTEND_ADD_FORM}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
     };
 
     const clickAddPlayer = () => {
@@ -221,7 +242,6 @@ const ChooseOrganization = () => {
         // )
     }, [competitionId, deleteResponse]);
 
-    console.log(depList);
 
     return (
         <Container>
@@ -246,9 +266,8 @@ const ChooseOrganization = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.filter(item => String(item[opt]).includes(val))
-                        .map(({ orgId, orgName, orgEmail, orgTel, orgLeaderName, leaderTel }) => (
-                            <tr key={orgId}>
+                    {data.map(({ orgId, orgName, orgEmail, orgTel, orgLeaderName, leaderTel }) => (
+                            <tr key={orgId+orgName}>
                                 <Td><button onClick={updateOrgPlayer} value={orgId}>신청</button></Td>
                                 <Td>{orgId}</Td>
                                 <Td>{orgName}</Td>
@@ -262,41 +281,39 @@ const ChooseOrganization = () => {
             </Table>
             {detailPlayerState ?
                 <ColumnContainer>
-                    <TitleContent><h3>선수 목록</h3></TitleContent>
-                    <form action={`${API.ATTEND_CREATE_FORM}?`} method="get" target="_blank">
-                        <input type="hidden" name="cmptId" value={competitionId} />
-                        <input type="hidden" name="orgId" value={orgId} />
-                        <button type="submit" onClick={check}>신청서 다운로드</button>
-                    </form>
                     <RowContainer>
-                        <Form>
-                            <Input type="text" value={csvFileName} readOnly onChange={handleCsvValue} />
-                            <CSVInput htmlFor="csv">선수등록(CSV)</CSVInput><br />
-                            <input type="file" id="csv" accept=".csv" onChange={handleCsvValue} style={{display: "none"}} />
-                            <input type="submit" onClick={sendCsvFile} value="파일전송" />
+                        <Form action={`${API.ATTEND_ADD_FORM}`} method="post" enctype="multipart/form-data">
+                            <Label htmlFor="csv">파일등록하기</Label>
+                            <Input type="text" value={xlsFileName} readOnly onChange={handleCsvValue} />
+                            <input type="file" id="csv" accept=".xls" onChange={handleCsvValue} style={{display: "none"}} />
+                            <input type="submit" onClick={sendXlsFile} value="파일전송" />
                         </Form>
-                        <button onClick={clickAddPlayer}>일반선수등록</button>
+                        <Form action={`${API.ATTEND_CREATE_FORM}?`} method="get" target="_blank">
+                            <input type="hidden" name="cmptId" value={competitionId} />
+                            <input type="hidden" name="orgId" value={orgId} />
+                            <button type="submit" onClick={check}>신청서 다운로드</button>
+                        </Form>
                     </RowContainer>
+                    <button onClick={clickAddPlayer}>일반선수등록</button>
+                    <TitleContent><h3>선수 목록</h3></TitleContent>
                     <Table>
                         <thead>
                             <tr>
                                 {orgPlyaerColumns.map((column, idx) => (
-                                    <Th key={idx}>{column}</Th>
+                                    <Th key={idx+column}>{column}</Th>
                                 ))}
-                                <Th>삭제여부</Th>
                             </tr>
                         </thead>
                         <tbody>
-                            {playerData.filter(item => String(item[opt]).includes(val))
-                                .map(({ organizationName, playerId, playerName, playerGender, playerAge, playerTel }) => (
-                                    <tr key={playerId}>
-                                        <Td>{organizationName}</Td>
-                                        <Td>{playerId}</Td>
+                            {playerData.map(({ cmptAttendId, playerName, playerGender, playerBirth, playerTel, eventName, grade, count }) => (
+                                    <tr key={cmptAttendId+playerName+eventName}>
                                         <Td>{playerName}</Td>
                                         <Td>{playerGender}</Td>
-                                        <Td>{playerAge}</Td>
+                                        <Td>{playerBirth}</Td>
                                         <Td>{playerTel}</Td>
-                                        <Td><button value={playerId} onClick={deletePlayer}>삭제</button></Td>
+                                        <Td>{eventName}</Td>
+                                        <Td>{grade}</Td>
+                                        <Td>{count}</Td>
                                     </tr>
                                 ))}
                         </tbody>
