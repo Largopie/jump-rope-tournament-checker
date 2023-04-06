@@ -1,13 +1,17 @@
 import './App.css';
 import Main from './main';
 import Header from './header';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Print from './printFile';
 
 function App() {
   return (
     <BrowserRouter basename="jump-rope-tournament-checker">
-      <Header />
-      <Main />
+      
+      <Routes>
+        <Route path="*" element={<><Header /><Main /></>} />
+        <Route path="/print" element={<Print />} />
+      </Routes>
     </BrowserRouter>
   );
 }

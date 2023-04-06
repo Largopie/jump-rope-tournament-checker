@@ -166,6 +166,8 @@ const ChooseOrganization = () => {
         setOpt(e.target.value);
     };
 
+    
+
     const updateOrgPlayer = (e) => {
         if (window.confirm("단체에 소속된 선수를 조회합니다.")) {
             setDetailPlayerState((state) => !state);
@@ -322,7 +324,7 @@ const ChooseOrganization = () => {
                 : null}
                 {modal ? 
                     <ModalContainer>
-                        <AddPlayer competitionId={competitionId} orgId={orgId} events={events} depList={depList} />
+                        <AddPlayer setDetailPlayerState={setDetailPlayerState} setModal={setModal} competitionId={competitionId} orgId={orgId} events={events} depList={depList} />
                     </ModalContainer>
                 : null}
         </Container>

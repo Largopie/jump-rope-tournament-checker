@@ -98,7 +98,7 @@ const Main = () => {
                     <List>인쇄
                         <Ul>
                             <li>단체 접수 인원 인쇄 및 조회</li>
-                            <li>배번표 인쇄 및 조회</li>
+                            <li><StyledLink to="/print" target='_blank'>배번표 인쇄 및 조회</StyledLink></li>
                             <li>개인 성적 인쇄 및 조회</li>
                             <li>기록지 인쇄 및 조회</li>
                             <li>단체 성적 인쇄 및 조회</li>

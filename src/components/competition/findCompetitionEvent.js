@@ -125,18 +125,18 @@ const FindEvent = () => {
                     {data.map(({ isProceed, cmptEventId, eventName,
                     partPoint, fstPrizeStandard, sndPrizeStandard, trdPrizeStandard,
                     firstGrandPrizePoint, secondGrandPrizePoint, thirdGrandPrizePoint, fourthGrandPrizePoint, fifthGrandPrizePoint }) => (
-                        <tr key={cmptEventId}>
+                        <tr key={cmptEventId+eventName}>
                             <Td><Input name={cmptEventId} type="checkbox" id="isProceed" checked={isProceed} onChange={handleOnChange} /></Td>
                             <Td>{eventName}</Td>
                             <Td><Input name={cmptEventId}  type="number" id="partPoint" value={partPoint} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="goldPrize" value={fstPrizeStandard} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="silverPrize" value={sndPrizeStandard} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="bronzePrize" value={trdPrizeStandard} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="fstPrizeStandard" value={firstGrandPrizePoint} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="sndPrizeStandard" value={secondGrandPrizePoint} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="trdPrizeStandard" value={thirdGrandPrizePoint} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="fourthPrizeStandard" value={fourthGrandPrizePoint} onChange={handleOnChange} /> </Td>
-                            <Td><Input name={cmptEventId}  type="number" id="fifthPrizeStandard" value={fifthGrandPrizePoint} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="fstPrizeStandard" value={fstPrizeStandard} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="sndPrizeStandard" value={sndPrizeStandard} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="trdPrizeStandard" value={trdPrizeStandard} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="firstGrandPrizePoint" value={firstGrandPrizePoint} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="secondGrandPrizePoint" value={secondGrandPrizePoint} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="thirdGrandPrizePoint" value={thirdGrandPrizePoint} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="fourthGrandPrizePoint" value={fourthGrandPrizePoint} onChange={handleOnChange} /> </Td>
+                            <Td><Input name={cmptEventId}  type="number" id="fifthGrandPrizePoint" value={fifthGrandPrizePoint} onChange={handleOnChange} /> </Td>
                         </tr>
                     ))}
                 </tbody>

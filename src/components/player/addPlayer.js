@@ -49,7 +49,7 @@ const Select = styled.select`
     width: ${(props) => props.wid};
 `;
 
-const AddPlayer = ({ competitionId, orgId, depList, events }) => {
+const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depList, events }) => {
     const [checkedList, setCheckedList] = useState([]);
     const [departId, setDepartId] = useState('');
     const [value, setValue] = useState({
@@ -90,20 +90,23 @@ const AddPlayer = ({ competitionId, orgId, depList, events }) => {
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        axios.post(`${API.ATTEND_PLAYER}`, {
-            cmptId: Number(competitionId),
-            orgId: Number(orgId),
-            cmptEventIds: checkedList,
-            departId: Number(departId),
-            playerName: value.playerName,
-            playerGender: value.playerGender,
-            playerBirth: value.playerBirth,
-            playerTel: value.playerTel
-        }).then((res) => console.log(res.data)).catch((err) => console.log(err));;
+        if (window.confirm('선수를 등록하시겠습니까?')){
+            axios.post(`${API.ATTEND_PLAYER}`, {
+                cmptId: Number(competitionId),
+                orgId: Number(orgId),
+                cmptEventIds: checkedList,
+                departId: Number(departId),
+                playerName: value.playerName,
+                playerGender: value.playerGender,
+                playerBirth: value.playerBirth,
+                playerTel: value.playerTel
+            });
+            setModal(false);
+            setDetailPlayerState(false);
+        }
+
     };
 
-    console.log(value);
-    console.log(checkedList);
     return (
         <Container>
             <Title><h2>선수 등록</h2></Title>
@@ -149,17 +152,19 @@ const AddPlayer = ({ competitionId, orgId, depList, events }) => {
                 </FormColumnContainer>
                 <h3>부서선택</h3>
                 <select onChange={(e) => setDepartId(e.target.value)}>
-                    {depList.map(({departId, departName}) => (
+                    {depList.map(({ departId, departName }) => (
                         <option key={departId} value={departId}>{departName}</option>
                     ))}
                 </select>
                 <h3>참가종목 선택</h3>
                 <table>
-                    <tr>
-                        <th>check</th>
-                        <th>이름</th>
-                    </tr>
-                    <tbody style={{textAlign:"center"}}>
+                    <thead>
+                        <tr>
+                            <th>check</th>
+                            <th>이름</th>
+                        </tr>
+                    </thead>
+                    <tbody style={{ textAlign: "center" }}>
                         {events.map(({ eventName, eventId }) => (
                             <tr key={eventName}>
                                 <td><input type="checkbox" onChange={(e) => onCheckHandler(eventId, e.target.checked)} /></td>

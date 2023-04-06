@@ -52,7 +52,7 @@ const StyledLink = styled(Link)`
 `;
 
 const FindCompetition = () => {
-    const columns = ['참가단체신청', '대회번호', '대회이름', '기록지명', '개최자명', '개최자이메일', '개최자전화번호', '대회시작날짜', '대회종료날짜'];
+    const columns = ['대회수정', '참가', '종목' ,'대회번호' ,'대회이름', '기록지명', '개최자명', '개최자이메일', '개최자전화번호', '대회시작날짜', '대회종료날짜'];
 
     // const dummy = [
     //     {
@@ -91,6 +91,9 @@ const FindCompetition = () => {
     const [val, setVal] = useState('');
     const [opt, setOpt] = useState('competitionId');
     const [deleteResponse, setDeleteResponse] = useState(false);
+    const [updateCmpt, setUpdateCmpt] = useState(false);
+    const [detailCmpt, setDetailCmpt] = useState({});
+
     const setValHandler = (e) => {
         setVal(e.target.value);
     };
@@ -107,6 +110,12 @@ const FindCompetition = () => {
             alert('취소 되었습니다.');
         }
         
+    };
+
+    const cmptUpdate = (e) => {
+        setUpdateCmpt((state) =>!state);
+        // axios로 대회정보 받아서 detailCmpt에 state 올리기
+        console.log(e.target.value);
     };
 
     const setOptHandler = (e) => {
@@ -159,7 +168,9 @@ const FindCompetition = () => {
                     {data.filter(item => String(item[opt]).includes(val) )
                     .map(({ competitionId, competitionName, recordingSheetName, competitionHost, hostEmail, hostTel, competitionStartDate, competitionEndDate }) => (
                         <tr key={competitionId}>
+                            <Td><button value={competitionId} onClick={cmptUpdate}>수정</button></Td>
                             <Td><StyledLink to="/competition/organization/choose"  state={{competitionId: competitionId}}>신청</StyledLink></Td>
+                            <Td><StyledLink to="/event/find" state={{competitionId: competitionId}} >수정</StyledLink></Td>
                             <Td>{competitionId}</Td>
                             <Td>{competitionName}</Td>
                             <Td>{recordingSheetName}</Td>
@@ -173,6 +184,11 @@ const FindCompetition = () => {
                     ))}
                 </tbody>
             </Table>
+            {updateCmpt ?
+                <div>
+                    <input type="text" />
+                </div>
+            : null}
         </Container>
     );
 }

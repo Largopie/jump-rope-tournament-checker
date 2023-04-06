@@ -175,7 +175,6 @@ const FindOrganization = () => {
             setDetail(data[e.target.value - 1]);
             setDetailUpdateState(true);
         }
-        
     };
 
     useEffect(() => {
