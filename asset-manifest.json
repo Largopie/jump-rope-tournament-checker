@@ -1,14 +1,15 @@
 {
   "files": {
-    "main.css": "/jump-rope-tournament-checker/static/css/main.396a6ec5.css",
-    "main.js": "/jump-rope-tournament-checker/static/js/main.62cf4715.js",
+    "main.css": "/jump-rope-tournament-checker/static/css/main.50209ebf.css",
+    "main.js": "/jump-rope-tournament-checker/static/js/main.cdf338df.js",
     "static/media/NotoSansKR-Regular.otf": "/jump-rope-tournament-checker/static/media/NotoSansKR-Regular.e1aa54c04a18648e6468.otf",
+    "static/media/prize.jpg": "/jump-rope-tournament-checker/static/media/prize.d86a2683fbb5ae7a987b.jpg",
     "index.html": "/jump-rope-tournament-checker/index.html",
-    "main.396a6ec5.css.map": "/jump-rope-tournament-checker/static/css/main.396a6ec5.css.map",
-    "main.62cf4715.js.map": "/jump-rope-tournament-checker/static/js/main.62cf4715.js.map"
+    "main.50209ebf.css.map": "/jump-rope-tournament-checker/static/css/main.50209ebf.css.map",
+    "main.cdf338df.js.map": "/jump-rope-tournament-checker/static/js/main.cdf338df.js.map"
   },
   "entrypoints": [
-    "static/css/main.396a6ec5.css",
-    "static/js/main.62cf4715.js"
+    "static/css/main.50209ebf.css",
+    "static/js/main.cdf338df.js"
   ]
 }
