@@ -83,7 +83,7 @@ const ChooseOrganization = () => {
     const location = useLocation();
     const competitionId = location.state?.competitionId;
     const orgColumns = ['신청하기', '단체번호','단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
-    const orgPlyaerColumns = ['선수이름', '성별', '생년월일', '전화번호', '참가종목명', '점수', '개수'];
+    const orgPlyaerColumns = ['선수이름', '성별', '생년월일', '전화번호', '참가종목명', '점수'];
     //cmptAttendId, playerName, playerGender, playerBirth, playerTel, eventName, grade, count
     // const orgDummy = [
     //     {
@@ -307,15 +307,14 @@ const ChooseOrganization = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {playerData.map(({ cmptAttendId, playerName, playerGender, playerBirth, playerTel, eventName, grade, count }) => (
+                            {playerData.map(({ cmptAttendId, playerName, playerGender, playerBirth, playerTel, eventName, score }) => (
                                     <tr key={cmptAttendId+playerName+eventName}>
                                         <Td>{playerName}</Td>
                                         <Td>{playerGender}</Td>
                                         <Td>{playerBirth}</Td>
                                         <Td>{playerTel}</Td>
                                         <Td>{eventName}</Td>
-                                        <Td>{grade}</Td>
-                                        <Td>{count}</Td>
+                                        <Td>{score}</Td>
                                     </tr>
                                 ))}
                         </tbody>

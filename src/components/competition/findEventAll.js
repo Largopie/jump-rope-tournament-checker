@@ -10,7 +10,7 @@ const Container = styled.div`
 `;
 
 const Table = styled.table`
-    font-size: 0.7em;
+    font-size: 1em;
     border: 1px solid black;
     margin: 0 auto;
     text-align: center;
@@ -24,6 +24,10 @@ const Th = styled.th`
 const Td = styled.td`
     overflow: scroll;
     border: 1px solid black;
+`;
+
+const H1 = styled.h1`
+    margin: 15px;
 `;
 
 const FindEventAll = () => {
@@ -71,6 +75,7 @@ const FindEventAll = () => {
 
     return (
         <Container>
+            <H1>전체 종목 조회</H1>
             <Table>
                 <thead>
                     <tr>

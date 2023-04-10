@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -23,7 +22,7 @@ const Table = styled.table`
     border: 1px solid black;
     margin: 0 auto;
     text-align: center;
-    width: 90%;
+    width: 98%;
 `;
 
 const Th = styled.th`
@@ -93,6 +92,8 @@ const FindCompetition = () => {
     const [deleteResponse, setDeleteResponse] = useState(false);
     const [updateCmpt, setUpdateCmpt] = useState(false);
     const [detailCmpt, setDetailCmpt] = useState({});
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
 
     const setValHandler = (e) => {
         setVal(e.target.value);
@@ -103,7 +104,7 @@ const FindCompetition = () => {
         if(window.confirm("정말 삭제하시겠습니까?")) {
             axios.delete(`${API.COMPETITION_DELETE}`,{
                 data: [
-                    e.target.value
+                    Number(e.target.value)
                 ]
             }).then((res) => setDeleteResponse((state) => !state));
         } else {
@@ -113,31 +114,39 @@ const FindCompetition = () => {
     };
 
     const cmptUpdate = (e) => {
-        setUpdateCmpt((state) =>!state);
         // axios로 대회정보 받아서 detailCmpt에 state 올리기
-        console.log(e.target.value);
+        axios.get(`${API.COMPETITION_FIND}/${e.target.value}`).then(
+            (res) => setDetailCmpt(res.data)
+        );
+        setUpdateCmpt((state) =>!state);
     };
 
     const setOptHandler = (e) => {
         setOpt(e.target.value);
     };
 
-    const findID = (e) => {
-        axios.get(`${API.COMPETITION_FIND}/${e.target.innerText}`).then(
-            (res) => console.log(res.data)
-        );
-        
+    const updateStartTime = (e) => {
+        setStartTime(e.target.value);
     };
 
-    const setEvent = (e) => {
-        console.log(e.target.id);
+    const updateEndTime = (e) => {
+        setEndTime(e.target.value);
     };
+
+    const updateOnChange = (e) => {
+        setDetailCmpt((prevState) => {
+            return {...prevState, [e.target.name]: e.target.name.includes('Date')  ? e.target.value = e.target.value.split(',').map((item) => Number(item)) : e.target.value};
+        });
+    };
+
 
     useEffect(() => {
         axios.get(`${API.COMPETITION_FIND_ALL}`).then(
             (res) => setData(res.data)
         );
     }, [deleteResponse]);
+
+    console.log(detailCmpt);
 
     return (
         <Container>
@@ -186,7 +195,18 @@ const FindCompetition = () => {
             </Table>
             {updateCmpt ?
                 <div>
-                    <input type="text" />
+                    <form action={`${API.COMPETITION_UPDATE}`} method="update">
+                        대회ID<input type="text" readOnly value={detailCmpt.competitionId} onChange={updateOnChange} /><br/>
+                        대회명<input type="text" name="competitionName" value={detailCmpt.competitionName} onChange={updateOnChange} /><br/>
+                        기록지명<input type="text" name="recordingSheetName" value={detailCmpt.recordingSheetName} onChange={updateOnChange} /><br/>
+                        주최자명<input type="text" name="competitionHost" value={detailCmpt.competitionHost} onChange={updateOnChange}/><br/>
+                        이메일<input type="text" name="hostEmail" value={detailCmpt.hostEmail} onChange={updateOnChange}/><br/>
+                        주최자번호<input type="text" name="hostTel" value={detailCmpt.hostTel} onChange={updateOnChange}/><br/>
+                        대회시작날짜<input type="text" name="competitionStartDate" value={detailCmpt.competitionStartDate} onChange={updateOnChange} /><br/>
+                        대회종료날짜<input type="text" name="competitionEndDate" value={detailCmpt.competitionEndDate} onChange={updateOnChange}/>
+                        <h3>대회 시작/종료 날짜 양식은 (년,월,일,시간,분)으로 입력해주세요. 잘못 입력되면 오류가 발생합니다.</h3>
+                        <input type="submit" value="수정" />
+                    </form>
                 </div>
             : null}
         </Container>

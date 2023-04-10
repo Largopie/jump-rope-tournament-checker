@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { API } from '../../config';
 import styled from 'styled-components';
 import axios from 'axios';
+import PrintPlayer from '../../printPlayer';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
     overflow: auto;
@@ -24,7 +26,12 @@ const Input = styled.input`
     outline: none;
 `;
 
+const H1 = styled.h1`
+    margin: 15px;
+`;
+
 const FindPage = () => {
+    const ref = useRef();
     const [competitions, setCompetitions] = useState([]);
 
     const [playerInquiring, setPlayerInquiring] = useState(false);
@@ -82,8 +89,12 @@ const FindPage = () => {
             (res) => setCompetitions(res.data)
         );
     }, []);
+
+    console.log(players);
+
     return (
         <Container>
+            <H1>대회 현황 조회</H1>
             <Table>
                 <thead>
                     <tr>
@@ -108,6 +119,7 @@ const FindPage = () => {
             </Table>
             {playerInquiring ?
                 <div>
+                    <Link to="/print/player" state={{players: players}}>인쇄하기</Link>
                     <h3>참가 선수 조회</h3>
                     <label htmlFor="search">선수 검색 </label>
                     <Input id="search" value={search} onChange={onSearch} />
@@ -120,11 +132,12 @@ const FindPage = () => {
                                 <th>생년월일</th>
                                 <th>전화번호</th>
                                 <th>참가종목</th>
+                                <th>점수</th>
                             </tr>
                         </thead>
                         <tbody>
                             {players.filter(item => item.playerName.includes(search) )
-                            .map(({ cmptAttendId, eventAttendId, organizationName, playerName, playerGender, playerBirth, playerTel, eventName }) => (
+                            .map(({ cmptAttendId, eventAttendId, organizationName, playerName, playerGender, playerBirth, playerTel, eventName, score }) => (
                                 <tr key={cmptAttendId + eventAttendId + playerName}>
                                     <Td>{organizationName}</Td>
                                     <Td>{playerName}</Td>
@@ -132,6 +145,7 @@ const FindPage = () => {
                                     <Td>{playerBirth}</Td>
                                     <Td>{playerTel}</Td>
                                     <Td>{eventName}</Td>
+                                    <Td>{score}</Td>
                                 </tr>
                             ))}
                         </tbody>
@@ -173,6 +187,7 @@ const FindPage = () => {
                                 <option key={cmptEventId+eventName} value={eventName}>{eventName}</option>
                             ))}
                         </select>
+                        <h3>총 인원 : {players.filter((item) => item.eventName === selectedEvent).length}</h3>
                         <Table>
                         <thead>
                             <tr>

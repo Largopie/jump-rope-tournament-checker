@@ -1,9 +1,19 @@
-@font-face {
+/* @font-face {
 	font-family: "NotoSansKR";
 	src: url(./assets/fonts/Noto_Sans_KR/NotoSansKR-Regular.otf);
+} */
+
+@font-face {
+  font-family: 'ChosunGs';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGs.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
+
+
+
 :root {
-	--font-NotoSansKR: "NotoSansKR";
+	--font-NotoSansKR: "ChosunGs";
 }
 
 * {
@@ -19,9 +29,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 body {
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
-  width: 960px;
 }
 
 ul, li {
