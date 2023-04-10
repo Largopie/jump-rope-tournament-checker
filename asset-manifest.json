@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/jump-rope-tournament-checker/static/css/main.ce6a8202.css",
-    "main.js": "/jump-rope-tournament-checker/static/js/main.599aad8c.js",
+    "main.js": "/jump-rope-tournament-checker/static/js/main.74720218.js",
     "static/media/prize.jpg": "/jump-rope-tournament-checker/static/media/prize.d86a2683fbb5ae7a987b.jpg",
     "index.html": "/jump-rope-tournament-checker/index.html",
     "main.ce6a8202.css.map": "/jump-rope-tournament-checker/static/css/main.ce6a8202.css.map",
-    "main.599aad8c.js.map": "/jump-rope-tournament-checker/static/js/main.599aad8c.js.map"
+    "main.74720218.js.map": "/jump-rope-tournament-checker/static/js/main.74720218.js.map"
   },
   "entrypoints": [
     "static/css/main.ce6a8202.css",
-    "static/js/main.599aad8c.js"
+    "static/js/main.74720218.js"
   ]
 }
