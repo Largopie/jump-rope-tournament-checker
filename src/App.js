@@ -7,8 +7,7 @@ import PrintPlayer from './printPlayer';
 
 function App() {
   return (
-    <BrowserRouter basename="/jump-rope-tournament-checker/">
-      
+    <BrowserRouter>
       <Routes>
         <Route path="*" element={<><Header /><Main /></>} />
         <Route path="printPrize" element={<PrintPrize />} />
