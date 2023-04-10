@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { API } from '../../config';
@@ -6,6 +6,11 @@ import { API } from '../../config';
 const Container = styled.div`
     padding: 15px;
     overflow: scroll;
+`;
+
+const Table = styled.table`
+    border: 1px solid black;
+    border-collapse: collapse;
 `;
 
 const TextContainer = styled.div`
@@ -21,6 +26,7 @@ const Form = styled.form`
 
 const FormRowContainer = styled.div`
     display: flex;
+    margin-bottom: 15px;
     flex-direction: row;
     width: ${(props) => props.wid};
     height: ${(props) => props.hei};
@@ -57,17 +63,8 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
         playerGender: '',
         playerBirth: '',
         playerTel: '',
+        playerAffiliation: '',
     });
-
-    const reset = () => {
-        setValue({
-            playerName: '',
-            playerGender: '',
-            playerBirth: '',
-            playerTel: '',
-        });
-        setDepartId('');
-    };
 
     const onChangeHandler = (e) => {
         setValue((prevState) => {
@@ -88,9 +85,10 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
 
     };
 
+
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        if (window.confirm('선수를 등록하시겠습니까?')){
+        if (window.confirm('선수를 등록하시겠습니까?')) {
             axios.post(`${API.ATTEND_PLAYER}`, {
                 cmptId: Number(competitionId),
                 orgId: Number(orgId),
@@ -99,13 +97,15 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
                 playerName: value.playerName,
                 playerGender: value.playerGender,
                 playerBirth: value.playerBirth,
-                playerTel: value.playerTel
+                playerTel: value.playerTel,
+                playerAffiliation: value.playerAffiliation,
             });
             setModal(false);
             setDetailPlayerState(false);
         }
 
     };
+
 
     return (
         <Container>
@@ -149,31 +149,46 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
                             <Input value={value.playerTel} maxLength="11" onChange={onChangeHandler} type="tel" id="playerTel" name="playerTel" />
                         </FormColumnContainer>
                     </FormRowContainer>
-                </FormColumnContainer>
-                <h3>부서선택</h3>
-                <select onChange={(e) => setDepartId(e.target.value)}>
-                    {depList.map(({ departId, departName }) => (
-                        <option key={departId} value={departId}>{departName}</option>
-                    ))}
-                </select>
-                <h3>참가종목 선택</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>check</th>
-                            <th>이름</th>
-                        </tr>
-                    </thead>
-                    <tbody style={{ textAlign: "center" }}>
-                        {events.map(({ eventName, eventId }) => (
-                            <tr key={eventName}>
-                                <td><input type="checkbox" onChange={(e) => onCheckHandler(eventId, e.target.checked)} /></td>
-                                <td>{eventName}</td>
-                            </tr>
-                        ))}
-                    </tbody>
 
-                </table>
+                    {/* <FormRowContainer>
+                        <FormColumnContainer wid="60%">
+                            <label htmlFor="playerAffiliation">소속명</label>
+                            <Input value={value.playerAffiliation} onChange={onChangeHandler} type="text" id="playerAffiliation" name="playerAffiliation" />
+                        </FormColumnContainer>
+                    </FormRowContainer> */}
+
+                    <FormRowContainer>
+                        <FormColumnContainer wid="60%">
+                            <label htmlFor="departId">부서선택</label>
+                            <select id="departId" onChange={(e) => setDepartId(e.target.value)}>
+                                {depList.map(({ departId, departName }) => (
+                                    <option key={departId} value={departId}>{departName}</option>
+                                ))}
+                            </select>
+                        </FormColumnContainer>
+                    </FormRowContainer>
+                    <FormRowContainer>
+                        <FormColumnContainer wid="60%">
+                            <label htmlFor="events">참가종목 선택</label>
+                            <Table id="events">
+                                <thead>
+                                    <tr>
+                                        <th>check</th>
+                                        <th>이름</th>
+                                    </tr>
+                                </thead>
+                                <tbody style={{ textAlign: "center" }}>
+                                    {events.map(({ eventName, eventId }) => (
+                                        <tr key={eventName}>
+                                            <td><input type="checkbox" onChange={(e) => onCheckHandler(eventId, e.target.checked)} /></td>
+                                            <td>{eventName}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        </FormColumnContainer>
+                    </FormRowContainer>
+                </FormColumnContainer>
                 <FormRowContainer>
                     <Input type="submit" value="선수 등록" onClick={onSubmitHandler} />
                 </FormRowContainer>

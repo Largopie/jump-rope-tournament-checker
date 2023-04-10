@@ -34,14 +34,6 @@ const Td = styled.td`
     border: 1px solid black;
 `;
 
-const A = styled.a`
-    :hover {
-        cursor: hand;
-    };
-    text-decoration: none;
-`;
-
-
 const StyledLink = styled(Link)`
     text-decoration: none;
     color: #1abc9c;
@@ -100,7 +92,7 @@ const FindCompetition = () => {
     };
 
     const doDelete = (e) => {
-        console.log([Number(e.target.value)]);
+        // console.log([Number(e.target.value)]);
         if(window.confirm("정말 삭제하시겠습니까?")) {
             axios.delete(`${API.COMPETITION_DELETE}`,{
                 data: [
@@ -146,7 +138,7 @@ const FindCompetition = () => {
         );
     }, [deleteResponse]);
 
-    console.log(detailCmpt);
+    // console.log(detailCmpt);
 
     return (
         <Container>
@@ -196,14 +188,14 @@ const FindCompetition = () => {
             {updateCmpt ?
                 <div>
                     <form action={`${API.COMPETITION_UPDATE}`} method="update">
-                        대회ID<input type="text" readOnly value={detailCmpt.competitionId} onChange={updateOnChange} /><br/>
+                        대회ID<span>{detailCmpt.competitionId}</span><br/>
                         대회명<input type="text" name="competitionName" value={detailCmpt.competitionName} onChange={updateOnChange} /><br/>
                         기록지명<input type="text" name="recordingSheetName" value={detailCmpt.recordingSheetName} onChange={updateOnChange} /><br/>
                         주최자명<input type="text" name="competitionHost" value={detailCmpt.competitionHost} onChange={updateOnChange}/><br/>
                         이메일<input type="text" name="hostEmail" value={detailCmpt.hostEmail} onChange={updateOnChange}/><br/>
                         주최자번호<input type="text" name="hostTel" value={detailCmpt.hostTel} onChange={updateOnChange}/><br/>
-                        대회시작날짜<input type="text" name="competitionStartDate" value={detailCmpt.competitionStartDate} onChange={updateOnChange} /><br/>
-                        대회종료날짜<input type="text" name="competitionEndDate" value={detailCmpt.competitionEndDate} onChange={updateOnChange}/>
+                        대회시작날짜<input type="date" name="competitionStartDate" value={detailCmpt.competitionStartDate} onChange={updateOnChange} /><br/>
+                        대회종료날짜<input type="date" name="competitionEndDate" value={detailCmpt.competitionEndDate} onChange={updateOnChange}/>
                         <h3>대회 시작/종료 날짜 양식은 (년,월,일,시간,분)으로 입력해주세요. 잘못 입력되면 오류가 발생합니다.</h3>
                         <input type="submit" value="수정" />
                     </form>

@@ -91,9 +91,10 @@ const FindEvent = () => {
                 item.sndPrizeStandard = Number(item.sndPrizeStandard),
                 item.trdPrizeStandard = Number(item.trdPrizeStandard)
             ))));
-            axios.put(`${API.COMPETITION_EVENT_UPDATAE}`, data).then(res => console.log(res));
-            alert('수정 완료!');
-            setUpdateState((state) => !state);
+            axios.patch(`${API.COMPETITION_EVENT_UPDATAE}`, data);
+            // setUpdateState((state) => !state);
+            // alert('수정 완료!');
+            window.location.reload();
         }else {
             alert('취소되었습니다.');
         }
@@ -102,12 +103,12 @@ const FindEvent = () => {
 
     // 종목번호, 종목이름, 진행여부, 참가점수, 1,2,3등점수
     useEffect(() => {
-        axios.get(`${API.COMPETITION_EVENT_FIND}/${competitionId}`).then(
+        axios.get(`${API.COMPETITION_EVENT_FIND}/${competitionId}?type=ALL`).then(
             (res) => setData(res.data)
-        )   
+        );
     },[competitionId, updateState]);
 
-    console.log(data);
+    // console.log(competitionId);
 
 
     return (

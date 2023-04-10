@@ -135,10 +135,11 @@ const FindOrganization = () => {
     const handleOnSubmit = (e) => {
         e.preventDefault();
         if (window.confirm('수정하시겠습니까?')) {
-            axios.put(`${API.ORGANIZATION_UPDATE}`, detail);
+            axios.patch(`${API.ORGANIZATION_UPDATE}`, detail);
             setUpdateState((state) => !state);
             alert('수정완료!');
-        }
+            setDetailUpdateState(false);
+        };
     };
 
     const handleCancel = () => {

@@ -89,16 +89,10 @@ const Main = () => {
                             <li>종목별 참가선수 현황</li> */}
                         </Ul>
                     </List>
-                    <List>대회 진행
-                        <Ul>
-                            <li>기록 등록</li>
-                            {/* <li>기록 조회<br />(단체 및 개인)</li> */}
-                        </Ul>
-                    </List>
                     <List>인쇄
                         <Ul>
                             {/* <li>단체 접수 인원 인쇄 및 조회</li> */}
-                            <li><StyledLink to="/printPrize" target='_blank'>배번표 인쇄 및 조회</StyledLink></li>
+                            <li><StyledLink to="/printPrize" target='_blank'>상장 인쇄 및 조회</StyledLink></li>
                             {/* <li>개인 성적 인쇄 및 조회</li>
                             <li>기록지 인쇄 및 조회</li>
                             <li>단체 성적 인쇄 및 조회</li>

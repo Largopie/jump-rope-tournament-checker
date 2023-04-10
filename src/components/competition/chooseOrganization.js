@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { API } from '../../config';
 import AddPlayer from '../player/addPlayer';
@@ -228,8 +228,8 @@ const ChooseOrganization = () => {
             (res) => setData(res.data)
         );
         
-        axios.get(`${API.COMPETITION_EVENT_FIND}/${competitionId}`).then(
-            (res) => setEvents(res.data.filter((item) => item.isProceed === true))
+        axios.get(`${API.COMPETITION_EVENT_FIND}/${competitionId}?type=PROCEED`).then(
+            (res) => setEvents(res.data)
         );
         
         axios.get(`${API.DEPART_FIND_ALL}`).then(
@@ -307,7 +307,7 @@ const ChooseOrganization = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {playerData.map(({ cmptAttendId, playerName, playerGender, playerBirth, playerTel, eventName, score }) => (
+                            {playerData.map(({ cmptAttendId, playerName, playerGender, playerBirth, playerAffiliation, playerTel, eventName, score }) => (
                                     <tr key={cmptAttendId+playerName+eventName}>
                                         <Td>{playerName}</Td>
                                         <Td>{playerGender}</Td>

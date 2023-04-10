@@ -1,7 +1,7 @@
-/* @font-face {
-	font-family: "NotoSansKR";
+@font-face {
+  font-family: "NotoSansKR";
 	src: url(./assets/fonts/Noto_Sans_KR/NotoSansKR-Regular.otf);
-} */
+}
 
 @font-face {
   font-family: 'ChosunGs';
@@ -13,13 +13,13 @@
 
 
 :root {
-	--font-NotoSansKR: "ChosunGs";
+	--font-ChosungGs: "ChosunGs";
+  --font-NotoSans_KR: "NotoSansKR";
 }
-
 * {
   margin: 0;
   padding: 0;
-  font-family: var(--font-NotoSansKR);
+  font-family: var(--font-ChosungGs);
 }
 
 input[type="number"]::-webkit-outer-spin-button,

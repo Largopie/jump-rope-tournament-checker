@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { API } from '../../config';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -31,7 +31,6 @@ const H1 = styled.h1`
 `;
 
 const FindPage = () => {
-    const ref = useRef();
     const [competitions, setCompetitions] = useState([]);
 
     const [playerInquiring, setPlayerInquiring] = useState(false);
@@ -73,13 +72,14 @@ const FindPage = () => {
     };
 
     const inquireEvent = (e) => {
+        // console.log(e.target.value);
         axios.get(`${API.ATTEND_FIND_PLAYER_CMPT}/${e.target.value}`).then(
             (res) => setPlayers(res.data)
         );
         setEventInquiring((state) =>!state);
         setPlayerInquiring(false);
         setOrgInquiring(false);
-        axios.get(`${API.COMPETITION_EVENT_FIND}/${e.target.value}`).then(
+        axios.get(`${API.COMPETITION_EVENT_FIND}/${e.target.value}?type=ALL`).then(
             (res) => setEvents(res.data.filter((event) => event.isProceed === true))
         );
     };
@@ -90,7 +90,7 @@ const FindPage = () => {
         );
     }, []);
 
-    console.log(players);
+    // console.log(players);
 
     return (
         <Container>

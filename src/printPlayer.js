@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import styled from 'styled-components';
@@ -54,8 +54,6 @@ const Info = styled.div`
 `;
 
 const PrintPlayer = () => {
-    const num = [1, 2, 3, 4];
-    const text = ['종목/학년/성별/이름', '종목/학년/성별/이름', '종목/학년/성별/이름', '종목/학년/성별/이름'];
     const location = useLocation();
     const ref = useRef();
     const players = location.state?.players;
