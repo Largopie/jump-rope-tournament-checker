@@ -63,6 +63,20 @@ const DayContainer = styled.div`
     height: ${props => props.fontSize}px;
 `;
 
+const OrganizationContainer = styled.div`
+    position: relative;
+    font-size: ${props => props.fontSize}px;
+    top: ${props => props.top}%;
+    height: ${props => props.fontSize}px;
+`;
+
+const LeaderContainer = styled.div`
+    position: relative;
+    font-size: ${props => props.fontSize}px;
+    top: ${props => props.top}%;
+    height: ${props => props.fontSize}px;
+`;
+
 const PrizeSubContainer = styled.div`
     text-align: center;
     width: 100%;
@@ -77,7 +91,6 @@ const Button = styled.button`
     background-color: #ffc;
     :hover {
     background-color: #fcf;
-
     }
 `;
 
@@ -89,13 +102,17 @@ const Input = styled.input`
     font-size: 20px;
     width: 200px;
     height: 50px;
+    white-space: pre;
 `;
 
 const Text = styled.div`
     font-family: ${(props) => props.fontFamily};
     width: 100%;
+    padding-right: ${(props) =>props.paddingRight}px;
+    padding-left: ${(props) =>props.paddingLeft}px;
     text-align: center;
     margin-bottom: 25px;
+    white-space: pre-wrap;
 `;
 
 const Select = styled.select`
@@ -120,14 +137,31 @@ const PrintPrize = () => {
     const [textFontSize, setTextFontSize] = useState(30);
 
     // Content State
-    const [prizeContent, setPrizeContent] = useState('');
+    const [prizeContent, setPrizeContent] = useState('위 선수(단체)는 제 4회 동작구 협회장배 줄넘기 대회에서 위와 같이 입상하여 이 상장을 드립니다.');
     const [contentFontSize, setContentFontSize] = useState(40);
     const [contentTop, setContentTop] = useState(35);
 
     // Day State
-    const [dayContent, setDayContent] = useState('');
-    const [dayFontSize, setDayFontSize] = useState(20);
-    const [dayTop, setDayTop] = useState(38);
+    const [dayContent, setDayContent] = useState('2023년 4월 23일');
+    const [dayFontSize, setDayFontSize] = useState(30);
+    const [dayTop, setDayTop] = useState(35);
+
+    // Organization State
+    const [orgContent, setOrgContent] = useState('동 작 구 줄 넘 기 협 회');
+    const [orgFontSize, setOrgFontSize] = useState(38);
+    const [orgTop, setOrgTop] = useState(39);
+
+    // Leader State
+    const [leaderContent, setLeaderContent] = useState('회 장     임     종     환 ');
+    const [leaderFontSize, setLeaderFontSize] = useState(38);
+    const [leaderTop, setLeaderTop] = useState(40);
+
+    // padding Setting State
+    const [topLeft, setTopLeft] = useState(20);
+    const [topRight, setTopRight] = useState(20);
+    const [bottomLeft, setBottomLeft] = useState(20);
+    const [bottomRight, setBottomRight] = useState(20);
+
 
     const onClickHandle = (e) => {
         setFont(e.target.value);
@@ -143,6 +177,36 @@ const PrintPrize = () => {
 
     const onDayContentHandle = (e) => {
         setDayContent(e.target.value);
+    };
+
+    const onOrgContentHandle = (e) => {
+        setOrgContent(e.target.value);
+    };
+
+    const onLeaderContentHandle = (e) => {
+        setLeaderContent(e.target.value);
+    };
+
+    const onTopChange = (e) => {
+        if (e.target.innerText === '좁히기'){
+            setTopLeft(topLeft + 2 );
+            setTopRight(topRight + 2 );
+        };
+        if (e.target.innerText === '넓히기') {
+            setTopLeft(topLeft - 2 < 0 ? 0 : topLeft - 2);
+            setTopRight(topRight - 2 < 0 ? 0 : topRight - 2);
+        };
+    };
+
+    const onBottomChange = (e) => {
+        if (e.target.innerText === '좁히기'){
+            setBottomLeft(bottomLeft + 2);
+            setBottomRight(bottomRight + 2);
+        };
+        if (e.target.innerText === '넓히기') {
+            setBottomLeft(bottomLeft - 2 < 0 ? 0 : bottomLeft - 2);
+            setBottomRight(bottomRight - 2 < 0 ? 0 : bottomRight - 2);
+        };
     };
 
     const onTextTopChange = (e) => {
@@ -165,10 +229,10 @@ const PrintPrize = () => {
 
     const onContentTopChange = (e) => {
         if (e.target.innerText === '상') {
-            setContentTop(contentTop - 1);
+            setContentTop(contentTop + 1);
         };
         if (e.target.innerText === '하') {
-            setContentTop(contentTop + 1);
+            setContentTop(contentTop - 1);
         };
     };
 
@@ -199,7 +263,46 @@ const PrintPrize = () => {
         };
     };
 
+    const onOrgTopChange = (e) => {
+        if (e.target.innerText === '상') {
+            setOrgTop(orgTop - 1);
+        };
+        if (e.target.innerText === '하') {
+            setOrgTop(orgTop + 1);
+        };
+    };
 
+    const onOrgFontChange = (e) => {
+        if (e.target.innerText === '+') {
+            setOrgFontSize(orgFontSize + 1);
+        };
+        if (e.target.innerText === '-') {
+            setOrgFontSize(orgFontSize - 1);
+        };
+    };
+
+    const onLeaderTopChange = (e) => {
+        if (e.target.innerText === '상') {
+            setLeaderTop(leaderTop - 1);
+        };
+        if (e.target.innerText === '하') {
+            setLeaderTop(leaderTop + 1);
+        };
+    };
+
+    const onLeaderFontChange = (e) => {
+        if (e.target.innerText === '+') {
+            setLeaderFontSize(leaderFontSize + 1);
+        };
+        if (e.target.innerText === '-') {
+            setLeaderFontSize(leaderFontSize - 1);
+        };
+    };
+    // console.log('Day', dayFontSize, dayTop);
+    // console.log('ORG', orgFontSize, orgTop);
+    // console.log('LEADER',leaderFontSize, leaderTop);
+    console.log('TOP' , topLeft, topRight);
+    console.log('BOTTOM', bottomLeft, bottomRight);
 
     const repeat = () => {
         const result = [];
@@ -208,12 +311,12 @@ const PrintPrize = () => {
                 <PrizeContainer backgroundImg={see}>
                     <PrizeTextContainer top={textTop} fontSize={textFontSize}>
                         <PrizeSubContainer>
-                            <Text fontFamily={font}>음악 줄넘기</Text>
-                            <Text fontFamily={font}>3위</Text>
+                            <Text paddingLeft={topLeft} fontFamily={font}>음악 줄넘기</Text>
+                            <Text paddingRight={topRight} fontFamily={font}>3위</Text>
                         </PrizeSubContainer>
                         <PrizeSubContainer>
-                            <Text fontFamily={font}>인터벌초등학교</Text>
-                            <Text fontFamily={font}>김철민</Text>
+                            <Text paddingLeft={bottomLeft} fontFamily={font}>인터벌초등학교</Text>
+                            <Text paddingRight={bottomRight} fontFamily={font}>김철민</Text>
                         </PrizeSubContainer>
                     </PrizeTextContainer>
                     <ContentContainer top={contentTop} fontSize={contentFontSize}>
@@ -222,6 +325,12 @@ const PrintPrize = () => {
                     <DayContainer top={dayTop} fontSize={dayFontSize}>
                         <Text fontFamily={font}>{dayContent}</Text>
                     </DayContainer>
+                    <OrganizationContainer top={orgTop} fontSize={orgFontSize}>
+                        <Text fontFamily={font}>{orgContent}</Text>
+                    </OrganizationContainer >
+                    <LeaderContainer top={leaderTop} fontSize={leaderFontSize}>
+                        <Text fontFamily={font}>{leaderContent}</Text>
+                    </LeaderContainer>
                 </PrizeContainer>
             );
         };
@@ -248,6 +357,16 @@ const PrintPrize = () => {
             <SettingRowContainer>
                 <SettingContainer>
                     <h1>종목/순위/단체(소속)/성명 부분</h1>
+                    <SettingSubContainer width="400px">
+                        <h2>윗줄 간격 조정</h2>
+                        <Button onClick={onTopChange}>좁히기</Button>
+                        <Button onClick={onTopChange}>넓히기</Button>
+                    </SettingSubContainer>
+                    <SettingSubContainer width="400px">
+                        <h2>아랫줄 간격 조정</h2>
+                        <Button onClick={onBottomChange}>좁히기</Button>
+                        <Button onClick={onBottomChange}>넓히기</Button>
+                    </SettingSubContainer>
                     <SettingSubContainer width="400px">
                         <h2>상 하 조정</h2>
                         <Button onClick={onTextTopChange}>상</Button>
@@ -293,6 +412,42 @@ const PrintPrize = () => {
                         <h2>폰트 크기 조정</h2>
                         <Button onClick={onDayFontChange}>+</Button>
                         <Button onClick={onDayFontChange}>-</Button>
+                    </SettingSubContainer>
+                </SettingContainer>
+
+                <SettingContainer>
+                    <h1>협회 작성 부분</h1>
+                    <InputDiv>
+                        <label id="orgContent">협회 이름 작성</label>
+                        <Input id="orgContent" type="text" value={orgContent} onChange={onOrgContentHandle} />
+                    </InputDiv>
+                    <SettingSubContainer width="400px">
+                        <h2>상 하 조정</h2>
+                        <Button onClick={onOrgTopChange}>상</Button>
+                        <Button onClick={onOrgTopChange}>하</Button>
+                    </SettingSubContainer>
+                    <SettingSubContainer width="400px">
+                        <h2>폰트 크기 조정</h2>
+                        <Button onClick={onOrgFontChange}>+</Button>
+                        <Button onClick={onOrgFontChange}>-</Button>
+                    </SettingSubContainer>
+                </SettingContainer>
+
+                <SettingContainer>
+                    <h1>협회장 작성 부분</h1>
+                    <InputDiv>
+                        <label id="leaderContent">협회장 이름 작성</label>
+                        <Input id="leaderContent" type="text" value={leaderContent} onChange={onLeaderContentHandle} />
+                    </InputDiv>
+                    <SettingSubContainer width="400px">
+                        <h2>상 하 조정</h2>
+                        <Button onClick={onLeaderTopChange}>상</Button>
+                        <Button onClick={onLeaderTopChange}>하</Button>
+                    </SettingSubContainer>
+                    <SettingSubContainer width="400px">
+                        <h2>폰트 크기 조정</h2>
+                        <Button onClick={onLeaderFontChange}>+</Button>
+                        <Button onClick={onLeaderFontChange}>-</Button>
                     </SettingSubContainer>
                 </SettingContainer>
             </SettingRowContainer>

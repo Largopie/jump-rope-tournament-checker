@@ -3,7 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import AddCompetition from './components/competition/addCompetition';
 import FindEventAll from './components/competition/findEventAll';
-import Test from './components/competition/test';
+import Home from './components/competition/home';
 import FindCompetition from './components/competition/findCompetition';
 import AddOrganization from './components/organization/addOrganization';
 import AddPlayer from './components/player/addPlayer';
@@ -104,7 +104,7 @@ const Main = () => {
             </SideMenu>
             <Content>
                 <Routes>
-                    <Route exact path="/" element={<Test />} />
+                    <Route exact path="/" element={<Home />} />
                     <Route path="/competition/add" element={<AddCompetition />} />
                     <Route path="/competition/find" element={<FindCompetition />} />
                     <Route path="/competition/organization/choose" element={<ChooseOrganization />} />
