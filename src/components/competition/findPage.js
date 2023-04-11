@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { API } from '../../config';
 import styled from 'styled-components';
 import axios from 'axios';
-import PrintPlayer from '../../printPlayer';
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
@@ -28,6 +27,16 @@ const Input = styled.input`
 
 const H1 = styled.h1`
     margin: 15px;
+`;
+
+const StyledLink = styled(Link)`
+    margin: 5px;
+    border: 1px solid #1abc9c;
+    text-decoration: none;
+    color: #1abc9c;
+    :hover {
+        color: #f1c40f;
+    };
 `;
 
 const FindPage = () => {
@@ -119,7 +128,7 @@ const FindPage = () => {
             </Table>
             {playerInquiring ?
                 <div>
-                    <Link to="/print/player" state={{players: players}}>인쇄하기</Link>
+                    <StyledLink to="/print/player" state={{players: players}}>배번표 인쇄하기</StyledLink>
                     <h3>참가 선수 조회</h3>
                     <label htmlFor="search">선수 검색 </label>
                     <Input id="search" value={search} onChange={onSearch} />

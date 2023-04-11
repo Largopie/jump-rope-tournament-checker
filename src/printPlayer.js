@@ -46,7 +46,7 @@ const PlayerNumberBox4 = styled.div`
 `;
 
 const Number = styled.div`
-    font-size: 200px;
+    font-size: 160px;
 `;
 
 const Info = styled.div`
