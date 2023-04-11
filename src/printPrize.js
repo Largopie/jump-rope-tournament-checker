@@ -6,12 +6,18 @@ import Image from './img/prize.jpg';
 const Container = styled.div`
 `;
 
+const H3 = styled.h3`
+    margin-bottom: 10px;
+    border-bottom: 1px solid black;
+`;
+
 const SettingRowContainer = styled.div`
     display: flex;
     flex-direction: row;
 `;
 
 const SettingContainer = styled.div`
+    padding: 10px;
     box-shadow: 0 0 0 1px black inset;
     width: 30%;
     display: flex;
@@ -85,9 +91,9 @@ const PrizeSubContainer = styled.div`
 `;
 
 const Button = styled.button`
-    width: 200px;
-    height: 50px;
-    font-size: 20px;
+    width: 50px;
+    height: 25px;
+    font-size: 10px;
     background-color: #ffc;
     :hover {
     background-color: #fcf;
@@ -95,13 +101,13 @@ const Button = styled.button`
 `;
 
 const InputDiv = styled.div`
-    font-size: 30px;
+    font-size: 18px;
 `;
 
 const Input = styled.input`
-    font-size: 20px;
+    font-size: 13px;
     width: 200px;
-    height: 50px;
+    height: 25px;
     white-space: pre;
 `;
 
@@ -116,9 +122,9 @@ const Text = styled.div`
 `;
 
 const Select = styled.select`
-    font-size: 20px;
+    font-size: 18px;
     width: 200px;
-    height: 50px;
+    height: 25px;
 `;
 
 const PrintPrize = () => {
@@ -301,8 +307,8 @@ const PrintPrize = () => {
     // console.log('Day', dayFontSize, dayTop);
     // console.log('ORG', orgFontSize, orgTop);
     // console.log('LEADER',leaderFontSize, leaderTop);
-    console.log('TOP' , topLeft, topRight);
-    console.log('BOTTOM', bottomLeft, bottomRight);
+    // console.log('TOP' , topLeft, topRight);
+    // console.log('BOTTOM', bottomLeft, bottomRight);
 
     const repeat = () => {
         const result = [];
@@ -344,7 +350,7 @@ const PrintPrize = () => {
                 trigger={() => <Button>Print</Button>}
                 content={() => ref.current}
             />
-            <label htmlFor="fontSetting" style={{ fontSize:"25px" }}>폰트 변경</label>
+            <label htmlFor="fontSetting" style={{ fontSize:"18px" }}>폰트 변경</label>
             <Select id="fontSetting" onChange={onClickHandle}>
                 <option>-- 폰트 선택 --</option>
                 <option value="NotoSansKR">NotoSansKR</option>
@@ -356,96 +362,96 @@ const PrintPrize = () => {
             <Button onClick={seeBackGround}>{see ? '배경보이기' : '배경숨기기'}</Button>
             <SettingRowContainer>
                 <SettingContainer>
-                    <h1>종목/순위/단체(소속)/성명 부분</h1>
-                    <SettingSubContainer width="400px">
-                        <h2>윗줄 간격 조정</h2>
+                    <H3>종목/순위/단체(소속)/성명 부분</H3>
+                    <SettingSubContainer width="200px">
+                        <h4>윗줄 간격 조정</h4>
                         <Button onClick={onTopChange}>좁히기</Button>
                         <Button onClick={onTopChange}>넓히기</Button>
                     </SettingSubContainer>
-                    <SettingSubContainer width="400px">
-                        <h2>아랫줄 간격 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>아랫줄 간격 조정</h4>
                         <Button onClick={onBottomChange}>좁히기</Button>
                         <Button onClick={onBottomChange}>넓히기</Button>
                     </SettingSubContainer>
-                    <SettingSubContainer width="400px">
-                        <h2>상 하 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>상 하 조정</h4>
                         <Button onClick={onTextTopChange}>상</Button>
                         <Button onClick={onTextTopChange}>하</Button>
                     </SettingSubContainer>
-                    <SettingSubContainer width="400px">
-                        <h2>폰트 크기 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>폰트 크기 조정</h4>
                         <Button onClick={onTextFontChange}>+</Button>
                         <Button onClick={onTextFontChange}>-</Button>
                     </SettingSubContainer>
                 </SettingContainer>
 
                 <SettingContainer>
-                    <h1>상장 내용 작성 부분</h1>
+                    <H3>상장 내용 작성 부분</H3>
                     <InputDiv>
                         <label id="prizeContent">상장 내용 작성</label>
                         <Input id="prizeContent" type="text" value={prizeContent} onChange={onPrizeContentHandle} />
                     </InputDiv>
-                    <SettingSubContainer width="400px">
-                        <h2>상 하 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>상 하 조정</h4>
                         <Button onClick={onContentTopChange}>상</Button>
                         <Button onClick={onContentTopChange}>하</Button>
                     </SettingSubContainer>
-                    <SettingSubContainer width="400px">
-                        <h2>폰트 크기 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>폰트 크기 조정</h4>
                         <Button onClick={onContentFontChange}>+</Button>
                         <Button onClick={onContentFontChange}>-</Button>
                     </SettingSubContainer>
                 </SettingContainer>
 
                 <SettingContainer>
-                    <h1>날짜 작성 부분</h1>
+                    <H3>날짜 작성 부분</H3>
                     <InputDiv>
                         <label id="dayContent">날짜 내용 작성</label>
                         <Input id="dayContent" type="text" value={dayContent} onChange={onDayContentHandle} />
                     </InputDiv>
-                    <SettingSubContainer width="400px">
-                        <h2>상 하 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>상 하 조정</h4>
                         <Button onClick={onDayTopChange}>상</Button>
                         <Button onClick={onDayTopChange}>하</Button>
                     </SettingSubContainer>
-                    <SettingSubContainer width="400px">
-                        <h2>폰트 크기 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>폰트 크기 조정</h4>
                         <Button onClick={onDayFontChange}>+</Button>
                         <Button onClick={onDayFontChange}>-</Button>
                     </SettingSubContainer>
                 </SettingContainer>
 
                 <SettingContainer>
-                    <h1>협회 작성 부분</h1>
+                    <H3>협회 작성 부분</H3>
                     <InputDiv>
                         <label id="orgContent">협회 이름 작성</label>
                         <Input id="orgContent" type="text" value={orgContent} onChange={onOrgContentHandle} />
                     </InputDiv>
-                    <SettingSubContainer width="400px">
-                        <h2>상 하 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>상 하 조정</h4>
                         <Button onClick={onOrgTopChange}>상</Button>
                         <Button onClick={onOrgTopChange}>하</Button>
                     </SettingSubContainer>
-                    <SettingSubContainer width="400px">
-                        <h2>폰트 크기 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>폰트 크기 조정</h4>
                         <Button onClick={onOrgFontChange}>+</Button>
                         <Button onClick={onOrgFontChange}>-</Button>
                     </SettingSubContainer>
                 </SettingContainer>
 
                 <SettingContainer>
-                    <h1>협회장 작성 부분</h1>
+                    <H3>협회장 작성 부분</H3>
                     <InputDiv>
                         <label id="leaderContent">협회장 이름 작성</label>
                         <Input id="leaderContent" type="text" value={leaderContent} onChange={onLeaderContentHandle} />
                     </InputDiv>
-                    <SettingSubContainer width="400px">
-                        <h2>상 하 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>상 하 조정</h4>
                         <Button onClick={onLeaderTopChange}>상</Button>
                         <Button onClick={onLeaderTopChange}>하</Button>
                     </SettingSubContainer>
-                    <SettingSubContainer width="400px">
-                        <h2>폰트 크기 조정</h2>
+                    <SettingSubContainer width="200px">
+                        <h4>폰트 크기 조정</h4>
                         <Button onClick={onLeaderFontChange}>+</Button>
                         <Button onClick={onLeaderFontChange}>-</Button>
                     </SettingSubContainer>
