@@ -9,7 +9,7 @@ const StyledLink = styled(Link)`
 const Header = () => {
     return (
         <div>
-            <StyledLink to="/">Home</StyledLink>
+            <StyledLink to="/"></StyledLink>
         </div>
     );
 };
