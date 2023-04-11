@@ -83,12 +83,42 @@ const FindCompetition = () => {
     const [opt, setOpt] = useState('competitionId');
     const [deleteResponse, setDeleteResponse] = useState(false);
     const [updateCmpt, setUpdateCmpt] = useState(false);
-    const [detailCmpt, setDetailCmpt] = useState({});
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
+    const [render, setRender] = useState(false);
+    const [detailCmpt, setDetailCmpt] = useState({
+        competitionId: '',
+        competitionName: '',
+        recordingSheetName: '',
+        competitionHost: '',
+        hostEmail: '',
+        hostTel: '',
+        competitionStartDate: '',
+        competitionStartTime: '',
+        competitionEndDate: '',
+        competitionEndTime: '',
+    });
 
     const setValHandler = (e) => {
         setVal(e.target.value);
+    };
+
+    const dateFormat = (date) => {
+        const dateStr = Date(date);
+        const d = new Date(dateStr);   
+        
+        let month = d.getMonth() + 1;
+        let day = d.getDate();
+        let hour = d.getHours();
+        let minute = d.getMinutes();
+        // let second = d.getSeconds();
+        
+
+        month = month >= 10 ? month : '0' + month;
+        day = day >= 10 ? day : '0' + day;
+        hour = hour >= 10 ? hour : '0' + hour;
+        minute = minute >= 10 ? minute : '0' + minute;
+        // second = second >= 10 ? second : '0' + second;
+
+        return d.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute;
     };
 
     const doDelete = (e) => {
@@ -108,27 +138,62 @@ const FindCompetition = () => {
     const cmptUpdate = (e) => {
         // axios로 대회정보 받아서 detailCmpt에 state 올리기
         axios.get(`${API.COMPETITION_FIND}/${e.target.value}`).then(
-            (res) => setDetailCmpt(res.data)
+            (res) => setDetailCmpt({
+                competitionId: res.data.competitionId,
+                competitionName: res.data.competitionName,
+                recordingSheetName: res.data.recordingSheetName,
+                competitionHost: res.data.competitionHost,
+                hostEmail: res.data.hostEmail,
+                hostTel: res.data.hostTel,
+                competitionStartDate: dateFormat(res.data.competitionStartDate).split(' ')[0],
+                competitionStartTime: dateFormat(res.data.competitionStartDate).split(' ')[1],
+                competitionEndDate: dateFormat(res.data.competitionEndDate).split(' ')[0],
+                competitionEndTime: dateFormat(res.data.competitionEndDate).split(' ')[1],
+            })
         );
-        setUpdateCmpt((state) =>!state);
+        setUpdateCmpt(true);
+    };
+
+    const cancelUpdate = () => {
+        alert('수정이 취소되었습니다');
+        setUpdateCmpt(false);
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        // console.log(new Date(detailCmpt.competitionStartDate + ' ' + detailCmpt.competitionStartTime).toISOString());
+        console.log(detailCmpt);
+        axios.patch(`${API.COMPETITION_UPDATE}`, {
+                competitionId: detailCmpt.competitionId,
+                competitionName: detailCmpt.competitionName,
+                recordingSheetName: detailCmpt.recordingSheetName,
+                competitionHost: detailCmpt.competitionHost,
+                hostEmail: detailCmpt.hostEmail,
+                hostTel: detailCmpt.hostTel,
+                competitionStartDate: new Date(detailCmpt.competitionStartDate + ' ' + detailCmpt.competitionStartTime).toISOString(),
+                competitionEndDate: new Date(detailCmpt.competitionEndDate + ' ' + detailCmpt.competitionEndTime).toISOString()
+        });
+        setUpdateCmpt(false);
+        alert('수정되었습니다');
+        window.location.reload();
     };
 
     const setOptHandler = (e) => {
         setOpt(e.target.value);
     };
 
-    const updateStartTime = (e) => {
-        setStartTime(e.target.value);
-    };
-
-    const updateEndTime = (e) => {
-        setEndTime(e.target.value);
-    };
-
     const updateOnChange = (e) => {
-        setDetailCmpt((prevState) => {
-            return {...prevState, [e.target.name]: e.target.name.includes('Date')  ? e.target.value = e.target.value.split(',').map((item) => Number(item)) : e.target.value};
-        });
+        if (e.target.name.includes('Start', 'End')){
+            
+            setDetailCmpt((prevState) => {
+                return {...prevState, [e.target.name] : e.target.value };
+            });
+        } else {
+            setDetailCmpt((prevState) => {
+                return {...prevState, [e.target.name] : e.target.value };
+            });
+        }
+        
     };
 
 
@@ -187,17 +252,20 @@ const FindCompetition = () => {
             </Table>
             {updateCmpt ?
                 <div>
-                    <form action={`${API.COMPETITION_UPDATE}`} method="update">
-                        대회ID<span>{detailCmpt.competitionId}</span><br/>
+                    <form>
+                        대회ID<input type="text" readOnly value={detailCmpt.competitionId} /><br/>
                         대회명<input type="text" name="competitionName" value={detailCmpt.competitionName} onChange={updateOnChange} /><br/>
                         기록지명<input type="text" name="recordingSheetName" value={detailCmpt.recordingSheetName} onChange={updateOnChange} /><br/>
                         주최자명<input type="text" name="competitionHost" value={detailCmpt.competitionHost} onChange={updateOnChange}/><br/>
                         이메일<input type="text" name="hostEmail" value={detailCmpt.hostEmail} onChange={updateOnChange}/><br/>
                         주최자번호<input type="text" name="hostTel" value={detailCmpt.hostTel} onChange={updateOnChange}/><br/>
                         대회시작날짜<input type="date" name="competitionStartDate" value={detailCmpt.competitionStartDate} onChange={updateOnChange} /><br/>
-                        대회종료날짜<input type="date" name="competitionEndDate" value={detailCmpt.competitionEndDate} onChange={updateOnChange}/>
+                        대회시작시간<input type="time" name="competitionStartTime" value={detailCmpt.competitionStartTime} onChange={updateOnChange} /><br/>
+                        대회종료날짜<input type="date" name="competitionEndDate" value={detailCmpt.competitionEndDate} onChange={updateOnChange}/><br />
+                        대회종료시간<input type="time" name="competitionEndTime" value={detailCmpt.competitionEndTime} onChange={updateOnChange}/>
                         <h3>대회 시작/종료 날짜 양식은 (년,월,일,시간,분)으로 입력해주세요. 잘못 입력되면 오류가 발생합니다.</h3>
-                        <input type="submit" value="수정" />
+                        <input type="submit" value="수정" onClick={onSubmit} />
+                        <button onClick={cancelUpdate}>취소</button>
                     </form>
                 </div>
             : null}
