@@ -18,11 +18,13 @@ const Search = styled.input`
 `;
 
 const Table = styled.table`
+    border-collapse: collapse;
     font-size: 0.7em;
     border: 1px solid black;
     margin: 0 auto;
     text-align: center;
     width: 98%;
+    line-height: 30px;
 `;
 
 const Th = styled.th`
@@ -34,6 +36,10 @@ const Td = styled.td`
     border: 1px solid black;
 `;
 
+const H1 = styled.h1`
+    margin: 15px;
+`;
+
 const StyledLink = styled(Link)`
     text-decoration: none;
     color: #1abc9c;
@@ -41,6 +47,7 @@ const StyledLink = styled(Link)`
         color: #f1c40f;
     };
 `;
+
 
 const FindCompetition = () => {
     const columns = ['대회수정', '참가', '종목' ,'대회번호' ,'대회이름', '기록지명', '개최자명', '개최자이메일', '개최자전화번호', '대회시작날짜', '대회종료날짜'];
@@ -125,10 +132,9 @@ const FindCompetition = () => {
         // console.log([Number(e.target.value)]);
         if(window.confirm("정말 삭제하시겠습니까?")) {
             axios.delete(`${API.COMPETITION_DELETE}`,{
-                data: [
-                    Number(e.target.value)
-                ]
+                data: Number(e.target.value)
             }).then((res) => setDeleteResponse((state) => !state));
+            window.location.reload();
         } else {
             alert('취소 되었습니다.');
         }
@@ -154,7 +160,7 @@ const FindCompetition = () => {
         setUpdateCmpt(true);
     };
 
-    const cancelUpdate = () => {
+    const cancelSubmit = () => {
         alert('수정이 취소되었습니다');
         setUpdateCmpt(false);
     };
@@ -162,7 +168,7 @@ const FindCompetition = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         // console.log(new Date(detailCmpt.competitionStartDate + ' ' + detailCmpt.competitionStartTime).toISOString());
-        console.log(detailCmpt);
+        // console.log(detailCmpt);
         axios.patch(`${API.COMPETITION_UPDATE}`, {
                 competitionId: detailCmpt.competitionId,
                 competitionName: detailCmpt.competitionName,
@@ -207,6 +213,7 @@ const FindCompetition = () => {
 
     return (
         <Container>
+            <H1>대회 조회 및 참가 단체 신청</H1>
             <SearchContainer>
                 <label htmlFor="search">대회 검색</label>
                 <Search onChange={setValHandler} name="search" id="search" />
@@ -263,9 +270,8 @@ const FindCompetition = () => {
                         대회시작시간<input type="time" name="competitionStartTime" value={detailCmpt.competitionStartTime} onChange={updateOnChange} /><br/>
                         대회종료날짜<input type="date" name="competitionEndDate" value={detailCmpt.competitionEndDate} onChange={updateOnChange}/><br />
                         대회종료시간<input type="time" name="competitionEndTime" value={detailCmpt.competitionEndTime} onChange={updateOnChange}/>
-                        <h3>대회 시작/종료 날짜 양식은 (년,월,일,시간,분)으로 입력해주세요. 잘못 입력되면 오류가 발생합니다.</h3>
                         <input type="submit" value="수정" onClick={onSubmit} />
-                        <button onClick={cancelUpdate}>취소</button>
+                        <button onClick={cancelSubmit}>취소</button>
                     </form>
                 </div>
             : null}

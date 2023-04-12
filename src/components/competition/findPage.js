@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
+    padding: 15px;
     overflow: auto;
 `;
 
@@ -14,6 +15,11 @@ const Table = styled.table`
     border: 1px solid black;
     border-collapse: collapse;
     font-size: 0.8em;
+    line-height: 30px;
+`;
+
+const Th = styled.th`
+    border: 1px solid black;
 `;
 
 const Td = styled.td`
@@ -29,13 +35,18 @@ const H1 = styled.h1`
     margin: 15px;
 `;
 
+const H2 = styled.h2`
+    margin: 15px;
+`;
+
 const StyledLink = styled(Link)`
     margin: 5px;
-    border: 1px solid #1abc9c;
+    background-color: #ffc;
+    border: 1px solid #fcf;
     text-decoration: none;
-    color: #1abc9c;
+    color: black;
     :hover {
-        color: #f1c40f;
+        background-color: #fcf;
     };
 `;
 
@@ -107,11 +118,11 @@ const FindPage = () => {
             <Table>
                 <thead>
                     <tr>
-                        <th>대회ID</th>
-                        <th>대회명</th>
-                        <th>참가단체조회</th>
-                        <th>참가선수조회</th>
-                        <th>종목별선수조회</th>
+                        <Th>대회ID</Th>
+                        <Th>대회명</Th>
+                        <Th>참가단체조회</Th>
+                        <Th>참가선수조회</Th>
+                        <Th>종목별선수조회</Th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,20 +139,20 @@ const FindPage = () => {
             </Table>
             {playerInquiring ?
                 <div>
+                    <H2>참가 선수 조회</H2>
                     <StyledLink to="/print/player" state={{players: players}}>배번표 인쇄하기</StyledLink>
-                    <h3>참가 선수 조회</h3>
                     <label htmlFor="search">선수 검색 </label>
                     <Input id="search" value={search} onChange={onSearch} />
                     <Table>
                         <thead>
                             <tr>
-                                <th>소속단체</th>
-                                <th>이름</th>
-                                <th>성별</th>
-                                <th>생년월일</th>
-                                <th>전화번호</th>
-                                <th>참가종목</th>
-                                <th>점수</th>
+                                <Th>소속단체</Th>
+                                <Th>이름</Th>
+                                <Th>성별</Th>
+                                <Th>생년월일</Th>
+                                <Th>전화번호</Th>
+                                <Th>참가종목</Th>
+                                <Th>점수</Th>
                             </tr>
                         </thead>
                         <tbody>
@@ -163,14 +174,15 @@ const FindPage = () => {
                 : null}
             {orgInquiring ?
                 <div>
+                    <H2>참가 단체 조회</H2>
                     <Table>
                         <thead>
                             <tr>
-                                <th>단체명</th>
-                                <th>단체메일</th>
-                                <th>단체전화번호</th>
-                                <th>단체대표자명</th>
-                                <th>대표자전화번호</th>
+                                <Th>단체명</Th>
+                                <Th>단체메일</Th>
+                                <Th>단체전화번호</Th>
+                                <Th>단체대표자명</Th>
+                                <Th>대표자전화번호</Th>
                             </tr>
                         </thead>
                         <tbody>
@@ -189,6 +201,7 @@ const FindPage = () => {
                 : null}
                 {eventInquiring ? 
                     <div>
+                        <H2>종목별 선수 조회</H2>
                         <label htmlFor="selectedEvent">종목 선택</label>
                         <select id="selectedEvent" value={selectedEvent} onChange={onSelectedEvent}>
                             <option value="0">선택하세요</option>
@@ -200,12 +213,12 @@ const FindPage = () => {
                         <Table>
                         <thead>
                             <tr>
-                                <th>소속단체</th>
-                                <th>이름</th>
-                                <th>성별</th>
-                                <th>생년월일</th>
-                                <th>전화번호</th>
-                                <th>참가종목</th>
+                                <Th>소속단체</Th>
+                                <Th>이름</Th>
+                                <Th>성별</Th>
+                                <Th>생년월일</Th>
+                                <Th>전화번호</Th>
+                                <Th>참가종목</Th>
                             </tr>
                         </thead> 
                         <tbody>

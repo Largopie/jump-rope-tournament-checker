@@ -22,24 +22,36 @@ const PrintSubContainer = styled.div`
 `;
 
 const PlayerNumberBox1 = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     width: 100%;
     height:50vh;
 `;
 
 const PlayerNumberBox2 = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     width: 100%;
     height:50vh;
 `;
 
 const PlayerNumberBox3 = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     width: 100%;
     height:50vh;
 `;
 
 const PlayerNumberBox4 = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     width: 100%;
     height:50vh;
@@ -65,16 +77,18 @@ const PrintPlayer = () => {
                 <div>
                     <PrintSubContainer>
                         <PlayerNumberBox1>
-                            <Number>{players[i].cmptAttendId}</Number>
-                            <Info>{players[i].eventName} / {players[i].departmentName} / {players[i].playerGender} / {players[i].playerName}</Info>
+                            <div>
+                                <Number>{players[i].cmptAttendId}</Number>
+                                <Info>{players[i].eventName} / {players[i].departmentName} / {players[i].playerGender} / {players[i].playerName}</Info>
+                            </div>
                         </PlayerNumberBox1>
                         <PlayerNumberBox2>
-                            {i+1 < players.length ?
+                            {i + 1 < players.length ?
                                 <div>
                                     <Number>{players[i + 1].cmptAttendId}</Number>
                                     <Info>{players[i + 1].eventName} / {players[i + 1].departmentName} / {players[i + 1].playerGender} / {players[i + 1].playerName}</Info>
                                 </div>
-                            : <div></div>}
+                                : <div></div>}
                         </PlayerNumberBox2>
                     </PrintSubContainer>
                     <PrintSubContainer>
@@ -102,7 +116,7 @@ const PrintPlayer = () => {
     };
 
 
-    console.log(players);
+    // console.log(players);
     return (
         <div>
             <ReactToPrint

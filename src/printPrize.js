@@ -91,13 +91,15 @@ const PrizeSubContainer = styled.div`
 `;
 
 const Button = styled.button`
+    margin: 2px;
     width: 50px;
     height: 25px;
     font-size: 10px;
+    border : 1px solid #fcf;
     background-color: #ffc;
     :hover {
     background-color: #fcf;
-    }
+    };
 `;
 
 const InputDiv = styled.div`

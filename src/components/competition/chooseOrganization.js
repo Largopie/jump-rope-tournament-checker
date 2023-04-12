@@ -7,6 +7,7 @@ import { API } from '../../config';
 import AddPlayer from '../player/addPlayer';
 
 const Container = styled.div`
+    padding: 15px;
     width: 100%;
     overflow: scroll;
 `;
@@ -26,12 +27,14 @@ const Search = styled.input`
 `;
 
 const Table = styled.table`
+    border-collapse: collapse;
     font-size: 0.7em;
     border: 1px solid black;
     margin: 0 auto;
     text-align: center;
     width: 90%;
     overflow: scroll;
+    line-height: 30px;
 `;
 
 const Th = styled.th`
@@ -65,13 +68,12 @@ const ColumnContainer = styled.div`
 
 const Label = styled.label`
     margin-right: 15px;
-    background-color: black;
-    color: white;
+    border : 1px solid #fcf;
+    background-color: #ffc;
     border-radius: 3px;
     cursor: pointer;
     :hover {
-        background-color: lightgray;
-        color: black;
+        background-color: #fcf;
     };
 `;
 
@@ -79,11 +81,16 @@ const Input = styled.input`
     outline: none;
 `;
 
+const Button = styled.button`
+    width: 200px;
+    height: 30px;
+`;
+
 const ChooseOrganization = () => {
     const location = useLocation();
     const competitionId = location.state?.competitionId;
-    const orgColumns = ['신청하기', '단체번호','단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
-    const orgPlyaerColumns = ['선수이름', '성별', '생년월일', '전화번호', '참가종목명', '점수'];
+    const orgColumns = ['신청하기', '단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
+    const orgPlyaerColumns = ['선수이름', '성별', '생년월일', '전화번호', '참가종목명', '점수', '선수삭제'];
     //cmptAttendId, playerName, playerGender, playerBirth, playerTel, eventName, grade, count
     // const orgDummy = [
     //     {
@@ -151,26 +158,26 @@ const ChooseOrganization = () => {
     };
 
 
-    // 선수삭제
-    // const deletePlayer = (e) => {
-    //     if (window.confirm("정말 삭제하시겠습니까?")) {
-    //         axios.delete(`${API.PLAYER_DELETE}/${e.target.value}`, {
-    //             data: [e.target.value]
-    //         }).then(() => setDeleteResponse((state) => !state));
-    //     } else {
-    //         alert('취소 되었습니다.');
-    //     }
-    // };
+    const onDeletePlayer = (e) => {
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+            console.log(e.target.value);
+            axios.delete(`${API.ATTEND_DELETE_PLAYER}/${e.target.value}`);
+            // window.location.reload();
+        } else {
+            alert('취소 되었습니다.');
+        };
+    };
 
     const setOptHandler = (e) => {
         setOpt(e.target.value);
     };
 
-    
+
 
     const updateOrgPlayer = (e) => {
         if (window.confirm("단체에 소속된 선수를 조회합니다.")) {
-            setDetailPlayerState((state) => !state);
+            setPlayerData([]);
+            setDetailPlayerState(true);
             setOrgId(e.target.value);
         }
         axios.get(`${API.ATTEND_FIND}?cmptId=${competitionId}&orgId=${e.target.value}`).then(
@@ -198,6 +205,7 @@ const ChooseOrganization = () => {
                 'Content-Type': 'multipart/form-data'
             }
         });
+        window.location.reload();
     };
 
     const clickAddPlayer = () => {
@@ -227,11 +235,11 @@ const ChooseOrganization = () => {
         axios.get(`${API.ORGANIZATION_FIND_ALL}`).then(
             (res) => setData(res.data)
         );
-        
+
         axios.get(`${API.COMPETITION_EVENT_FIND}/${competitionId}?type=PROCEED`).then(
             (res) => setEvents(res.data)
         );
-        
+
         axios.get(`${API.DEPART_FIND_ALL}`).then(
             (res) => setDepList(res.data)
         );
@@ -244,6 +252,7 @@ const ChooseOrganization = () => {
         // )
     }, [competitionId, deleteResponse]);
 
+    // console.log(val);
 
     return (
         <Container>
@@ -268,8 +277,9 @@ const ChooseOrganization = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map(({ orgId, orgName, orgEmail, orgTel, orgLeaderName, leaderTel }) => (
-                            <tr key={orgId+orgName}>
+                    {data.filter((item) => String(item[opt]).includes(val))
+                        .map(({ orgId, orgName, orgEmail, orgTel, orgLeaderName, leaderTel }) => (
+                            <tr key={orgId + orgName}>
                                 <Td><button onClick={updateOrgPlayer} value={orgId}>신청</button></Td>
                                 <Td>{orgId}</Td>
                                 <Td>{orgName}</Td>
@@ -287,7 +297,7 @@ const ChooseOrganization = () => {
                         <Form action={`${API.ATTEND_ADD_FORM}`} method="post" enctype="multipart/form-data">
                             <Label htmlFor="csv">파일등록하기</Label>
                             <Input type="text" value={xlsFileName} readOnly onChange={handleCsvValue} />
-                            <input type="file" id="csv" accept=".xls" onChange={handleCsvValue} style={{display: "none"}} />
+                            <input type="file" id="csv" accept=".xls" onChange={handleCsvValue} style={{ display: "none" }} />
                             <input type="submit" onClick={sendXlsFile} value="파일전송" />
                         </Form>
                         <Form action={`${API.ATTEND_CREATE_FORM}?`} method="get" target="_blank">
@@ -296,36 +306,38 @@ const ChooseOrganization = () => {
                             <button type="submit" onClick={check}>신청서 다운로드</button>
                         </Form>
                     </RowContainer>
-                    <button onClick={clickAddPlayer}>일반선수등록</button>
+                    <Button onClick={clickAddPlayer}>일반선수등록</Button>
+                    {modal ?
+                        <ModalContainer>
+                            <AddPlayer setDetailPlayerState={setDetailPlayerState} setModal={setModal} competitionId={competitionId} orgId={orgId} events={events} depList={depList} />
+                        </ModalContainer>
+                        : null}
                     <TitleContent><h3>선수 목록</h3></TitleContent>
                     <Table>
                         <thead>
                             <tr>
                                 {orgPlyaerColumns.map((column, idx) => (
-                                    <Th key={idx+column}>{column}</Th>
+                                    <Th key={idx + column}>{column}</Th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody>
                             {playerData.map(({ cmptAttendId, playerName, playerGender, playerBirth, playerAffiliation, playerTel, eventName, score }) => (
-                                    <tr key={cmptAttendId+playerName+eventName}>
-                                        <Td>{playerName}</Td>
-                                        <Td>{playerGender}</Td>
-                                        <Td>{playerBirth}</Td>
-                                        <Td>{playerTel}</Td>
-                                        <Td>{eventName}</Td>
-                                        <Td>{score}</Td>
-                                    </tr>
-                                ))}
+                                <tr key={cmptAttendId + playerName + eventName}>
+                                    <Td>{playerName}</Td>
+                                    <Td>{playerGender}</Td>
+                                    <Td>{playerBirth}</Td>
+                                    <Td>{playerTel}</Td>
+                                    <Td>{eventName}</Td>
+                                    <Td>{score}</Td>
+                                    <Td><button value={cmptAttendId} onClick={onDeletePlayer}>삭제</button></Td>
+                                </tr>
+                            ))}
                         </tbody>
                     </Table>
                 </ColumnContainer>
                 : null}
-                {modal ? 
-                    <ModalContainer>
-                        <AddPlayer setDetailPlayerState={setDetailPlayerState} setModal={setModal} competitionId={competitionId} orgId={orgId} events={events} depList={depList} />
-                    </ModalContainer>
-                : null}
+
         </Container>
     );
 }

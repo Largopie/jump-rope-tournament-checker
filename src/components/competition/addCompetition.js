@@ -34,11 +34,6 @@ const FormColumnContainer = styled.div`
     height: ${(props) => props.hei};
 `;
 
-const Title = styled.div`
-    margin-bottom: 10px;
-    text-align: center;
-`;
-
 const Input = styled.input`
     margin-bottom: 10px;
     width: ${(props) => props.wid};
@@ -49,6 +44,10 @@ const Select = styled.select`
     margin-bottom: 10px;
     width: ${(props) => props.wid};
     outline: none;
+`;
+
+const H1 = styled.h1`
+    margin: 15px;
 `;
 
 const AddCompetition = () => {
@@ -101,7 +100,7 @@ const AddCompetition = () => {
 
     return (
         <Container>
-            <Title><h2>대회 등록</h2></Title>
+            <H1>대회 등록</H1>
             <Form>
                 <FormRowContainer>
                     <FormColumnContainer wid="60%" hei="100%">

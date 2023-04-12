@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { API } from '../../config';
 
 const Container = styled.div`
+    padding: 15px;
     width: 100%;
     overflow: scroll;
 `;
@@ -22,11 +23,13 @@ const Search = styled.input`
 `;
 
 const Table = styled.table`
+    border-collapse: collapse;
     font-size: 0.7em;
     border: 1px solid black;
     margin: 0 auto;
     text-align: center;
     width: 90%;
+    line-height: 30px;
 `;
 
 const Th = styled.th`
@@ -38,9 +41,8 @@ const Td = styled.td`
     border: 1px solid black;
 `;
 
-const A = styled.a`
-    cursor: pointer;
-    text-decoration: none;
+const H1 = styled.h1`
+    margin: 15px;
 `;
 
 const RowContainer = styled.div`
@@ -139,6 +141,7 @@ const FindOrganization = () => {
             setUpdateState((state) => !state);
             alert('수정완료!');
             setDetailUpdateState(false);
+            window.location.reload();
         };
     };
 
@@ -162,7 +165,9 @@ const FindOrganization = () => {
             console.log(Number(e.target.value));
             axios.delete(`${API.ORGANIZATION_DELETE}`, {
                 data: [Number(e.target.value)]
-            }).then((res) => console.log(res) );
+            })
+            // .then((res) => console.log(res) );
+            window.location.reload();
         } else {
             alert('취소 되었습니다.');
         }
@@ -187,6 +192,7 @@ const FindOrganization = () => {
 
     return (
         <Container>
+            <H1>단체 조회</H1>
             <SearchContainer>
                 <label htmlFor="search">단체 검색</label>
                 <Search onChange={setValHandler} name="search" id="search" />

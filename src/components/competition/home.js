@@ -3,6 +3,7 @@ import bgImg from '../../img/flag.jpg';
 import styled from 'styled-components';
 
 const Container = styled.div`
+    padding: 15px;
     margin: 20px;
     width: 100%;
     height: 100%;

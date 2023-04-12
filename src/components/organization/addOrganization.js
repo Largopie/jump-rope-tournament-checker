@@ -8,6 +8,10 @@ const Container = styled.div`
     overflow: scroll;
 `;
 
+const H1 = styled.h1`
+    margin: 15px;
+`;
+
 const TextContainer = styled.div`
     margin-bottom: 15px;
 `;
@@ -32,11 +36,6 @@ const FormColumnContainer = styled.div`
     flex-direction: column;
     width: ${(props) => props.wid};
     height: ${(props) => props.hei};
-`;
-
-const Title = styled.div`
-    margin-bottom: 10px;
-    text-align: center;
 `;
 
 const Input = styled.input`
@@ -81,7 +80,7 @@ const AddOrganization = () => {
 
     return (
         <Container>
-            <Title><h2>단체 참가 등록</h2></Title>
+            <H1>단체 참가 등록</H1>
             <Form>
                 <FormRowContainer>
                     <FormColumnContainer wid="60%">

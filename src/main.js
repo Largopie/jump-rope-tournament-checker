@@ -26,13 +26,13 @@ const SideMenu = styled.div`
     align-items: center;
     justify-content: centerㅁ;
     flex-direction: column;
-    width: 20%;
+    width: 15%;
 `;
 
 const Content = styled.div`
     box-shadow: 0 0 0 1px red inset;
     display: flex;
-    width: 80%;
+    width: 85%;
     flex-direction: column;
 `;
 
