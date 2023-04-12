@@ -170,7 +170,7 @@ const FindEvent = () => {
 
     // console.log(competitionId);
 
-
+    console.log(data);
     return (
         <Container>
             <h3>종목 등록 / 점수 수정</h3>

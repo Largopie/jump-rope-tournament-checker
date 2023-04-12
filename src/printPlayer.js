@@ -1,7 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ReactToPrint from 'react-to-print';
 import styled from 'styled-components';
+import { API } from './config';
+import axios from 'axios';
 
 const PrintContainer = styled.div`
     @page {
@@ -61,15 +63,25 @@ const Number = styled.div`
     font-size: 160px;
 `;
 
+const Org = styled.div`
+    font-size: 50px;
+    margin-bottom: 20px;
+`;
+
 const Info = styled.div`
     font-size: 35px;
 `;
 
 const PrintPlayer = () => {
+    const [players, setPlayers] = useState([]);
     const location = useLocation();
     const ref = useRef();
-    const players = location.state?.players;
+    const cmptId = location.state?.cmptId;
 
+
+    useEffect(() => {
+        axios.get(`${API.ATTEND_NUMBERTAGS}/${cmptId}`).then((res) => setPlayers(res.data));
+    },[cmptId])
     const repeat = (players) => {
         const result = [];
         for (let i = 0; i < players.length; i += 4) {
@@ -78,15 +90,17 @@ const PrintPlayer = () => {
                     <PrintSubContainer>
                         <PlayerNumberBox1>
                             <div>
-                                <Number>{players[i].cmptAttendId}</Number>
-                                <Info>{players[i].eventName} / {players[i].departmentName} / {players[i].playerGender} / {players[i].playerName}</Info>
+                                <Number>{players[i].seperatedCmptAttendId}</Number>
+                                <Org>{players[i].orgName}</Org>
+                                <Info> {players[i].playerName} / {players[i].playerGender} / {players[i].departName}</Info>
                             </div>
                         </PlayerNumberBox1>
                         <PlayerNumberBox2>
                             {i + 1 < players.length ?
                                 <div>
-                                    <Number>{players[i + 1].cmptAttendId}</Number>
-                                    <Info>{players[i + 1].eventName} / {players[i + 1].departmentName} / {players[i + 1].playerGender} / {players[i + 1].playerName}</Info>
+                                    <Number>{players[i + 1].seperatedCmptAttendId}</Number>
+                                    <Org>{players[i + 1].orgName}</Org>
+                                    <Info>{players[i + 1].playerName} / {players[i + 1].playerGender} / {players[i + 1].departName}</Info>
                                 </div>
                                 : <div></div>}
                         </PlayerNumberBox2>
@@ -95,16 +109,18 @@ const PrintPlayer = () => {
                         <PlayerNumberBox3>
                             {i + 2 < players.length ?
                                 <div>
-                                    <Number>{players[i + 2].cmptAttendId}</Number>
-                                    <Info>{players[i + 2].eventName} / {players[i + 2].departmentName} / {players[i + 2].playerGender} / {players[i + 2].playerName}</Info>
+                                    <Number>{players[i + 2].seperatedCmptAttendId}</Number>
+                                    <Org>{players[i + 2].orgName}</Org>
+                                    <Info>{players[i + 2].playerName} / {players[i + 2].playerGender} / {players[i + 2].departName}</Info>
                                 </div>
                                 : <div></div>}
                         </PlayerNumberBox3>
                         <PlayerNumberBox4>
                             {i + 3 < players.length ?
                                 <div>
-                                    <Number>{players[i + 3].cmptAttendId}</Number>
-                                    <Info>{players[i + 3].eventName} / {players[i + 3].departmentName} / {players[i + 3].playerGender} / {players[i + 3].playerName}</Info>
+                                    <Number>{players[i + 3].seperatedCmptAttendId}</Number>
+                                    <Org>{players[i + 3].orgName}</Org>
+                                    <Info>{players[i + 3].playerName} / {players[i + 3].playerGender} / {players[i + 3].orgName} / {players[i + 3].departName}</Info>
                                 </div>
                                 : <div></div>}
                         </PlayerNumberBox4>

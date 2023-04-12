@@ -1,7 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactToPrint from 'react-to-print';
 import styled from 'styled-components';
 import Image from './img/prize.jpg';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { API } from './config';
 
 const Container = styled.div`
 `;
@@ -131,12 +134,10 @@ const Select = styled.select`
 
 const PrintPrize = () => {
     const ref = useRef();
-    const [value, setValue] = useState({
-        competitionName: '',
-        playerName: '',
-        organizationName: '',
-        rank: '',
-    });
+    const location = useLocation();
+    const cmptId = location.state?.cmptId;
+
+    const [data, setData] = useState([]);
 
     const [font, setFont] = useState('');
     const [see, setSee] = useState(false);
@@ -311,20 +312,29 @@ const PrintPrize = () => {
     // console.log('LEADER',leaderFontSize, leaderTop);
     // console.log('TOP' , topLeft, topRight);
     // console.log('BOTTOM', bottomLeft, bottomRight);
+    // console.log(cmptId);
+
+    useEffect(() => {
+        axios.get(`${API.PRIZE}/${cmptId}`).then(
+            (res) => setData(res.data)
+        )
+    }, [cmptId])
+
+    // console.log(data);
 
     const repeat = () => {
         const result = [];
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < data.length; i++) {
             result.push(
                 <PrizeContainer backgroundImg={see}>
                     <PrizeTextContainer top={textTop} fontSize={textFontSize}>
                         <PrizeSubContainer>
-                            <Text paddingLeft={topLeft} fontFamily={font}>음악 줄넘기</Text>
-                            <Text paddingRight={topRight} fontFamily={font}>3위</Text>
+                            <Text paddingLeft={topLeft} fontFamily={font}>{data[i].cmptName}</Text>
+                            <Text paddingRight={topRight} fontFamily={font}>{data[i].grade}</Text>
                         </PrizeSubContainer>
                         <PrizeSubContainer>
-                            <Text paddingLeft={bottomLeft} fontFamily={font}>인터벌초등학교</Text>
-                            <Text paddingRight={bottomRight} fontFamily={font}>김철민</Text>
+                            <Text paddingLeft={bottomLeft} fontFamily={font}>{data[i].playerAffiliation}</Text>
+                            <Text paddingRight={bottomRight} fontFamily={font}>{data[i].playerName}</Text>
                         </PrizeSubContainer>
                     </PrizeTextContainer>
                     <ContentContainer top={contentTop} fontSize={contentFontSize}>

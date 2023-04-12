@@ -59,6 +59,7 @@ const RowContainer = styled.div`
 
 const TitleContent = styled.div`
     margin: 0 auto;
+    padding: 15px;
 `;
 
 const ColumnContainer = styled.div`
@@ -90,7 +91,7 @@ const ChooseOrganization = () => {
     const location = useLocation();
     const competitionId = location.state?.competitionId;
     const orgColumns = ['신청하기', '단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
-    const orgPlyaerColumns = ['선수이름', '성별', '생년월일', '전화번호', '참가종목명', '점수', '선수삭제'];
+    const orgPlyaerColumns = ['소속명', '선수이름', '성별', '생년월일', '전화번호', '참가종목명', '배점','기록점수', '선수삭제'];
     //cmptAttendId, playerName, playerGender, playerBirth, playerTel, eventName, grade, count
     // const orgDummy = [
     //     {
@@ -159,10 +160,10 @@ const ChooseOrganization = () => {
 
 
     const onDeletePlayer = (e) => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
-            console.log(e.target.value);
+        if (window.confirm("정말 삭제하시겠습니까? 선수 정보가 모두 삭제됩니다.")) {
+            // console.log(e.target.value);
             axios.delete(`${API.ATTEND_DELETE_PLAYER}/${e.target.value}`);
-            // window.location.reload();
+            window.location.reload();
         } else {
             alert('취소 되었습니다.');
         };
@@ -211,22 +212,6 @@ const ChooseOrganization = () => {
     const clickAddPlayer = () => {
         setModal((state) => !state);
     };
-
-    // const downloadApply = () => {
-    //     axios.get(
-    //         `${API.ATTEND_CREATE_FORM}?cmptId=${competitionId}&orgId=${orgId}`, {
-    //             responseType: 'blob'
-    //         }).then( (res) => {
-    //             const blob = new Blob([res.blob]);
-    //             const fileUrl = window.URL.createObjectURL(blob);
-    //             const link = document.createElement('a');
-    //             link.href = fileUrl;
-    //             link.style.display = 'none';
-    //         })
-    //         .catch( (err) => console.log(err));;
-    //     console.log(`${API.ATTEND_CREATE_FORM}?cmptId=${competitionId}&orgId=${orgId}`);
-    // };
-
     const check = () => {
         console.log(`${API.ATTEND_CREATE_FORM}?cmptId=${competitionId}&orgId=${orgId}`);
     };
@@ -312,7 +297,7 @@ const ChooseOrganization = () => {
                             <AddPlayer setDetailPlayerState={setDetailPlayerState} setModal={setModal} competitionId={competitionId} orgId={orgId} events={events} depList={depList} />
                         </ModalContainer>
                         : null}
-                    <TitleContent><h3>선수 목록</h3></TitleContent>
+                    <TitleContent><h2>선수 목록</h2></TitleContent>
                     <Table>
                         <thead>
                             <tr>
@@ -322,13 +307,15 @@ const ChooseOrganization = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {playerData.map(({ cmptAttendId, playerName, playerGender, playerBirth, playerAffiliation, playerTel, eventName, score }) => (
+                            {playerData.map(({ cmptAttendId, playerName, playerGender, playerBirth, playerAffiliation, playerTel, eventName, grade, score }) => (
                                 <tr key={cmptAttendId + playerName + eventName}>
+                                    <Td>{playerAffiliation}</Td>
                                     <Td>{playerName}</Td>
                                     <Td>{playerGender}</Td>
                                     <Td>{playerBirth}</Td>
                                     <Td>{playerTel}</Td>
                                     <Td>{eventName}</Td>
+                                    <Td>{grade}</Td>
                                     <Td>{score}</Td>
                                     <Td><button value={cmptAttendId} onClick={onDeletePlayer}>삭제</button></Td>
                                 </tr>

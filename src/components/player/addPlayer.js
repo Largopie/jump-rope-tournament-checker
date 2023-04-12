@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const Table = styled.table`
-    border: 1px solid black;
+    border: 1px solid blue;
     border-collapse: collapse;
 `;
 
@@ -20,8 +20,7 @@ const TextContainer = styled.div`
 const Form = styled.form`
     display: flex;
     flex-direction: column;
-    width: 90%;
-    margin: 0 auto;
+    padding: 15px;
 `;
 
 const FormRowContainer = styled.div`
@@ -33,21 +32,24 @@ const FormRowContainer = styled.div`
 `;
 
 const FormColumnContainer = styled.div`
-    box-shadow: 0 0 0 1px black inset;
+    box-shadow: 0 0 0 1px blue inset;
     display: flex;
     flex-direction: column;
     width: ${(props) => props.wid};
     height: ${(props) => props.hei};
 `;
 
-const Title = styled.div`
-    margin-bottom: 10px;
-    text-align: center;
+const H2 = styled.h2`
+    padding: 15px;
 `;
 
 const Input = styled.input`
     margin-bottom: 10px;
     width: ${(props) => props.wid};
+`;
+
+const InputBtn = styled.input`
+
 `;
 
 const Select = styled.select`
@@ -109,7 +111,7 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
 
     return (
         <Container>
-            <Title><h2>선수 등록</h2></Title>
+            <H2>선수 등록</H2>
             <Form>
                 <FormColumnContainer wid="60%">
                     <TextContainer><h3>선수 정보 입력</h3></TextContainer>
@@ -150,12 +152,13 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
                         </FormColumnContainer>
                     </FormRowContainer>
 
-                    {/* <FormRowContainer>
+                    {/* 소속명 */}
+                    <FormRowContainer>
                         <FormColumnContainer wid="60%">
                             <label htmlFor="playerAffiliation">소속명</label>
                             <Input value={value.playerAffiliation} onChange={onChangeHandler} type="text" id="playerAffiliation" name="playerAffiliation" />
                         </FormColumnContainer>
-                    </FormRowContainer> */}
+                    </FormRowContainer>
 
                     <FormRowContainer>
                         <FormColumnContainer wid="60%">
@@ -190,7 +193,7 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
                     </FormRowContainer>
                 </FormColumnContainer>
                 <FormRowContainer>
-                    <Input type="submit" value="선수 등록" onClick={onSubmitHandler} />
+                    <InputBtn type="submit" value="선수 등록" onClick={onSubmitHandler} />
                 </FormRowContainer>
             </Form>
 

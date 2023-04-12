@@ -11,7 +11,7 @@ function App() {
       <Routes>
         <Route path="*" element={<><Header /><Main /></>} />
         <Route path="printPrize" element={<PrintPrize />} />
-        <Route path="/print/player" element={<PrintPlayer />} />
+        <Route path="printPlayer" element={<PrintPlayer />} />
       </Routes>
     </BrowserRouter>
   );

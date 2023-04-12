@@ -48,6 +48,11 @@ const StyledLink = styled(Link)`
     };
 `;
 
+const Form = styled.form`
+    border: 1px solid blue;
+    width: 350px;
+    padding: 5px;
+`;
 
 const FindCompetition = () => {
     const columns = ['대회수정', '참가', '종목' ,'대회번호' ,'대회이름', '기록지명', '개최자명', '개최자이메일', '개최자전화번호', '대회시작날짜', '대회종료날짜'];
@@ -129,11 +134,9 @@ const FindCompetition = () => {
     };
 
     const doDelete = (e) => {
-        // console.log([Number(e.target.value)]);
+        // console.log(Number(e.target.value));
         if(window.confirm("정말 삭제하시겠습니까?")) {
-            axios.delete(`${API.COMPETITION_DELETE}`,{
-                data: Number(e.target.value)
-            }).then((res) => setDeleteResponse((state) => !state));
+            axios.delete(`${API.COMPETITION_DELETE}/${e.target.value}`).then(res => console.log(res.data));
             window.location.reload();
         } else {
             alert('취소 되었습니다.');
@@ -259,7 +262,7 @@ const FindCompetition = () => {
             </Table>
             {updateCmpt ?
                 <div>
-                    <form>
+                    <Form>
                         대회ID<input type="text" readOnly value={detailCmpt.competitionId} /><br/>
                         대회명<input type="text" name="competitionName" value={detailCmpt.competitionName} onChange={updateOnChange} /><br/>
                         기록지명<input type="text" name="recordingSheetName" value={detailCmpt.recordingSheetName} onChange={updateOnChange} /><br/>
@@ -269,10 +272,10 @@ const FindCompetition = () => {
                         대회시작날짜<input type="date" name="competitionStartDate" value={detailCmpt.competitionStartDate} onChange={updateOnChange} /><br/>
                         대회시작시간<input type="time" name="competitionStartTime" value={detailCmpt.competitionStartTime} onChange={updateOnChange} /><br/>
                         대회종료날짜<input type="date" name="competitionEndDate" value={detailCmpt.competitionEndDate} onChange={updateOnChange}/><br />
-                        대회종료시간<input type="time" name="competitionEndTime" value={detailCmpt.competitionEndTime} onChange={updateOnChange}/>
+                        대회종료시간<input type="time" name="competitionEndTime" value={detailCmpt.competitionEndTime} onChange={updateOnChange}/><br />
                         <input type="submit" value="수정" onClick={onSubmit} />
                         <button onClick={cancelSubmit}>취소</button>
-                    </form>
+                    </Form>
                 </div>
             : null}
         </Container>

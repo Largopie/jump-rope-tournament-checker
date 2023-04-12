@@ -162,11 +162,9 @@ const FindOrganization = () => {
 
     const doDelete = (e) => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
-            console.log(Number(e.target.value));
-            axios.delete(`${API.ORGANIZATION_DELETE}`, {
-                data: [Number(e.target.value)]
-            })
-            // .then((res) => console.log(res) );
+            // console.log(Number(e.target.value));
+            axios.delete(`${API.ORGANIZATION_DELETE}/${e.target.value}`)
+            .then((res) => console.log(res));
             window.location.reload();
         } else {
             alert('취소 되었습니다.');
