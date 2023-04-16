@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const Table = styled.table`
-    border: 1px solid blue;
+    border: 2px solid red;
     border-collapse: collapse;
 `;
 
@@ -32,6 +32,7 @@ const FormRowContainer = styled.div`
 `;
 
 const FormColumnContainer = styled.div`
+    
     box-shadow: 0 0 0 1px blue inset;
     display: flex;
     flex-direction: column;
@@ -44,6 +45,9 @@ const H2 = styled.h2`
 `;
 
 const Input = styled.input`
+    outline: none;
+    border-radius: 3px;
+    border: 2px solid ${(props) => props.Border};
     margin-bottom: 10px;
     width: ${(props) => props.wid};
 `;
@@ -53,6 +57,9 @@ const InputBtn = styled.input`
 `;
 
 const Select = styled.select`
+    outline: none;
+    border-radius: 3px;
+    border: 2px solid ${(props) => props.Border};
     margin-bottom: 10px;
     width: ${(props) => props.wid};
 `;
@@ -120,7 +127,7 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
                     <FormRowContainer>
                         <FormColumnContainer wid="60%">
                             <label htmlFor="playerName">선수 이름</label>
-                            <Input value={value.playerName} onChange={onChangeHandler} type="text" id="playerName" name="playerName" />
+                            <Input Border="red" placeholder="필수입력" value={value.playerName} onChange={onChangeHandler} type="text" id="playerName" name="playerName" />
                         </FormColumnContainer>
                     </FormRowContainer>
 
@@ -129,17 +136,17 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
                         <FormRowContainer>
                             <FormColumnContainer wid="50%">
                                 <label htmlFor="playerGender">성별</label>
-                                <Select value={value.playerGender} wid="90%" onChange={onChangeHandler} name="playerGender" id="playerGender">
+                                <Select Border="red" value={value.playerGender} wid="90%" onChange={onChangeHandler} name="playerGender" id="playerGender">
                                     <option value="">-- 성별 --</option>
                                     <option value="남">남성</option>
                                     <option value="여">여성</option>
                                 </Select>
                             </FormColumnContainer>
 
-                            {/* 나이 */}
+                            {/* 생년월일 */}
                             <FormColumnContainer wid="50%">
                                 <label html="playerBirth">생년월일</label>
-                                <Input value={value.playerBirth} onChange={onChangeHandler} type="date" id="playerBirth" name="playerBirth" />
+                                <Input Border="red" value={value.playerBirth} onChange={onChangeHandler} type="date" id="playerBirth" name="playerBirth" />
                             </FormColumnContainer>
                         </FormRowContainer>
                     </FormColumnContainer>
@@ -163,11 +170,11 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
                     <FormRowContainer>
                         <FormColumnContainer wid="60%">
                             <label htmlFor="departId">부서선택</label>
-                            <select id="departId" onChange={(e) => setDepartId(e.target.value)}>
+                            <Select Border="red" id="departId" onChange={(e) => setDepartId(e.target.value)}>
                                 {depList.map(({ departId, departName }) => (
                                     <option key={departId} value={departId}>{departName}</option>
                                 ))}
-                            </select>
+                            </Select>
                         </FormColumnContainer>
                     </FormRowContainer>
                     <FormRowContainer>

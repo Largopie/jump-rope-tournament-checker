@@ -36,11 +36,15 @@ const FormColumnContainer = styled.div`
 
 const Input = styled.input`
     margin-bottom: 10px;
+    border-radius: 3px;
+    border: 2px solid ${(props) => props.Border};
     width: ${(props) => props.wid};
     outline: none;
 `;
 
 const Select = styled.select`
+    border-radius: 3px;
+    border: 2px solid black;
     margin-bottom: 10px;
     width: ${(props) => props.wid};
     outline: none;
@@ -106,21 +110,20 @@ const AddCompetition = () => {
                     <FormColumnContainer wid="60%" hei="100%">
                         <TextContainer><h3>대회 정보 입력</h3></TextContainer>
                         <label htmlFor="competitionName">대회명 </label>
-                        <Input value={value.competitionName} wid="60%" id="competitionName" name="competitionName" onChange={onChangeHandler} type="text" />
+                        <Input placeholder="필수입력" Border="red" value={value.competitionName} wid="60%" id="competitionName" name="competitionName" onChange={onChangeHandler} type="text" />
 
                         <label htmlFor="recordingSheetName">기록지인쇄명</label>
-                        <Input value={value.recordingSheetName} wid="60%" id="recordingSheetName" name="recordingSheetName" onChange={onChangeHandler} type="text" />
+                        <Input placeholder="필수입력" Border="red" value={value.recordingSheetName} wid="60%" id="recordingSheetName" name="recordingSheetName" onChange={onChangeHandler} type="text" />
                         <FormRowContainer wid="100%" hei="100%">
                             <FormColumnContainer wid="50%">
                                 <label htmlFor="competitionStartDate">대회 시작 날짜</label>
-                                <Input value={value.competitionStartDate} wid="60%" id="competitionStartDate" name="competitionStartDate" onChange={onChangeHandler} type="date" />
-                                <Input value={value.startTime} wid="60%" name="startTime" onChange={onChangeHandler} type="time" />
+                                <Input Border="red" value={value.competitionStartDate} wid="60%" id="competitionStartDate" name="competitionStartDate" onChange={onChangeHandler} type="date" />
+                                <Input Border="red" value={value.startTime} wid="60%" name="startTime" onChange={onChangeHandler} type="time" />
                             </FormColumnContainer>
                             <FormColumnContainer wid="50%">
                                 <label htmlFor="competitionEndDate">대회 종료 날짜</label>
-                                <Input value={value.competitionEndDate} wid="60%" id="competitionEndDate" name="competitionEndDate" onChange={onChangeHandler} type="date" />
-                                
-                                <Input value={value.endTime} wid="60%" name="endTime" onChange={onChangeHandler} type="time" />
+                                <Input Border="red" value={value.competitionEndDate} wid="60%" id="competitionEndDate" name="competitionEndDate" onChange={onChangeHandler} type="date" />
+                                <Input Border="red" value={value.endTime} wid="60%" name="endTime" onChange={onChangeHandler} type="time" />
                             </FormColumnContainer>
                         </FormRowContainer>
                     </FormColumnContainer>
@@ -130,7 +133,7 @@ const AddCompetition = () => {
                     <FormColumnContainer wid="60%" hei="100%">
                         <TextContainer><h3>개최측 정보입력</h3></TextContainer>
                         <label htmlFor="competitionHost">개최자</label>
-                        <Input value={value.competitionHost} wid="60%" id="competitionHost" name="competitionHost" onChange={onChangeHandler} type="text" />
+                        <Input placeholder="필수입력" Border="red" value={value.competitionHost} wid="60%" id="competitionHost" name="competitionHost" onChange={onChangeHandler} type="text" />
                         
                         <label htmlFor="orgEmailId">이메일</label>
                         <FormRowContainer>

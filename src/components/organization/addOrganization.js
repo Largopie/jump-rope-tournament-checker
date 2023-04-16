@@ -39,7 +39,10 @@ const FormColumnContainer = styled.div`
 `;
 
 const Input = styled.input`
+    outline: none;
+    border-radius: 3px;
     margin-bottom: 10px;
+    border: 2px solid ${(props) => props.Border};
     width: ${(props) => props.wid};
 `;
 
@@ -86,10 +89,10 @@ const AddOrganization = () => {
                     <FormColumnContainer wid="60%">
                         <TextContainer><h3>단체 정보 입력</h3></TextContainer>
                         <label htmlFor="orgName">단체 참가명</label>
-                        <Input value={value.orgName} onChange={onChangeHandler} wid="60%" type="text" id="orgName" name="orgName" />
+                        <Input Border="red" placeholder="필수입력" value={value.orgName} onChange={onChangeHandler} wid="60%" type="text" id="orgName" name="orgName" />
 
                         <label htmlFor="orgEmail">단체 이메일</label>
-                        <Input value={value.orgEmail} onChange={onChangeHandler}  wid="60%" type="email" id="orgEmail" name="orgEmail" />
+                        <Input  value={value.orgEmail} onChange={onChangeHandler}  wid="60%" type="email" id="orgEmail" name="orgEmail" />
 
                         <label htmlFor="orgTel">단체 전화번호</label>
                         <Input value={value.orgTel} onChange={onChangeHandler} wid="60%" type="tel" id="orgTel" name="orgTel" />
@@ -100,10 +103,10 @@ const AddOrganization = () => {
                     <FormColumnContainer wid="60%">
                         <TextContainer><h3>리더 정보 입력</h3></TextContainer>
                         <label htmlFor="orgLeaderName">리더명</label>
-                        <Input value={value.orgLeaderName} onChange={onChangeHandler} wid="60%" type="text" id="orgLeaderName" name="orgLeaderName" />
+                        <Input Border="red" placeholder="필수입력" value={value.orgLeaderName} onChange={onChangeHandler} wid="60%" type="text" id="orgLeaderName" name="orgLeaderName" />
 
                         <label htmlFor="leaderTel">리더 전화번호</label>
-                        <Input value={value.leaderTel} onChange={onChangeHandler} wid="60%" type="tel" id="leaderTel" name="leaderTel" />
+                        <Input Border="red" placeholder="필수입력" value={value.leaderTel} onChange={onChangeHandler} wid="60%" type="tel" id="leaderTel" name="leaderTel" />
                     </FormColumnContainer>
                 </FormRowContainer>
                 <FormRowContainer>
