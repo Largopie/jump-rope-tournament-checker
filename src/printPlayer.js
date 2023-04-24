@@ -12,10 +12,8 @@ const PrintContainer = styled.div`
     }
     width: 29.7cm;
     height: 21cm;
-    padding: 1cm;
+    /* padding: 1cm; */
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
 `;
 
 const PrintSubContainer = styled.div`
@@ -23,13 +21,18 @@ const PrintSubContainer = styled.div`
     flex-direction: row;
 `;
 
+const PlayerNumberBox = styled.div`
+    width: 29.7cm / 2;
+    height: 21cm / 2;
+`;
+
 const PlayerNumberBox1 = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100%;
-    height:50vh;
+    width: 14.85cm;
+    height: 10.5cm;
 `;
 
 const PlayerNumberBox2 = styled.div`
@@ -37,8 +40,8 @@ const PlayerNumberBox2 = styled.div`
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100%;
-    height:50vh;
+    width: 14.85cm;
+    height: 10.5cm;
 `;
 
 const PlayerNumberBox3 = styled.div`
@@ -46,8 +49,8 @@ const PlayerNumberBox3 = styled.div`
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100%;
-    height:50vh;
+    width: 14.85cm;
+    height: 10.5cm;
 `;
 
 const PlayerNumberBox4 = styled.div`
@@ -55,8 +58,8 @@ const PlayerNumberBox4 = styled.div`
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 100%;
-    height:50vh;
+    width: 14.85cm;
+    height: 10.5cm;
 `;
 
 const Number = styled.div`
@@ -102,7 +105,9 @@ const PrintPlayer = () => {
                                     <Org>{players[i + 1].orgName}</Org>
                                     <Info>{players[i + 1].playerName} / {players[i + 1].playerGender} / {players[i + 1].departName}</Info>
                                 </div>
-                                : <div></div>}
+                                : 
+                                <div>
+                                </div>}
                         </PlayerNumberBox2>
                     </PrintSubContainer>
                     <PrintSubContainer>
@@ -113,7 +118,9 @@ const PrintPlayer = () => {
                                     <Org>{players[i + 2].orgName}</Org>
                                     <Info>{players[i + 2].playerName} / {players[i + 2].playerGender} / {players[i + 2].departName}</Info>
                                 </div>
-                                : <div></div>}
+                                :
+                                <div>
+                                </div>}
                         </PlayerNumberBox3>
                         <PlayerNumberBox4>
                             {i + 3 < players.length ?
@@ -122,7 +129,9 @@ const PrintPlayer = () => {
                                     <Org>{players[i + 3].orgName}</Org>
                                     <Info>{players[i + 3].playerName} / {players[i + 3].playerGender} / {players[i + 3].orgName} / {players[i + 3].departName}</Info>
                                 </div>
-                                : <div></div>}
+                                : 
+                                <div>
+                                </div>}
                         </PlayerNumberBox4>
                     </PrintSubContainer>
                 </div>
