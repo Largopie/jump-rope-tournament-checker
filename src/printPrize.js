@@ -138,6 +138,8 @@ const PrintPrize = () => {
     const cmptId = location.state?.cmptId;
 
     const [data, setData] = useState([]);
+    const [filterPrize, setFilterPrize] = useState('');
+    const [filterValue, setFilterValue] = useState('');
 
     const [font, setFont] = useState('');
     const [see, setSee] = useState(false);
@@ -307,6 +309,15 @@ const PrintPrize = () => {
             setLeaderFontSize(leaderFontSize - 1);
         };
     };
+
+    const onFilterPrize = (e) => {
+        setFilterPrize(e.target.value);
+    };
+
+    const onChangefilterValue = (e) => {
+        setFilterValue(e.target.value);
+    };
+
     // console.log('Day', dayFontSize, dayTop);
     // console.log('ORG', orgFontSize, orgTop);
     // console.log('LEADER',leaderFontSize, leaderTop);
@@ -322,39 +333,40 @@ const PrintPrize = () => {
 
     // console.log(data);
 
-    const repeat = () => {
-        const result = [];
-        for (let i = 0; i < data.length; i++) {
-            result.push(
-                <PrizeContainer backgroundImg={see}>
-                    <PrizeTextContainer top={textTop} fontSize={textFontSize}>
-                        <PrizeSubContainer>
-                            <Text paddingLeft={topLeft} fontFamily={font}>{data[i].cmptName}</Text>
-                            <Text paddingRight={topRight} fontFamily={font}>{data[i].grade}</Text>
-                        </PrizeSubContainer>
-                        <PrizeSubContainer>
-                            <Text paddingLeft={bottomLeft} fontFamily={font}>{data[i].playerAffiliation}</Text>
-                            <Text paddingRight={bottomRight} fontFamily={font}>{data[i].playerName}</Text>
-                        </PrizeSubContainer>
-                    </PrizeTextContainer>
-                    <ContentContainer top={contentTop} fontSize={contentFontSize}>
-                        <Text fontFamily={font}>{prizeContent}</Text>
-                    </ContentContainer>
-                    <DayContainer top={dayTop} fontSize={dayFontSize}>
-                        <Text fontFamily={font}>{dayContent}</Text>
-                    </DayContainer>
-                    <OrganizationContainer top={orgTop} fontSize={orgFontSize}>
-                        <Text fontFamily={font}>{orgContent}</Text>
-                    </OrganizationContainer >
-                    <LeaderContainer top={leaderTop} fontSize={leaderFontSize}>
-                        <Text fontFamily={font}>{leaderContent}</Text>
-                    </LeaderContainer>
-                </PrizeContainer>
-            );
-        };
-        return result;
-    };
+    // const repeat = () => {
+    //     const result = [];
+    //     for (let i = 0; i < data.length; i++) {
+    //         result.push(
+    //             <PrizeContainer backgroundImg={see}>
+    //                 <PrizeTextContainer top={textTop} fontSize={textFontSize}>
+    //                     <PrizeSubContainer>
+    //                         <Text paddingLeft={topLeft} fontFamily={font}>{data[i].cmptName}</Text>
+    //                         <Text paddingRight={topRight} fontFamily={font}>{data[i].grade}</Text>
+    //                     </PrizeSubContainer>
+    //                     <PrizeSubContainer>
+    //                         <Text paddingLeft={bottomLeft} fontFamily={font}>{data[i].playerAffiliation}</Text>
+    //                         <Text paddingRight={bottomRight} fontFamily={font}>{data[i].playerName}</Text>
+    //                     </PrizeSubContainer>
+    //                 </PrizeTextContainer>
+    //                 <ContentContainer top={contentTop} fontSize={contentFontSize}>
+    //                     <Text fontFamily={font}>{prizeContent}</Text>
+    //                 </ContentContainer>
+    //                 <DayContainer top={dayTop} fontSize={dayFontSize}>
+    //                     <Text fontFamily={font}>{dayContent}</Text>
+    //                 </DayContainer>
+    //                 <OrganizationContainer top={orgTop} fontSize={orgFontSize}>
+    //                     <Text fontFamily={font}>{orgContent}</Text>
+    //                 </OrganizationContainer >
+    //                 <LeaderContainer top={leaderTop} fontSize={leaderFontSize}>
+    //                     <Text fontFamily={font}>{leaderContent}</Text>
+    //                 </LeaderContainer>
+    //             </PrizeContainer>
+    //         );
+    //     };
+    //     return result;
+    // };
 
+    // console.log(filterValue);
 
     return (
         <div>
@@ -372,6 +384,15 @@ const PrintPrize = () => {
                 <option value="돋움체">돋움체</option>
             </Select>
             <Button onClick={seeBackGround}>{see ? '배경보이기' : '배경숨기기'}</Button>
+            <label htmlFor="filterPrize" style={{ fontSize: "18px" }}>상장 조회</label>
+            <Select id="filterPrize" onChange={onFilterPrize}>
+                <option value="">--  선택  --</option>
+                <option value="cmptName">종목</option>
+                <option value="playerName">이름</option>
+                <option value="grade">등수</option>
+                <option value="playerAffiliation">단체</option>
+            </Select>
+            <Input type="text" value={filterValue} onChange={onChangefilterValue}/>
             <SettingRowContainer>
                 <SettingContainer>
                     <H3>종목/순위/단체(소속)/성명 부분</H3>
@@ -471,25 +492,33 @@ const PrintPrize = () => {
             </SettingRowContainer>
 
             <Container ref={ref}>
-                {/* <PrizeContainer  backgroundImg={see}>
-                    <PrizeTextContainer>
-                        <PrizeSubContainer>
-                            <Text fontFamily={font}>음악 줄넘기</Text>
-                            <Text fontFamily={font}>3위</Text>
-                        </PrizeSubContainer>
-                        <PrizeSubContainer>
-                            <Text fontFamily={font}>인터벌초등학교</Text>
-                            <Text fontFamily={font}>김철민</Text>
-                        </PrizeSubContainer>
-                    </PrizeTextContainer>
-                    <ContentContainer>
-                        <Text fontFamily={font}>{prizeContent}</Text>
-                    </ContentContainer>
-                    <DayContainer fontSize={dayFontSize}>
-                        <Text fontFamily={font}>2023년 4월 3일</Text>
-                    </DayContainer>
-                </PrizeContainer> */}
-                {repeat()}
+                {data.filter((item) => String(item[filterPrize]).includes(filterValue)).map(({cmptName, grade, playerAffiliation, playerName}) => (
+                    <PrizeContainer backgroundImg={see}>
+                        <PrizeTextContainer top={textTop} fontSize={textFontSize}>
+                            <PrizeSubContainer>
+                                <Text paddingLeft={topLeft} fontFamily={font}>{cmptName}</Text>
+                                <Text paddingRight={topRight} fontFamily={font}>{grade}</Text>
+                            </PrizeSubContainer>
+                            <PrizeSubContainer>
+                                <Text paddingLeft={bottomLeft} fontFamily={font}>{playerAffiliation}</Text>
+                                <Text paddingRight={bottomRight} fontFamily={font}>{playerName}</Text>
+                            </PrizeSubContainer>
+                        </PrizeTextContainer>
+                        <ContentContainer top={contentTop} fontSize={contentFontSize}>
+                            <Text fontFamily={font}>{prizeContent}</Text>
+                        </ContentContainer>
+                        <DayContainer top={dayTop} fontSize={dayFontSize}>
+                            <Text fontFamily={font}>{dayContent}</Text>
+                        </DayContainer>
+                        <OrganizationContainer top={orgTop} fontSize={orgFontSize}>
+                            <Text fontFamily={font}>{orgContent}</Text>
+                        </OrganizationContainer >
+                        <LeaderContainer top={leaderTop} fontSize={leaderFontSize}>
+                            <Text fontFamily={font}>{leaderContent}</Text>
+                        </LeaderContainer>
+                    </PrizeContainer>
+                ))}
+                {/* {repeat()} */}
             </Container>
         </div>
     );

@@ -9,7 +9,7 @@ const Container = styled.div`
     overflow: auto;
 `;
 
-const UpdateContainer =  styled.div`
+const UpdateContainer = styled.div`
     border: 1px solid black;
     padding: 5px;
     display: flex;
@@ -18,7 +18,7 @@ const UpdateContainer =  styled.div`
 `;
 
 const Table = styled.table`
-    margin: 0 auto;
+    margin: 15px 0px 15px 0px;
     width: 80%;
     border: 1px solid black;
     border-collapse: collapse;
@@ -39,17 +39,12 @@ const Input = styled.input`
     outline: none;
 `;
 
-const InputScore = styled.input`
-    outline: none;
-    width: 20px;
-`;
-
 const H1 = styled.h1`
     margin: 15px;
 `;
 
 const H2 = styled.h2`
-    margin: 15px;
+    margin: 15px 0px 15px 0px;
 `;
 
 const Button = styled.button`
@@ -84,7 +79,6 @@ const FindPage = () => {
     const [selectedEvent, setSelectedEvent] = useState(0);
     const [search, setSearch] = useState('');
     const [updateToggle, setUpdateToggle] = useState(false);
-
     const [updateContent, setUpdateContent] = useState({
         cmptAttendId: '',
         eventAttendId: '',
@@ -138,11 +132,11 @@ const FindPage = () => {
     };
 
     const onChangeUpdate = (e) => {
-        setUpdateContent({...updateContent, [e.target.name]: e.target.value });
+        setUpdateContent({ ...updateContent, [e.target.name]: e.target.value });
     };
 
     const onSubmitUpdate = () => {
-        axios.patch(`${API.ATTEND_UPDATE_EVENTSCORE}/${updateContent.cmptAttendId}`,{
+        axios.patch(`${API.ATTEND_UPDATE_EVENTSCORE}/${updateContent.cmptAttendId}`, {
             cmptEventId: Number(updateContent.eventAttendId),
             score: Number(updateContent.score)
         });
@@ -180,8 +174,8 @@ const FindPage = () => {
                             <Td><button value={competitionId} onClick={inquireOrg}>조회</button></Td>
                             <Td><button value={competitionId} onClick={inquirePlayer}>조회</button></Td>
                             <Td><button value={competitionId} onClick={inquireEvent}>조회</button></Td>
-                            <Td><StyledLink to="/printPlayer" state={{cmptId: competitionId}}>출력하기</StyledLink></Td>
-                            <Td><StyledLink to="/printPrize" state={{cmptId: competitionId}}>출력하기</StyledLink></Td>
+                            <Td><StyledLink to="/printPlayer" state={{ cmptId: competitionId }}>출력하기</StyledLink></Td>
+                            <Td><StyledLink to="/printPrize" state={{ cmptId: competitionId }}>출력하기</StyledLink></Td>
                         </tr>
                     ))}
                 </tbody>
@@ -189,17 +183,17 @@ const FindPage = () => {
             {playerInquiring ?
                 <div>
                     <H2>참가 선수 조회</H2>
-                    {/* <StyledLink to="/print/player" state={{ players: players }}>배번표 인쇄하기</StyledLink> */}
                     <label htmlFor="search">선수 검색 </label>
                     <Input id="search" value={search} onChange={onSearch} />
                     <button onClick={updateScoreToggle}>점수 수정하기</button>
+                    <StyledLink to="/printOrg-players" state={{players: players}}>단체별 선수 출력</StyledLink>
                     {updateToggle ?
                         <UpdateContainer>
                             <h3>점수 수정</h3><br />
                             <label htmlFor="cmptAttendId">선수 번호</label>
                             <input id="cmptAttendId" name="cmptAttendId" type="text" onChange={onChangeUpdate} />
                             <label htmlFor="eventAttendId">종목 번호</label>
-                            <input id="eventAttendId" name="eventAttendId" type="text" onChange={onChangeUpdate}/>
+                            <input id="eventAttendId" name="eventAttendId" type="text" onChange={onChangeUpdate} />
                             <label htmlFor="score">점수</label>
                             <input id="score" name="score" type="number" onChange={onChangeUpdate} />
                             <input type="button" value="수정하기" onClick={onSubmitUpdate} />
