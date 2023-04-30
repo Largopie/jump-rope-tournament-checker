@@ -213,6 +213,7 @@ const FindPage = () => {
                                 <Th>참가종목</Th>
                                 <Th>배점</Th>
                                 <Th>기록점수</Th>
+                                <Th>정보수정</Th>
                             </tr>
                         </thead>
                         <tbody>
@@ -230,6 +231,7 @@ const FindPage = () => {
                                         <Td>{eventName}</Td>
                                         <Td>{grade}</Td>
                                         <Td>{score}</Td>
+                                        <Td><StyledLink to="/updatePlayer" state={{ playerId:cmptAttendId }}>수정</StyledLink></Td>
                                     </tr>
                                 ))}
                         </tbody>

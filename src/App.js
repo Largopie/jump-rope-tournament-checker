@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import PrintPrize from './printPrize';
 import PrintPlayer from './printPlayer';
 import PrintOrgPlayers from './printOrg-players';
+import UpdatePlayer from './components/player/updatePlayer';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="printPrize" element={<PrintPrize />} />
         <Route path="printPlayer" element={<PrintPlayer />} />
         <Route path="printOrg-players" element={<PrintOrgPlayers />} />
+        <Route path="updatePlayer" element={<UpdatePlayer />} />
       </Routes>
     </BrowserRouter>
   );
