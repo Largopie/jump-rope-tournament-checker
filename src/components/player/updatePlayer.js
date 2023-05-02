@@ -10,6 +10,18 @@ const Table = styled.table`
     border-collapse: collapse;
 `;
 
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 15px;
+    width: 50%;
+`;
+
+const MarginDiv = styled.div`
+    margin: 5px 0px 5px 0px;
+`;
+
 const UpdatePlayer = () => {
     const location = useLocation();
     const playerId = location.state?.playerId;
@@ -51,6 +63,7 @@ const UpdatePlayer = () => {
                 ...playerInfo,
                 cmptEventIds: checkedList
             });
+            window.location.assign('/player/find');
         }
         // else{
         //     alert('취소되었습니다.');
@@ -82,9 +95,9 @@ const UpdatePlayer = () => {
 
     return (
         <div>
-            <form>
+            <Form>
                 <input type="hidden" id="cmptAttendId" name="cmptAttendId" />
-
+                
                 <label htmlFor="departmentName">부서명</label>
                 <select type="text" id="departmentName" name="departmentName" value={playerInfo.departId} onChange={handlePlayerState}>
                     {department.map(({departId, departName}) => (<option kee={departId+departName} value={departId}>{departName}</option>))}
@@ -92,22 +105,22 @@ const UpdatePlayer = () => {
 
                 <label htmlFor="playerBirth">생년월일</label>
                 <input type="date" id="playerBirth" name="playerBirth" value={playerInfo.playerBirth} onChange={handlePlayerState} />
-
+                
                 <label htmlFor="playerName">선수명</label>
                 <input type="text" id="playerName" name="playerName" value={playerInfo.playerName} onChange={handlePlayerState} />
-
+                
                 <label htmlFor="playerGender">성별</label>
                 <select id="playerGender" name="playerGender" value={playerInfo.playerGender} onChange={handlePlayerState} >
                     <option value="남">남</option>
                     <option value="여">여</option>
                 </select>
-
+                
                 <label htmlFor="playerTel">전화번호</label>
                 <input type="text" id="playerTel" name="playerTel" value={playerInfo.playerTel} onChange={handlePlayerState} />
 
                 <label htmlFor="playerAffiliation">소속명</label>
                 <input type="text" id="playerAffiliation" name="playerAffiliation" value={playerInfo.playerAffiliation} onChange={handlePlayerState} />
-
+                
                 <br /><label htmlFor="events">참가종목 선택</label>
                 <Table id="events">
                     <thead>
@@ -127,7 +140,7 @@ const UpdatePlayer = () => {
                 </Table>
 
                 <input type="submit" onClick={onUpdateSubmit} value="수정하기" />
-            </form>
+            </Form>
         </div>
     );
 };

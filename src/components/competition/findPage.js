@@ -198,6 +198,7 @@ const FindPage = () => {
                             <input id="cmptAttendId" name="cmptAttendId" type="text" onChange={onChangeUpdate} />
                             <label htmlFor="eventId">종목 선택</label>
                             <select id="eventId" name="eventId" onChange={onChangeUpdate}>
+                                <option value="">--- 종목을 선택하세요 ---</option>
                                 {eventList.map(({eventId, eventName}) => (<option key={eventId+eventName} value={eventId}>{eventName}</option>))}
                             </select>
                             <label htmlFor="score">점수</label>
