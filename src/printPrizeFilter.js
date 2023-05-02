@@ -132,14 +132,12 @@ const Select = styled.select`
     height: 25px;
 `;
 
-const PrintPrize = () => {
+const PrintPrizeFilter = () => {
     const ref = useRef();
     const location = useLocation();
     const cmptId = location.state?.cmptId;
 
     const [data, setData] = useState([]);
-    const [filterPrize, setFilterPrize] = useState('');
-    const [filterValue, setFilterValue] = useState('');
 
     const [font, setFont] = useState('');
     const [see, setSee] = useState(false);
@@ -173,6 +171,7 @@ const PrintPrize = () => {
     const [bottomLeft, setBottomLeft] = useState(20);
     const [bottomRight, setBottomRight] = useState(20);
 
+    const [eventAttendIds, setEventAttendIds] = useState([]);
 
     const onClickHandle = (e) => {
         setFont(e.target.value);
@@ -310,12 +309,14 @@ const PrintPrize = () => {
         };
     };
 
-    const onFilterPrize = (e) => {
-        setFilterPrize(e.target.value);
-    };
-
-    const onChangefilterValue = (e) => {
-        setFilterValue(e.target.value);
+    const printSuccess = () => {
+        if (window.confirm('상장 출력을 완료하시겠습니까?')){
+            axios.patch(`${API.PRIZE_STATE}`, {
+                eventAttendIds: eventAttendIds
+            });
+            alert('상장 출력 완료 처리 되었습니다.');
+            window.location.reload();
+        };
     };
 
     // console.log('Day', dayFontSize, dayTop);
@@ -327,11 +328,14 @@ const PrintPrize = () => {
 
     useEffect(() => {
         axios.get(`${API.PRIZE}/${cmptId}`).then(
-            (res) => setData(res.data)
-        )
+            (res) => (
+                setData(res.data),
+                setEventAttendIds(res.data.filter((item) => item.printed === false).map((item) => item.eventAttendId))
+            )
+        );
     }, [cmptId])
 
-    // console.log(data);
+    // console.log(eventAttendIds);
 
     // const repeat = () => {
     //     const result = [];
@@ -367,6 +371,7 @@ const PrintPrize = () => {
     // };
 
     // console.log(filterValue);
+    // console.log(a);
 
     return (
         <div>
@@ -384,15 +389,7 @@ const PrintPrize = () => {
                 <option value="돋움체">돋움체</option>
             </Select>
             <Button onClick={seeBackGround}>{see ? '배경보이기' : '배경숨기기'}</Button>
-            <label htmlFor="filterPrize" style={{ fontSize: "18px" }}>상장 조회</label>
-            <Select id="filterPrize" onChange={onFilterPrize}>
-                <option value="">--  선택  --</option>
-                <option value="cmptName">종목</option>
-                <option value="playerName">이름</option>
-                <option value="grade">등수</option>
-                <option value="playerAffiliation">단체</option>
-            </Select>
-            <Input type="text" value={filterValue} onChange={onChangefilterValue}/>
+            <Button onClick={printSuccess}>출력완료</Button>
             <SettingRowContainer>
                 <SettingContainer>
                     <H3>종목/순위/단체(소속)/성명 부분</H3>
@@ -492,7 +489,8 @@ const PrintPrize = () => {
             </SettingRowContainer>
 
             <Container ref={ref}>
-                {data.filter((item) => String(item[filterPrize]).includes(filterValue)).map(({cmptName, grade, playerAffiliation, playerName, printed}) => (
+
+                {data.filter((item) => item.printed === false).map(({cmptName, grade, playerAffiliation, playerName, printed}) => (
                     <PrizeContainer backgroundImg={see}>
                         <PrizeTextContainer top={textTop} fontSize={textFontSize}>
                             <PrizeSubContainer>
@@ -524,4 +522,4 @@ const PrintPrize = () => {
     );
 };
 
-export default PrintPrize;
+export default PrintPrizeFilter;

@@ -91,7 +91,6 @@ const AddPlayer = ({ setDetailPlayerState, setModal, competitionId, orgId, depLi
         if (!isChecked && checkedList.includes(value)) {
             setCheckedList(checkedList.filter((item) => item !== value));
         };
-
     };
 
 

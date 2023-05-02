@@ -78,10 +78,11 @@ const FindPage = () => {
     const [events, setEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(0);
     const [search, setSearch] = useState('');
+    const [eventList, setEventList] = useState([]);
     const [updateToggle, setUpdateToggle] = useState(false);
     const [updateContent, setUpdateContent] = useState({
         cmptAttendId: '',
-        eventAttendId: '',
+        eventId: '',
         score: '',
     });
 
@@ -137,7 +138,7 @@ const FindPage = () => {
 
     const onSubmitUpdate = () => {
         axios.patch(`${API.ATTEND_UPDATE_EVENTSCORE}/${updateContent.cmptAttendId}`, {
-            cmptEventId: Number(updateContent.eventAttendId),
+            cmptEventId: Number(updateContent.eventId),
             score: Number(updateContent.score)
         });
         window.location.reload();
@@ -147,9 +148,10 @@ const FindPage = () => {
         axios.get(`${API.COMPETITION_FIND_ALL}`).then(
             (res) => setCompetitions(res.data)
         );
+        axios.get(`${API.EVENT_FIND_ALL}`).then((res) => setEventList(res.data));
     }, []);
 
-    // console.log(players);
+    // console.log(updateContent);
 
     return (
         <Container>
@@ -163,7 +165,8 @@ const FindPage = () => {
                         <Th>참가선수조회</Th>
                         <Th>종목별선수조회</Th>
                         <Th>대회 배번표 출력</Th>
-                        <Th>대회 상장 출력</Th>
+                        <Th>미출력 상장 출력</Th>
+                        <Th>대회 상장 전체 출력</Th>
                     </tr>
                 </thead>
                 <tbody>
@@ -175,6 +178,7 @@ const FindPage = () => {
                             <Td><button value={competitionId} onClick={inquirePlayer}>조회</button></Td>
                             <Td><button value={competitionId} onClick={inquireEvent}>조회</button></Td>
                             <Td><StyledLink to="/printPlayer" state={{ cmptId: competitionId }}>출력하기</StyledLink></Td>
+                            <Td><StyledLink to="/printPrizeFilter" state={{ cmptId: competitionId }}>출력하기</StyledLink></Td>
                             <Td><StyledLink to="/printPrize" state={{ cmptId: competitionId }}>출력하기</StyledLink></Td>
                         </tr>
                     ))}
@@ -192,8 +196,10 @@ const FindPage = () => {
                             <h3>점수 수정</h3><br />
                             <label htmlFor="cmptAttendId">선수 번호</label>
                             <input id="cmptAttendId" name="cmptAttendId" type="text" onChange={onChangeUpdate} />
-                            <label htmlFor="eventAttendId">종목 번호</label>
-                            <input id="eventAttendId" name="eventAttendId" type="text" onChange={onChangeUpdate} />
+                            <label htmlFor="eventId">종목 선택</label>
+                            <select id="eventId" name="eventId" onChange={onChangeUpdate}>
+                                {eventList.map(({eventId, eventName}) => (<option key={eventId+eventName} value={eventId}>{eventName}</option>))}
+                            </select>
                             <label htmlFor="score">점수</label>
                             <input id="score" name="score" type="number" onChange={onChangeUpdate} />
                             <input type="button" value="수정하기" onClick={onSubmitUpdate} />
@@ -203,7 +209,6 @@ const FindPage = () => {
                         <thead>
                             <tr>
                                 <Th>선수번호</Th>
-                                <Th>종목번호</Th>
                                 <Th>소속명</Th>
                                 <Th>단체명</Th>
                                 <Th>이름</Th>
@@ -221,7 +226,6 @@ const FindPage = () => {
                                 .map(({ cmptAttendId, eventAttendId, playerAffiliation, organizationName, playerName, playerGender, playerBirth, playerTel, eventName, grade, score }) => (
                                     <tr key={cmptAttendId + eventAttendId + playerName}>
                                         <Td>{cmptAttendId}</Td>
-                                        <Td>{eventAttendId}</Td>
                                         <Td>{organizationName}</Td>
                                         <Td>{playerAffiliation}</Td>
                                         <Td>{playerName}</Td>
