@@ -40,7 +40,7 @@ const UpdatePlayer = () => {
     });
 
     const handlePlayerState = (e) => {
-        setPlayerInfo({ ...playerInfo, [e.target.name]: e.target.value });
+        setPlayerInfo({ ...playerInfo, [e.target.name]: e.target.name === "departId" ? Number(e.target.value) : e.target.value });
     };
 
     const onCheckHandler = (value, isChecked) => {
@@ -91,15 +91,15 @@ const UpdatePlayer = () => {
         axios.get(`${API.DEPART_FIND_ALL}`).then((res) => setDepartment(res.data));
     }, [playerId]);
 
-    console.log()
+    console.log(playerInfo);
 
     return (
         <div>
             <Form>
                 <input type="hidden" id="cmptAttendId" name="cmptAttendId" />
                 
-                <label htmlFor="departmentName">부서명</label>
-                <select type="text" id="departmentName" name="departmentName" value={playerInfo.departId} onChange={handlePlayerState}>
+                <label htmlFor="departId">부서명</label>
+                <select type="text" id="departId" name="departId" value={playerInfo.departId} onChange={handlePlayerState}>
                     {department.map(({departId, departName}) => (<option kee={departId+departName} value={departId}>{departName}</option>))}
                 </select>
 
