@@ -136,11 +136,14 @@ const FindCompetition = () => {
     const doDelete = (e) => {
         // console.log(Number(e.target.value));
         if(window.confirm("정말 삭제하시겠습니까?")) {
-            axios.delete(`${API.COMPETITION_DELETE}/${e.target.value}`).then(res => console.log(res.data));
-            window.location.reload();
-        } else {
-            alert('취소 되었습니다.');
+            axios.delete(`${API.COMPETITION_DELETE}/${e.target.value}`).then((res) => {
+                if (res.status === 200) {
+                    alert('삭제가 완료되었습니다. 페이지가 새로고침 됩니다.');
+                    window.location.reload();
+                }
+            });
         }
+        // window.location.reload();
         
     };
 

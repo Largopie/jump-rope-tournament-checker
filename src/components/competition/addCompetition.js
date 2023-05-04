@@ -85,7 +85,7 @@ const AddCompetition = () => {
                 hostTel: value.hostTel,
                 competitionStartDate: `${value.competitionStartDate}T${value.startTime}`,
                 competitionEndDate: `${value.competitionEndDate}T${value.endTime}`
-            }).then((res) => console.log(res));
+            }).then((res) => res);
             setValue({
                 competitionName: '',
                 recordingSheetName: '',
