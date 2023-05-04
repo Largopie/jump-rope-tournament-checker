@@ -72,9 +72,11 @@ const FindPage = () => {
     const [competitions, setCompetitions] = useState([]);
     const [playerInquiring, setPlayerInquiring] = useState(false);
     const [orgInquiring, setOrgInquiring] = useState(false);
+    const [orgScoreInquiring, setOrgScoreInquiring] = useState(false);
     const [eventInquiring, setEventInquiring] = useState(false);
     const [players, setPlayers] = useState([]);
     const [organizations, setOrganizations] = useState([]);
+    const [orgScores, setOrgScores] = useState([]);
     const [events, setEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(0);
     const [search, setSearch] = useState('');
@@ -82,7 +84,7 @@ const FindPage = () => {
     const [updateToggle, setUpdateToggle] = useState(false);
     const [updateContent, setUpdateContent] = useState({
         cmptAttendId: '',
-        eventId: '',
+        cmptEventId: '',
         score: '',
     });
 
@@ -102,6 +104,7 @@ const FindPage = () => {
         setPlayerInquiring(true);
         setOrgInquiring(false);
         setEventInquiring(false);
+        setOrgScoreInquiring(false);
     };
 
     const inquireOrg = (e) => {
@@ -110,6 +113,18 @@ const FindPage = () => {
             (res) => setOrganizations(res.data)
         );
         setOrgInquiring(true);
+        setPlayerInquiring(false);
+        setEventInquiring(false);
+        setOrgScoreInquiring(false);
+    };
+
+    const inquireOrgScore = (e) => {
+        setOrgScores([]);
+        axios.get(`${API.PRIZE_ORG}/${e.target.value}`).then(
+            (res) => setOrgScores(res.data)
+        );
+        setOrgScoreInquiring(true);
+        setOrgInquiring(false);
         setPlayerInquiring(false);
         setEventInquiring(false);
     };
@@ -123,6 +138,7 @@ const FindPage = () => {
         setEventInquiring(true);
         setPlayerInquiring(false);
         setOrgInquiring(false);
+        setOrgScoreInquiring(false);
         axios.get(`${API.COMPETITION_EVENT_FIND}/${e.target.value}?type=ALL`).then(
             (res) => setEvents(res.data.filter((event) => event.isProceed === true))
         );
@@ -138,9 +154,9 @@ const FindPage = () => {
 
     const onSubmitUpdate = () => {
         axios.patch(`${API.ATTEND_UPDATE_EVENTSCORE}/${updateContent.cmptAttendId}`, {
-            cmptEventId: Number(updateContent.eventId),
+            cmptEventId: Number(updateContent.cmptEventId),
             score: Number(updateContent.score)
-        });
+        }).then(res => res);
         window.location.reload();
     };
 
@@ -162,6 +178,7 @@ const FindPage = () => {
                         <Th>대회ID</Th>
                         <Th>대회명</Th>
                         <Th>참가단체조회</Th>
+                        <Th>참가단체점수조회</Th>
                         <Th>참가선수조회</Th>
                         <Th>종목별선수조회</Th>
                         <Th>대회 배번표 출력</Th>
@@ -175,6 +192,7 @@ const FindPage = () => {
                             <Td>{competitionId}</Td>
                             <Td>{competitionName}</Td>
                             <Td><button value={competitionId} onClick={inquireOrg}>조회</button></Td>
+                            <Td><button value={competitionId} onClick={inquireOrgScore}>조회</button></Td>
                             <Td><button value={competitionId} onClick={inquirePlayer}>조회</button></Td>
                             <Td><button value={competitionId} onClick={inquireEvent}>조회</button></Td>
                             <Td><StyledLink to="/printPlayer" state={{ cmptId: competitionId }}>출력하기</StyledLink></Td>
@@ -196,11 +214,12 @@ const FindPage = () => {
                             <h3>점수 수정</h3><br />
                             <label htmlFor="cmptAttendId">선수 번호</label>
                             <input id="cmptAttendId" name="cmptAttendId" type="text" onChange={onChangeUpdate} />
-                            <label htmlFor="eventId">종목 선택</label>
-                            <select id="eventId" name="eventId" onChange={onChangeUpdate}>
+                            <label htmlFor="eventId">종목 번호</label>
+                            {/* <select id="eventId" name="eventId" onChange={onChangeUpdate}>
                                 <option value="">--- 종목을 선택하세요 ---</option>
                                 {eventList.map(({eventId, eventName}) => (<option key={eventId+eventName} value={eventId}>{eventName}</option>))}
-                            </select>
+                            </select> */}
+                            <input id="cmptEventId" name="cmptEventId" type="text" onChange={onChangeUpdate} />
                             <label htmlFor="score">점수</label>
                             <input id="score" name="score" type="number" onChange={onChangeUpdate} />
                             <input type="button" value="수정하기" onClick={onSubmitUpdate} />
@@ -210,6 +229,7 @@ const FindPage = () => {
                         <thead>
                             <tr>
                                 <Th>선수번호</Th>
+                                <Th>종목번호</Th>
                                 <Th>소속명</Th>
                                 <Th>단체명</Th>
                                 <Th>이름</Th>
@@ -217,16 +237,17 @@ const FindPage = () => {
                                 <Th>생년월일</Th>
                                 <Th>전화번호</Th>
                                 <Th>참가종목</Th>
-                                <Th>배점</Th>
+                                <Th>등수</Th>
                                 <Th>기록점수</Th>
                                 <Th>정보수정</Th>
                             </tr>
                         </thead>
                         <tbody>
                             {players.filter(item => item.playerName.includes(search))
-                                .map(({ cmptAttendId, eventAttendId, playerAffiliation, organizationName, playerName, playerGender, playerBirth, playerTel, eventName, grade, score }) => (
+                                .map(({ cmptAttendId, cmptEventId ,eventAttendId, playerAffiliation, organizationName, playerName, playerGender, playerBirth, playerTel, eventName, grade, score }) => (
                                     <tr key={cmptAttendId + eventAttendId + playerName}>
                                         <Td>{cmptAttendId}</Td>
+                                        <Td>{cmptEventId}</Td>
                                         <Td>{organizationName}</Td>
                                         <Td>{playerAffiliation}</Td>
                                         <Td>{playerName}</Td>
@@ -234,7 +255,11 @@ const FindPage = () => {
                                         <Td>{playerBirth}</Td>
                                         <Td>{playerTel}</Td>
                                         <Td>{eventName}</Td>
-                                        <Td>{grade}</Td>
+                                        <Td>
+                                            {
+                                                grade === 1 ? '3위' : grade === 2 ? '2위' : grade === 3 ? '1위' : '순위밖'
+                                            }
+                                        </Td>
                                         <Td>{score}</Td>
                                         <Td><StyledLink to="/updatePlayer" state={{ playerId:cmptAttendId }}>수정</StyledLink></Td>
                                     </tr>
@@ -286,28 +311,64 @@ const FindPage = () => {
                     <Table>
                         <thead>
                             <tr>
+                                <Th>점수순나열</Th>
                                 <Th>소속단체</Th>
                                 <Th>이름</Th>
                                 <Th>성별</Th>
                                 <Th>생년월일</Th>
                                 <Th>전화번호</Th>
                                 <Th>참가종목</Th>
+                                <Th>개수</Th>
                             </tr>
                         </thead>
                         <tbody>
-                            {players.filter((item) => item.eventName === selectedEvent).map(({ cmptAttendId, eventAttendId, organizationName, playerName, playerGender, playerBirth, playerTel, eventName }) => (
+                            {players.filter((item) => item.eventName === selectedEvent).sort(function(a,b){
+                                return b.score - a.score;
+                            }).map(({ cmptAttendId, eventAttendId, organizationName, playerName, playerGender, playerBirth, playerTel, eventName, score }, idx) => (
                                 <tr key={cmptAttendId + eventAttendId + playerName}>
+                                    <Td>{idx + 1}</Td>
                                     <Td>{organizationName}</Td>
                                     <Td>{playerName}</Td>
                                     <Td>{playerGender}</Td>
                                     <Td>{playerBirth}</Td>
                                     <Td>{playerTel}</Td>
                                     <Td>{eventName}</Td>
+                                    <Td>{score}</Td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
                     <Button onClick={() => setEventInquiring(false)}>닫기</Button>
+                </div>
+                : null}
+                {orgScoreInquiring ?
+                <div>
+                    <H2>참가 단체 점수 조회</H2>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <Th>점수순나열</Th>
+                                <Th>단체명</Th>
+                                <Th>종합점수</Th>
+                                <Th>1등개수</Th>
+                                <Th>2등개수</Th>
+                                <Th>3등개수</Th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orgScores.map(({ orgName, totalScore, fstPrizeCnt, sndPrizeCnt, trdPrizeCnt }, idx) => (
+                                <tr key={orgName + totalScore}>
+                                    <Td>{idx + 1}</Td>
+                                    <Td>{orgName}</Td>
+                                    <Td>{totalScore}</Td>
+                                    <Td>{fstPrizeCnt}</Td>
+                                    <Td>{sndPrizeCnt}</Td>
+                                    <Td>{trdPrizeCnt}</Td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                    <Button onClick={() => setOrgScoreInquiring(false)}>닫기</Button>
                 </div>
                 : null}
         </Container>
