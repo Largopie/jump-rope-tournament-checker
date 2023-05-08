@@ -91,7 +91,7 @@ const ChooseOrganization = () => {
     const location = useLocation();
     const competitionId = location.state?.competitionId;
     const orgColumns = ['신청하기', '단체번호', '단체이름', '이메일', '전화번호', '리더명', '리더전화번호'];
-    const orgPlyaerColumns = ['소속명', '선수이름', '성별', '생년월일', '전화번호', '참가종목명', '배점','기록점수', '선수삭제'];
+    const orgPlyaerColumns = ['소속명', '선수이름', '성별', '생년월일', '전화번호', '참가종목명', '배점', '기록점수', '선수삭제'];
     //cmptAttendId, playerName, playerGender, playerBirth, playerTel, eventName, grade, count
     // const orgDummy = [
     //     {
@@ -162,8 +162,7 @@ const ChooseOrganization = () => {
     const onDeletePlayer = (e) => {
         if (window.confirm("정말 삭제하시겠습니까? 선수 정보가 모두 삭제됩니다.")) {
             // console.log(e.target.value);
-            axios.delete(`${API.ATTEND_DELETE_PLAYER}/${e.target.value}`);
-            window.location.reload();
+            axios.delete(`${API.ATTEND_DELETE_PLAYER}/${e.target.value}`).then(window.location.reload());
         } else {
             alert('취소 되었습니다.');
         };
@@ -197,23 +196,22 @@ const ChooseOrganization = () => {
         const formData = new FormData();
         formData.append("attendForm", xlsFile);
 
-        for (var value of formData.values()) {
-            console.log(value);
-        }
+        // for (var value of formData.values()) {
+        //     console.log(value);
+        // }
 
         axios.post(`${API.ATTEND_ADD_FORM}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        });
-        window.location.reload();
+        }).then(window.location.reload());
     };
 
     const clickAddPlayer = () => {
         setModal((state) => !state);
     };
     const check = () => {
-        console.log(`${API.ATTEND_CREATE_FORM}?cmptId=${competitionId}&orgId=${orgId}`);
+        // console.log(`${API.ATTEND_CREATE_FORM}?cmptId=${competitionId}&orgId=${orgId}`);
     };
 
     useEffect(() => {
@@ -241,6 +239,14 @@ const ChooseOrganization = () => {
 
     return (
         <Container>
+            <RowContainer>
+                <Form action={`${API.ATTEND_ADD_FORM}`} method="post" enctype="multipart/form-data">
+                    <Label htmlFor="csv">파일등록하기</Label>
+                    <Input type="text" value={xlsFileName} readOnly onChange={handleCsvValue} />
+                    <input type="file" id="csv" accept=".xls" onChange={handleCsvValue} style={{ display: "none" }} />
+                    <input type="submit" onClick={sendXlsFile} value="파일전송" />
+                </Form>
+            </RowContainer>
             <SearchContainer>
                 <label htmlFor="search">단체 검색</label>
                 <Search onChange={setValHandler} name="search" id="search" />
@@ -279,12 +285,6 @@ const ChooseOrganization = () => {
             {detailPlayerState ?
                 <ColumnContainer>
                     <RowContainer>
-                        <Form action={`${API.ATTEND_ADD_FORM}`} method="post" enctype="multipart/form-data">
-                            <Label htmlFor="csv">파일등록하기</Label>
-                            <Input type="text" value={xlsFileName} readOnly onChange={handleCsvValue} />
-                            <input type="file" id="csv" accept=".xls" onChange={handleCsvValue} style={{ display: "none" }} />
-                            <input type="submit" onClick={sendXlsFile} value="파일전송" />
-                        </Form>
                         <Form action={`${API.ATTEND_CREATE_FORM}?`} method="get" target="_blank">
                             <input type="hidden" name="cmptId" value={competitionId} />
                             <input type="hidden" name="orgId" value={orgId} />

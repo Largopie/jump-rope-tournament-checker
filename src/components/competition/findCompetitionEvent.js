@@ -151,10 +151,9 @@ const FindEvent = () => {
                 item.cmSndStandard = Number(item.cmSndStandard),
                 item.cmTrdStandard = Number(item.cmTrdStandard)
             ))));
-            axios.patch(`${API.COMPETITION_EVENT_UPDATAE}`, data);
+            axios.patch(`${API.COMPETITION_EVENT_UPDATAE}`, data).then(window.location.reload());
             // setUpdateState((state) => !state);
             // alert('수정 완료!');
-            window.location.reload();
         }else {
             alert('취소되었습니다.');
         }

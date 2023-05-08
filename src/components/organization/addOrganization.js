@@ -70,7 +70,7 @@ const AddOrganization = () => {
                 orgTel: value.orgTel,
                 orgLeaderName: value.orgLeaderName,
                 leaderTel: value.leaderTel,
-            }).then((res) => console.log(res));
+            }).then((res) => res);
             setValue({
                 orgName: '',
                 orgEmail: '',

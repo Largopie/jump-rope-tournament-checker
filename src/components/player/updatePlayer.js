@@ -58,13 +58,14 @@ const UpdatePlayer = () => {
 
     const onUpdateSubmit = (e) => {
         e.preventDefault();
-        if (window.confirm('정말로 수정하시겠습니까?')) {
-            axios.patch(`${API.ATTEND_UPDATE_PLAYER}/${playerId}`, {
-                ...playerInfo,
-                cmptEventIds: checkedList
-            });
-            window.location.assign('/player/find');
-        }
+        // if (window.confirm('정말로 수정하시겠습니까?')) {
+        //     ;
+        //     // window.location.assign('/player/find');
+        // }
+        axios.patch(`${API.ATTEND_UPDATE_PLAYER}/${playerId}`, {
+            ...playerInfo,
+            cmptEventIds: checkedList
+        }).then((res) => console.log(res)).then(window.location.assign('player/find'));
         // else{
         //     alert('취소되었습니다.');
         // }

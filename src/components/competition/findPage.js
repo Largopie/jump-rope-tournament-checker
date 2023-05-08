@@ -156,8 +156,7 @@ const FindPage = () => {
         axios.patch(`${API.ATTEND_UPDATE_EVENTSCORE}/${updateContent.cmptAttendId}`, {
             cmptEventId: Number(updateContent.cmptEventId),
             score: Number(updateContent.score)
-        }).then(res => res);
-        window.location.reload();
+        }).then(res => res).then(window.location.reload());
     };
 
     useEffect(() => {

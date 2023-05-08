@@ -184,10 +184,8 @@ const FindCompetition = () => {
                 hostTel: detailCmpt.hostTel,
                 competitionStartDate: new Date(detailCmpt.competitionStartDate + ' ' + detailCmpt.competitionStartTime).toISOString(),
                 competitionEndDate: new Date(detailCmpt.competitionEndDate + ' ' + detailCmpt.competitionEndTime).toISOString()
-        });
+        }).then(alert('수정되었습니다.')).then(window.location.reload());
         setUpdateCmpt(false);
-        alert('수정되었습니다');
-        window.location.reload();
     };
 
     const setOptHandler = (e) => {

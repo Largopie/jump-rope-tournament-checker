@@ -137,11 +137,15 @@ const FindOrganization = () => {
     const handleOnSubmit = (e) => {
         e.preventDefault();
         if (window.confirm('수정하시겠습니까?')) {
-            axios.patch(`${API.ORGANIZATION_UPDATE}`, detail);
-            setUpdateState((state) => !state);
-            alert('수정완료!');
-            setDetailUpdateState(false);
-            window.location.reload();
+            axios.patch(`${API.ORGANIZATION_UPDATE}`, detail).then(
+                setUpdateState((state) => !state)
+            ).then(
+                alert('수정완료!')
+            ).then(
+                setDetailUpdateState(false)
+            ).then(
+                window.location.reload()
+            );
         };
     };
 
@@ -164,8 +168,7 @@ const FindOrganization = () => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
             // console.log(Number(e.target.value));
             axios.delete(`${API.ORGANIZATION_DELETE}/${e.target.value}`)
-            .then((res) => console.log(res));
-            window.location.reload();
+            .then((res) => console.log(res)).then(window.location.reload());
         } else {
             alert('취소 되었습니다.');
         }
